@@ -5,7 +5,7 @@
 { font }:
 
 stdenv.mkDerivation {
-  name = "${font.pname}NerdPatched";
+  pname = "${font.pname}NerdPatched";
   inherit (font) meta version;
 
   src = font;

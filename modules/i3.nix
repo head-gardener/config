@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+  services.logind.extraConfig = ''
+    HandlePowerKey=suspend
+  '';
+
   services.xserver = {
     libinput.enable = true;
 
@@ -19,13 +23,16 @@
     windowManager.i3 = {
       enable = true;
       extraPackages = with pkgs; [
+        cpanel
+        dmenu
+        dunst
+        feh
+        i3lock-color
         i3status
         kitty
+        main-menu
         picom
         scrot
-        dunst
-        i3lock-color
-        feh
       ];
     };
   };

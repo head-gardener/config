@@ -1,22 +1,14 @@
 { lib, pkgs, inputs, ... }:
 
-let
-  personal = import ./overlay.nix { inherit pkgs; };
-in {
+{
   home = {
     username = "hunter";
     homeDirectory = "/home/hunter";
     stateVersion = "23.11";
     packages = with pkgs; [
-      (personal.main-menu.override { inherit (personal) dmenu; })
       arkpandora_ttf
-      bat
-      bat
-      brightnessctl
       dconf
       easyeffects
-      fd
-      fd
       fish
       fzf
       fzy
@@ -24,8 +16,6 @@ in {
       neofetch
       nix-prefetch-github
       obs-studio
-      personal.cpanel
-      personal.dmenu
       pw-volume
       qpwgraph
       tree
@@ -104,13 +94,15 @@ in {
       interactiveShellInit = ''
         ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
       '';
-      plugins = let
-        ghplug = url: {
-          name = lib.last (lib.splitString "/" url);
-          src = fetchGit { url = url; };
-        };
-      in builtins.map ghplug [
-      ];
+      plugins =
+        let
+          ghplug = url: {
+            name = lib.last (lib.splitString "/" url);
+            src = fetchGit { url = url; };
+          };
+        in
+        builtins.map ghplug [
+        ];
     };
 
     git = {
@@ -124,7 +116,7 @@ in {
     kitty = {
       enable = true;
       font = {
-        package = personal.lilex;
+        package = pkgs.lilex;
         name = "Lilex Nerd Font Medium";
       };
       extraConfig = builtins.readFile ../kitty/kitty.conf;

@@ -7,8 +7,4 @@
     keyMap = "us";
     # useXkbConfig = true; # use xkbOptions in tty.
   };
-
-  services.logind.extraConfig = ''
-    HandlePowerKey=suspend
-  '';
 }

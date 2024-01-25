@@ -18,6 +18,14 @@
 
     lib = import ./lib.nix nixpkgs.lib;
 
+    overlays =
+      lib.importAll ./overlays // {
+        packages = final: prev: import ./pkgs final;
+      };
+
+    packages = lib.forAllSystems
+      (system: import ./pkgs nixpkgs.legacyPackages.${system});
+
     nixosModules = rec {
       home = { inputs, ... }: {
         home-manager = {
@@ -33,6 +41,9 @@
         ./modules/nix.nix
         ./modules/openssh.nix
         ./modules/tools.nix
+        {
+          nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays;
+        }
       ];
 
       desktopMods.imports = [
