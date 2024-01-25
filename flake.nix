@@ -26,6 +26,8 @@
     packages = lib.forAllSystems
       (system: import ./pkgs nixpkgs.legacyPackages.${system});
 
+    hydraJobs = { inherit (self) packages; };
+
     nixosModules = rec {
       home = { inputs, ... }: {
         home-manager = {
