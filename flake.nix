@@ -31,12 +31,12 @@
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
-          users.hunter = import ./dots/home-manager/home.nix;
+          users.hunter = import ./modules/home.nix;
           extraSpecialArgs = { inherit inputs; };
         };
       };
 
-      defaultMods.imports = [
+      default.imports = [
         ./modules/default.nix
         ./modules/nix.nix
         ./modules/openssh.nix
@@ -46,51 +46,30 @@
         }
       ];
 
-      desktopMods.imports = [
+      desktop.imports = [
         (import ./modules/doas.nix [ "hunter" ])
         ./modules/i3.nix
         ./modules/nvidia.nix
         ./modules/pipewire.nix
-        home-manager.nixosModules.home-manager
-        home
-      ];
-
-      hydraMods.imports = [
-        {
-          networking.firewall.allowedTCPPorts = [ 3000 ];
-          services.hydra = {
-            enable = true;
-            hydraURL = "http://localhost:3000";
-            notificationSender = "hydra@localhost";
-            buildMachinesFiles = [ ];
-            useSubstitutes = true;
-          };
-          services.postgresql.enable = true;
-        }
       ];
     };
 
     nixosConfigurations = {
 
-      distortion = lib.mkHost inputs "x86_64-linux" "distortion" [
+      distortion = lib.mkDesktop inputs "x86_64-linux" "distortion" [
         musnix.nixosModules.musnix
         { musnix.enable = true; }
-        nixosModules.defaultMods
-        nixosModules.desktopMods
       ];
 
-      shears = lib.mkHost inputs "x86_64-linux" "shears" [
+      shears = lib.mkDesktop inputs "x86_64-linux" "shears" [
         (lib.mkKeys self "hunter")
-        nixosModules.defaultMods
-        nixosModules.desktopMods
       ];
 
       blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" [
         ./modules/nginx.nix
         ./modules/nas.nix
-        blog.nixosModules.default
+        blog.nixosModules.blog
         (lib.mkKeys self "hunter")
-        nixosModules.defaultMods
       ];
 
     };
