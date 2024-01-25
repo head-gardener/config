@@ -13,8 +13,15 @@
           name = lib.last (lib.splitString "/" url);
           src = fetchGit { url = url; };
         };
+        nixplug = src: {
+          name = "${src.pname}-${src.version}";
+          src = src.src;
+        };
       in
-      builtins.map ghplug [
-      ];
+      builtins.map nixplug (with pkgs.fishPlugins; [ 
+        autopair
+        done
+        fzf-fish
+      ]);
   };
 }
