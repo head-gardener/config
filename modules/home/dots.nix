@@ -1,16 +1,24 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
+let
+  expand = p: "${inputs.self}/dots/${p}";
+
+  mkFile = path: { source = expand path; };
+
+  mkDir = path:
+    (mkFile path) // {
+      recursive = true;
+    };
+
+  isDir = path: builtins.pathExists (toString (expand path) + "/.");
+
+  mkPath = path: if isDir path then mkDir path else mkFile path;
+
+  mkPaths = ps: builtins.listToAttrs
+    (map (p: { name = ".config/${p}"; value = mkPath p; }) ps);
+in
 {
-  home.file = {
-    ".config/nvim".source = "${inputs.self}/dots/nvim";
-    ".config/nvim".recursive = true;
-
-    ".config/i3/config".source = "${inputs.self}/dots/i3/config";
-
-    ".config/fish".source = "${inputs.self}/dots/fish";
-    ".config/fish".recursive = true;
-
-    ".config/picom.conf".source = "${inputs.self}/dots/picom.conf";
-
-    "Pictures/11.png".source = "${inputs.self}/dots/static/11.png";
-  };
+  home.file = mkPaths [ "dunst" "fish" "i3" "nvim" "picom.conf" ] //
+    {
+      "Pictures/11.png".source = "${inputs.self}/dots/static/11.png";
+    };
 }
