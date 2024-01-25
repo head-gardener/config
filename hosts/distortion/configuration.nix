@@ -55,16 +55,4 @@
     networkmanager.enable = true;
     firewall.enable = false;
   };
-
-  nix = {
-    settings = {
-      substituters = [
-        "http://blueberry"
-        "https://cache.nixos.org/"
-      ];
-      trusted-public-keys = [
-        "blueberry:yZO3C9X6Beti/TAEXxoJaMHeIP3jXYVWscrYyqthly8="
-      ];
-    };
-  };
 }

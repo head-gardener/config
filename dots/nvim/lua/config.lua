@@ -22,7 +22,7 @@ vim.o.copyindent = true
 -- Folds
 vim.opt.foldmethod = "indent"
 vim.opt.foldminlines = 2
-vim.opt.foldnestmax = 4
+vim.opt.foldnestmax = 7
 
 -- Display
 vim.o.signcolumn = "yes"

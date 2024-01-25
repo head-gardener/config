@@ -38,12 +38,6 @@ lspconfig.hls.setup {
   capabilities = capabilities;
 }
 
-lspconfig.nixd.setup {
-  on_attach = on_attach;
-  capabilities = capabilities;
-  cmd = { os.getenv("HOME") .. "/Code/nixd/result/bin/nixd" };
-}
-
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-lspconfig").setup_handlers {

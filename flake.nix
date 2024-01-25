@@ -59,10 +59,12 @@
       distortion = lib.mkDesktop inputs "x86_64-linux" "distortion" [
         musnix.nixosModules.musnix
         { musnix.enable = true; }
+        ./modules/cache.nix
       ];
 
       shears = lib.mkDesktop inputs "x86_64-linux" "shears" [
         (lib.mkKeys self "hunter")
+        ./modules/cache.nix
       ];
 
       blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" [
