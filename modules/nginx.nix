@@ -1,4 +1,6 @@
 { config, ... }: {
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
+
   services.blog = {
     enable = true;
     host = "backyard-hg.xyz";

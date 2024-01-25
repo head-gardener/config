@@ -34,13 +34,12 @@
     wget
   ];
 
-  networking.firewall.allowedTCPPorts = [ 80 22 443 3000 ];
+  networking.firewall.allowedTCPPorts = [ 3000 ];
   networking.firewall.allowedUDPPorts = [ ];
   networking.firewall.allowPing = true;
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.gc = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
-
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 30d";
@@ -52,7 +51,7 @@
     autoUpgrade = {
       enable = true;
       allowReboot = true;
-      flake = "./.";
+      flake = "github:head-gardener/config";
       flags = [
         "--update-input"
         "nixpkgs"
