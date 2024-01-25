@@ -49,6 +49,7 @@
 
       blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" ([
         ./modules/nginx.nix
+        ./modules/nas.nix
         blog.nixosModules.default
         (lib.mkKeys self "hunter")
       ] ++ defaultMods);
