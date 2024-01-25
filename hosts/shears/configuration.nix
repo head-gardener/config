@@ -32,15 +32,7 @@
 
   environment = {
     systemPackages = with pkgs; [
-      wget
-      fd
-      btrfs-progs
-      atop
-      git
       sshfs
-      neovim
-      pciutils
-      tree
     ];
   };
 
@@ -55,22 +47,6 @@
       storageDriver = "btrfs";
     };
   };
-
-  nix = {
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-    optimise = {
-      automatic = true;
-    };
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
-  system.stateVersion = "23.11";
 
   hardware.bluetooth.enable = true;
 }

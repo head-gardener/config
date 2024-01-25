@@ -1,6 +1,20 @@
 { config, ... }: {
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
+  security = {
+    acme = {
+      acceptTerms = true;
+      defaults.email = "trashbin2019np@gmail.com";
+    };
+  };
+
+  services = {
+    nix-serve = {
+      enable = true;
+      secretKeyFile = "/home/hunter/nix-serve/cache-priv.pem";
+    };
+  };
+
   services.blog = {
     enable = true;
     host = "backyard-hg.xyz";

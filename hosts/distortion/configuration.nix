@@ -24,10 +24,6 @@
   environment = {
     pathsToLink = [ "/libexec" ];
     systemPackages = with pkgs; [
-      wget
-      fd
-      atop
-      git
       sshfs
       networkmanager-openvpn
     ];
@@ -47,26 +43,11 @@
     dconf.enable = true;
   };
 
-  fileSystems = {
-    "/home" = {
-      device = "/dev/disk/by-label/home";
-      fsType = "ext4";
-    };
-    "/boot" = {
-      device = "/dev/disk/by-label/BOOT";
-      fsType = "vfat";
-    };
-  };
-
   virtualisation = {
     docker = {
       enable = true;
       storageDriver = "btrfs";
     };
-  };
-
-  services = {
-    xserver.videoDrivers = [ "nvidia" ];
   };
 
   networking = {
@@ -76,11 +57,6 @@
   };
 
   nix = {
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
     settings = {
       substituters = [
         "http://blueberry"
@@ -90,16 +66,5 @@
         "blueberry:yZO3C9X6Beti/TAEXxoJaMHeIP3jXYVWscrYyqthly8="
       ];
     };
-    optimise = {
-      automatic = true;
-    };
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
-  system = {
-    copySystemConfiguration = false;
-    stateVersion = "23.11";
   };
 }

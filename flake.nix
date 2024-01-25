@@ -1,6 +1,11 @@
 {
   inputs = {
+    musnix.inputs.nixpkgs.follows = "nixpkgs";
+    blog.inputs.nixpkgs.follows = "nixpkgs";
+    hydra.inputs.nixpkgs.follows = "nixpkgs";
+
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     musnix.url = "github:musnix/musnix";
     hydra.url = "github:NixOS/hydra";
     blog.url = "github:head-gardener/blog";
@@ -8,51 +13,61 @@
   };
 
   outputs = inputs: with inputs; rec {
+
     lib = import ./lib.nix nixpkgs.lib;
 
-    defaultMods = [
-      ./modules/openssh.nix
-      ./modules/default.nix
-    ];
+    nixosModules = {
+      defaultMods.imports = [
+        ./modules/default.nix
+        ./modules/nix.nix
+        ./modules/openssh.nix
+        ./modules/tools.nix
+      ];
 
-    desktopMods = [
-      (import ./modules/doas.nix [ "hunter" ])
-      ./modules/i3.nix
-      ./modules/nvidia.nix
-      ./modules/pipewire.nix
-    ];
+      desktopMods.imports = [
+        (import ./modules/doas.nix [ "hunter" ])
+        ./modules/i3.nix
+        ./modules/nvidia.nix
+        ./modules/pipewire.nix
+      ];
 
-    hydraMods = [
-      {
-        networking.firewall.allowedTCPPorts = [ 3000 ];
-        services.hydra = {
-          enable = true;
-          hydraURL = "http://localhost:3000";
-          notificationSender = "hydra@localhost";
-          buildMachinesFiles = [ ];
-          useSubstitutes = true;
-        };
-        services.postgresql.enable = true;
-      }
-    ];
+      hydraMods.imports = [
+        {
+          networking.firewall.allowedTCPPorts = [ 3000 ];
+          services.hydra = {
+            enable = true;
+            hydraURL = "http://localhost:3000";
+            notificationSender = "hydra@localhost";
+            buildMachinesFiles = [ ];
+            useSubstitutes = true;
+          };
+          services.postgresql.enable = true;
+        }
+      ];
+    };
 
     nixosConfigurations = {
 
-      distortion = lib.mkHost inputs "x86_64-linux" "distortion" ([
+      distortion = lib.mkHost inputs "x86_64-linux" "distortion" [
         musnix.nixosModules.musnix
         { musnix.enable = true; }
-      ] ++ defaultMods ++ desktopMods);
+        nixosModules.defaultMods
+        nixosModules.desktopMods
+      ];
 
-      shears = lib.mkHost inputs "x86_64-linux" "shears" ([
+      shears = lib.mkHost inputs "x86_64-linux" "shears" [
         (lib.mkKeys self "hunter")
-      ] ++ defaultMods ++ desktopMods);
+        nixosModules.defaultMods
+        nixosModules.desktopMods
+      ];
 
-      blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" ([
+      blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" [
         ./modules/nginx.nix
         ./modules/nas.nix
         blog.nixosModules.default
         (lib.mkKeys self "hunter")
-      ] ++ defaultMods);
+        nixosModules.defaultMods
+      ];
 
     };
 

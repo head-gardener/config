@@ -17,21 +17,10 @@
   users.users.hunter = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    packages = with pkgs; [
-    ];
   };
 
   environment.systemPackages = with pkgs; [
-    atop
-    git
-    grc
-    less
-    neovim
-    nix-tree
     ntfs3g
-    rsync
-    tree
-    wget
   ];
 
   networking.firewall.allowedTCPPorts = [ 3000 ];
@@ -46,20 +35,11 @@
   };
 
   system = {
-    copySystemConfiguration = false;
-    stateVersion = "23.11";
     autoUpgrade = {
       enable = true;
       allowReboot = true;
       flake = "github:head-gardener/config";
       flags = [ ];
-    };
-  };
-
-  security = {
-    acme = {
-      acceptTerms = true;
-      defaults.email = "trashbin2019np@gmail.com";
     };
   };
 
@@ -75,11 +55,6 @@
       systemCronJobs = [
         "0 6 * * * hunter . /etc/profile; /home/hunter/cache/build.sh"
       ];
-    };
-
-    nix-serve = {
-      enable = true;
-      secretKeyFile = "/home/hunter/nix-serve/cache-priv.pem";
     };
   };
 
