@@ -7,7 +7,7 @@
     vhostConfig = {
       enableACME = true;
       forceSSL = true;
-      extraConfig = "limit_req zone=common;";
+      # extraConfig = "limit_req zone=common;";
     };
   };
 
