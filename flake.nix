@@ -5,10 +5,6 @@
     hydra.url = "github:NixOS/hydra";
     blog.url = "github:head-gardener/blog";
     # blog.url = "/home/hunter/Blog/";
-    keys = {
-      url = "./ssh/";
-      flake = false;
-    };
   };
 
   outputs = inputs: with inputs; rec {
@@ -48,13 +44,13 @@
       ] ++ defaultMods ++ desktopMods);
 
       shears = lib.mkHost inputs "x86_64-linux" "shears" ([
-        (lib.mkKeys keys "hunter")
+        (lib.mkKeys self "hunter")
       ] ++ defaultMods ++ desktopMods);
 
       blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" [
         ./modules/nginx.nix
         blog.nixosModules.default
-        (lib.mkKeys keys "hunter")
+        (lib.mkKeys self "hunter")
       ];
 
     };

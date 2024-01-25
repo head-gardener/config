@@ -3,8 +3,8 @@ with lib;
 rec {
   ls = path: map (f: "${path}/${f}") (builtins.attrNames (builtins.readDir path));
 
-  mkKeys = keys: user: {
-    users.users.${user}.openssh.authorizedKeys.keyFiles = ls "${keys}/${user}";
+  mkKeys = self: user: {
+    users.users.${user}.openssh.authorizedKeys.keyFiles = ls "${self}/ssh/${user}";
   };
 
   mkHost = inputs: system: hostname: extraMods:
