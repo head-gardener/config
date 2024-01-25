@@ -70,6 +70,7 @@
       blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" [
         ./modules/nginx.nix
         ./modules/nas.nix
+        ./modules/hydra.nix
         blog.nixosModules.blog
         (lib.mkKeys self "hunter")
       ];
