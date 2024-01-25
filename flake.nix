@@ -14,12 +14,30 @@
   outputs = inputs: with inputs; rec {
     lib = import ./lib.nix nixpkgs.lib;
 
+    defaultMods = [
+      ./modules/openssh.nix
+      ./modules/default.nix
+    ];
+
     desktopMods = [
       (import ./modules/doas.nix [ "hunter" ])
-      ./modules/default.nix
       ./modules/i3.nix
       ./modules/nvidia.nix
       ./modules/pipewire.nix
+    ];
+
+    hydraMods = [
+      {
+        networking.firewall.allowedTCPPorts = [ 3000 ];
+        services.hydra = {
+          enable = true;
+          hydraURL = "http://localhost:3000";
+          notificationSender = "hydra@localhost";
+          buildMachinesFiles = [ ];
+          useSubstitutes = true;
+        };
+        services.postgresql.enable = true;
+      }
     ];
 
     nixosConfigurations = {
@@ -27,27 +45,11 @@
       distortion = lib.mkHost inputs "x86_64-linux" "distortion" ([
         musnix.nixosModules.musnix
         { musnix.enable = true; }
-        {
-          nixpkgs.overlays = [
-            (
-              final: prev: { postgresql_11 = final.postgresql_12; }
-            )
-          ];
-        }
-
-        hydra.nixosModules.hydraTest
-        ({ pkgs, ... }: {
-          boot.isContainer = true;
-
-          # Network configuration.
-          networking.useDHCP = false;
-          networking.firewall.allowedTCPPorts = [ 80 3000 ];
-        })
-      ] ++ desktopMods);
+      ] ++ defaultMods ++ desktopMods);
 
       shears = lib.mkHost inputs "x86_64-linux" "shears" ([
         (lib.mkKeys keys "hunter")
-      ] ++ desktopMods);
+      ] ++ defaultMods ++ desktopMods);
 
       blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" [
         ./modules/nginx.nix
@@ -60,15 +62,6 @@
     nixosConfigurations.container = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        {
-          nixpkgs.overlays = [
-            (
-              final: prev: { postgresql_11 = final.postgresql_12; }
-            )
-          ];
-        }
-
-        hydra.nixosModules.hydraTest
         ({ pkgs, ... }: {
           boot.isContainer = true;
 

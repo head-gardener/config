@@ -66,7 +66,6 @@
   };
 
   services = {
-    openssh.enable = true;
     xserver.videoDrivers = [ "nvidia" ];
   };
 

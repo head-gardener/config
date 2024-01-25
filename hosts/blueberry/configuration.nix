@@ -14,14 +14,6 @@
 
   networking.networkmanager.enable = false;
 
-  time.timeZone = "Europe/Minsk";
-
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    font = "Lat2-Terminus16";
-    useXkbConfig = true;
-  };
-
   users.users.hunter = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
@@ -31,7 +23,6 @@
 
   environment.systemPackages = with pkgs; [
     atop
-    docker
     git
     grc
     less
@@ -43,17 +34,13 @@
     wget
   ];
 
-  virtualisation.docker = {
-    enable = true;
-    storageDriver = "btrfs";
-  };
-
   networking.firewall.allowedTCPPorts = [ 80 22 443 3000 ];
   networking.firewall.allowedUDPPorts = [ ];
   networking.firewall.allowPing = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.gc = {
+    settings.experimental-features = [ "nix-command" "flakes" ];
+
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 30d";
@@ -105,14 +92,6 @@
     nix-serve = {
       enable = true;
       secretKeyFile = "/home/hunter/nix-serve/cache-priv.pem";
-    };
-
-    openssh = {
-      enable = true;
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
-      };
     };
   };
 

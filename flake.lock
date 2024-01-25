@@ -58,11 +58,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-8sKElcZo8bS/6RL6kIhW7cCOHq2WjPu8qPUxseDJPlY=",
-        "path": "/nix/store/ybw1dv549lr9mhkmmw3xw1gxl2lqrwix-source/ssh",
+        "path": "/nix/store/lgv82a2qmcspnyqrh72a8fgw41k7ni14-source/ssh",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/ybw1dv549lr9mhkmmw3xw1gxl2lqrwix-source/ssh",
+        "path": "/nix/store/lgv82a2qmcspnyqrh72a8fgw41k7ni14-source/ssh",
         "type": "path"
       }
     },
