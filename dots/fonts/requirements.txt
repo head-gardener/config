@@ -1,0 +1,7 @@
+fontmake==3.7.1
+gftools==0.9.35
+glyphsLib==6.4.1
+arrrgs==2.0.0
+colored==2.2.3
+pylance==0.8.7
+fontbakery[freetype]==0.10.4

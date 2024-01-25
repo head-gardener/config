@@ -1,22 +1,33 @@
 {
   inputs = {
-    musnix.inputs.nixpkgs.follows = "nixpkgs";
     blog.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hydra.inputs.nixpkgs.follows = "nixpkgs";
+    musnix.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    musnix.url = "github:musnix/musnix";
-    hydra.url = "github:NixOS/hydra";
     blog.url = "github:head-gardener/blog";
     # blog.url = "/home/hunter/Blog/";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
+    hydra.url = "github:NixOS/hydra";
+    musnix.url = "github:musnix/musnix";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   outputs = inputs: with inputs; rec {
 
     lib = import ./lib.nix nixpkgs.lib;
 
-    nixosModules = {
+    nixosModules = rec {
+      home = { inputs, ... }: {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          users.hunter = import ./dots/home-manager/home.nix;
+          extraSpecialArgs = { inherit inputs; };
+        };
+      };
+
       defaultMods.imports = [
         ./modules/default.nix
         ./modules/nix.nix
@@ -29,6 +40,8 @@
         ./modules/i3.nix
         ./modules/nvidia.nix
         ./modules/pipewire.nix
+        home-manager.nixosModules.home-manager
+        home
       ];
 
       hydraMods.imports = [
