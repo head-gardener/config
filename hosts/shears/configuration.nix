@@ -49,5 +49,10 @@
   };
 
   hardware.bluetooth.enable = true;
+  hardware.opengl.extraPackages = with pkgs; [
+    libvdpau-va-gl
+    vaapiIntel
+    vaapiVdpau
+  ];
 }
 
