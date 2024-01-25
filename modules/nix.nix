@@ -30,6 +30,17 @@
           type = "github";
         };
       };
+      config = {
+        from = {
+          id = "config";
+          type = "indirect";
+        };
+        to = {
+          owner = "head-gardener";
+          repo = "config";
+          type = "github";
+        };
+      };
     };
 
     gc = {
