@@ -47,11 +47,11 @@
         (lib.mkKeys self "hunter")
       ] ++ defaultMods ++ desktopMods);
 
-      blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" [
+      blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" ([
         ./modules/nginx.nix
         blog.nixosModules.default
         (lib.mkKeys self "hunter")
-      ];
+      ] ++ defaultMods);
 
     };
 
