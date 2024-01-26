@@ -8,10 +8,16 @@
     };
   };
 
+  age.secrets.cache = {
+    file = ../secrets/cache.age;
+    owner = "nix-serve";
+    group = "users";
+  };
+
   services = {
     nix-serve = {
       enable = true;
-      secretKeyFile = "/home/hunter/nix-serve/cache-priv.pem";
+      secretKeyFile = config.age.secrets.cache.path;
     };
   };
 

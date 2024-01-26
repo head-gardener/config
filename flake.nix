@@ -1,16 +1,20 @@
 {
   inputs = {
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
     blog.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hydra.inputs.nixpkgs.follows = "nixpkgs";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    blog.url = "github:head-gardener/blog";
+    agenix.url = "github:ryantm/agenix";
     # blog.url = "/home/hunter/Blog/";
+    blog.url = "github:head-gardener/blog";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     hydra.url = "github:NixOS/hydra";
     musnix.url = "github:musnix/musnix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    sops-nix.url = "github:Mic92/sops-nix";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
@@ -38,6 +42,18 @@
         };
       };
 
+      sops = {
+        imports = [ sops-nix.nixosModules.sops ];
+        sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+        sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+        sops.age.generateKey = true;
+
+        sops.defaultSopsFile = ./secrets/cache.yaml;
+        # sops.secrets."cache-priv.pem" = { };
+        # sops.secrets."cache-pub.pem" = { };
+        sops.secrets."key" = { };
+      };
+
       default.imports = [
         ./modules/default.nix
         ./modules/nix.nix
@@ -57,7 +73,6 @@
     };
 
     nixosConfigurations = {
-
       distortion = lib.mkDesktop inputs "x86_64-linux" "distortion" [
         musnix.nixosModules.musnix
         { musnix.enable = true; }
@@ -75,8 +90,8 @@
         ./modules/hydra.nix
         blog.nixosModules.blog
         (lib.mkKeys self "hunter")
+        agenix.nixosModules.default
       ];
-
     };
 
     nixosConfigurations.container = nixpkgs.lib.nixosSystem {
