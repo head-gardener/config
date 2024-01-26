@@ -38,6 +38,7 @@
     autoUpgrade = {
       enable = true;
       allowReboot = true;
+      dates = "hourly";
       flake = "github:head-gardener/config";
       flags = [ ];
     };
