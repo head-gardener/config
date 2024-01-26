@@ -49,13 +49,6 @@
       interval = "weekly";
       fileSystems = [ "/" ];
     };
-
-    cron = {
-      enable = true;
-      systemCronJobs = [
-        "0 6 * * * hunter . /etc/profile; /home/hunter/cache/build.sh"
-      ];
-    };
   };
 
   programs = {
