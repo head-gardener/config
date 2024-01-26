@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   networking.firewall.allowedTCPPorts = [ 3000 ];
   services.hydra = {
@@ -7,5 +8,15 @@
     buildMachinesFiles = [ ];
     useSubstitutes = true;
   };
+
   services.postgresql.enable = true;
+
+  services.nginx.virtualHosts."hydra.backyard-hg.xyz" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      recommendedProxySettings = true;
+      proxyPass = config.services.hydra.hydraURL;
+    };
+  };
 }
