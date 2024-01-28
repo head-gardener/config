@@ -17,7 +17,10 @@
         efiSupport = true;
         device = "nodev";
       };
-      efi.efiSysMountPoint = "/boot";
+      efi = {
+        efiSysMountPoint = "/boot";
+        canTouchEfiVariables = true;
+      };
     };
   };
 
