@@ -1,0 +1,11 @@
+name: config
+root: ~/config
+
+windows:
+  - editor:
+      layout: main-horizontal
+      panes:
+        - nvim .
+        - ~
+  - log:
+    - grc journalctl -ef
