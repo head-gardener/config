@@ -1,7 +1,5 @@
 { lib, pkgs, ... }:
 {
-  programs.tmux.shell = "${pkgs.fish}/bin/fish";
-
   programs.fish = {
     enable = true;
     interactiveShellInit = ''

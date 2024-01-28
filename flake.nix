@@ -23,7 +23,7 @@
     lib = import ./lib.nix nixpkgs.lib;
 
     overlays =
-      lib.importAll ./overlays // {
+      lib.mkOverlays inputs ./overlays // {
         packages = final: prev: import ./pkgs final;
       };
 
@@ -54,15 +54,12 @@
         sops.secrets."key" = { };
       };
 
-      default.imports = [
-        ./modules/default.nix
-        ./modules/nix.nix
-        ./modules/openssh.nix
-        ./modules/tools.nix
-        {
-          nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays;
-        }
-      ];
+      default.imports =
+        (lib.ls ./modules/default) ++ [
+          {
+            nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays;
+          }
+        ];
 
       desktop.imports = [
         (import ./modules/doas.nix [ "hunter" ])
@@ -100,10 +97,16 @@
     nixosConfigurations.container = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        (lib.mkKeys self "hunter")
+        ./modules/default/openssh.nix
+        ./modules/default/tmux.nix
         ({ pkgs, ... }: {
+          users.users.hunter = {
+            isNormalUser = true;
+            password = "hunter";
+          };
           boot.isContainer = true;
-
-          # Network configuration.
+          system.stateVersion = "23.11";
           networking.useDHCP = false;
           networking.firewall.allowedTCPPorts = [ 80 3000 ];
         })

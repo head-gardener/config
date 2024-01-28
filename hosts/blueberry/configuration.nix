@@ -63,13 +63,5 @@
         flags = "a1f";
       };
     };
-
-    tmux = {
-      enable = true;
-      shortcut = "a";
-      keyMode = "vi";
-      newSession = true;
-      escapeTime = 50;
-    };
   };
 }

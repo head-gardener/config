@@ -2,7 +2,7 @@
 
 TERM_EMUL="$(which kitty)"
 
-case $(echo -ne '⚡  run\n  configure\n⛴  shell\n  math\n📡 news' | dmenu) in
+case $(echo -ne '⚡  run\n💲 exec\n  configure\n⛴  shell\n  math\n📡 news' | dmenu) in
   *configure)
     path="$(find "$HOME"/dots/ -maxdepth 1 -mindepth 1\
       -type d -not -name '\.*' -printf '%P\n' | dmenu)"
@@ -14,6 +14,16 @@ case $(echo -ne '⚡  run\n  configure\n⛴  shell\n  math\n📡 news' | d
 
   *run)
     i3-dmenu-desktop
+    ;;
+
+  *exec)
+    hist="/tmp/menu-exec-hist"
+    echo -n '' >> "$hist"
+    expr="$(dmenu < "$hist")"
+    if [ -n "$expr" ]; then
+      bash -c "$expr"&
+      disown
+    fi
     ;;
 
   *shell)

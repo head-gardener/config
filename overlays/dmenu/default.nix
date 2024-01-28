@@ -1,4 +1,4 @@
-final: prev:
+inputs: final: prev:
 
 let patch_url = "https://tools.suckless.org/dmenu/patches/";
 in

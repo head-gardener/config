@@ -40,5 +40,7 @@ rec {
 
   importAll = path: genAttrsFromDir path import;
 
+  mkOverlays = imports: path: genAttrsFromDir path (p: (import p) imports);
+
   forAllSystems = genAttrs systems;
 }
