@@ -67,7 +67,6 @@
       desktop.imports = [
         (import ./modules/doas.nix [ "hunter" ])
         ./modules/i3.nix
-        ./modules/nvidia.nix
         ./modules/pipewire.nix
       ];
     };
@@ -77,6 +76,7 @@
         musnix.nixosModules.musnix
         { musnix.enable = true; }
         ./modules/cache.nix
+        ./modules/nvidia.nix
       ];
 
       shears = lib.mkDesktop inputs "x86_64-linux" "shears" [

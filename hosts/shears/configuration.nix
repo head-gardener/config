@@ -38,7 +38,6 @@
 
   services = {
     blueman.enable = true;
-    xserver.videoDrivers = [ "nvidia" ];
   };
 
   virtualisation = {
