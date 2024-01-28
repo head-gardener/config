@@ -74,7 +74,10 @@
     nixosConfigurations = {
       distortion = lib.mkDesktop inputs "x86_64-linux" "distortion" [
         musnix.nixosModules.musnix
-        { musnix.enable = true; }
+        {
+          musnix.enable = true;
+          users.users.hunter.extraGroups = [ "audio" ];
+        }
         ./modules/cache.nix
         ./modules/nvidia.nix
       ];

@@ -27,7 +27,7 @@
 
   users.users.hunter = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = [ "wheel" ];
   };
 
   environment = {
@@ -38,13 +38,6 @@
 
   services = {
     blueman.enable = true;
-  };
-
-  virtualisation = {
-    docker = {
-      enable = true;
-      storageDriver = "btrfs";
-    };
   };
 
   hardware.bluetooth.enable = true;

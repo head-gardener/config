@@ -31,7 +31,7 @@
 
   users.users.hunter = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "audio" ];
+    extraGroups = [ "wheel" ];
   };
 
   programs = {
@@ -41,13 +41,6 @@
       enableSSHSupport = true;
     };
     dconf.enable = true;
-  };
-
-  virtualisation = {
-    docker = {
-      enable = true;
-      storageDriver = "btrfs";
-    };
   };
 
   networking = {
