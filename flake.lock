@@ -132,11 +132,11 @@
         "nixpkgs-for-fileset": "nixpkgs-for-fileset"
       },
       "locked": {
-        "lastModified": 1706218576,
-        "narHash": "sha256-Z+OLKc7zMAZHkG67BIEVfn2TTVqrgTT67bclqBBxqus=",
+        "lastModified": 1706309642,
+        "narHash": "sha256-Lk1ErBYJR08sJKdFhYvMgf6ILUirTXAiYUobjWkO5Uk=",
         "owner": "NixOS",
         "repo": "hydra",
-        "rev": "083ef46c12fa5bc94234dbcfc5bba3bbf90ff5df",
+        "rev": "838648c0cebc12e0527ede3ac5f71b64670b5f83",
         "type": "github"
       },
       "original": {
@@ -320,11 +320,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1705856552,
-        "narHash": "sha256-JXfnuEf5Yd6bhMs/uvM67/joxYKoysyE3M2k6T3eWbg=",
+        "lastModified": 1706191920,
+        "narHash": "sha256-eLihrZAPZX0R6RyM5fYAWeKVNuQPYjAkCUBr+JNvtdE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "612f97239e2cc474c13c9dafa0df378058c5ad8d",
+        "rev": "ae5c332cbb5827f6b1f02572496b141021de335f",
         "type": "github"
       },
       "original": {
