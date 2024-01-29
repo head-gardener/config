@@ -77,6 +77,7 @@
         }
         ./modules/cache.nix
         ./modules/nvidia.nix
+        { environment.binsh = "${pkgs.dash}/bin/dash"; }
       ];
 
       shears = lib.mkDesktop inputs "x86_64-linux" "shears" [
