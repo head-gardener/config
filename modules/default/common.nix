@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   time.timeZone = "Europe/Minsk";
 

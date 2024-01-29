@@ -67,6 +67,11 @@
       userEmail = "trashbin2019np@gmail.com";
     };
 
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
     home-manager.enable = true;
   };
 }
