@@ -79,7 +79,7 @@
       ];
 
       shears = self.lib.mkDesktop inputs "x86_64-linux" "shears" [
-        (lib.mkKeys self "hunter")
+        (self.lib.mkKeys self "hunter")
         ./modules/cache.nix
       ];
 
