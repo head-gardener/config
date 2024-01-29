@@ -3,6 +3,7 @@
   environment.systemPackages = with pkgs; [
     atop
     bat
+    entr
     fd
     git
     grc

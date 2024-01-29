@@ -8,8 +8,9 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     agenix.url = "github:ryantm/agenix";
-    # blog.url = "/home/hunter/Blog/";
     blog.url = "github:head-gardener/blog";
+    # blog.url = "/home/hunter/Blog/";
+    flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     hydra.url = "github:NixOS/hydra";
     musnix.url = "github:musnix/musnix";
@@ -18,19 +19,16 @@
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = inputs: with inputs; rec {
+  outputs = inputs: with inputs; {
 
     lib = import ./lib.nix nixpkgs.lib;
 
     overlays =
-      lib.mkOverlays inputs ./overlays // {
+      self.lib.mkOverlays inputs ./overlays // {
         packages = final: prev: import ./pkgs final;
       };
 
-    packages = lib.forAllSystems
-      (system: import ./pkgs nixpkgs.legacyPackages.${system});
-
-    hydraJobs = { inherit (self) packages; };
+    hydraJobs = { inherit (self.packages) x86_64-linux; };
 
     nixosModules = rec {
       home = { inputs, ... }: {
@@ -55,7 +53,7 @@
       };
 
       default.imports =
-        (lib.ls ./modules/default) ++ [
+        (self.lib.ls ./modules/default) ++ [
           {
             nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays;
           }
@@ -69,7 +67,7 @@
     };
 
     nixosConfigurations = {
-      distortion = lib.mkDesktop inputs "x86_64-linux" "distortion" [
+      distortion = self.lib.mkDesktop inputs "x86_64-linux" "distortion" [
         musnix.nixosModules.musnix
         {
           musnix.enable = true;
@@ -77,42 +75,45 @@
         }
         ./modules/cache.nix
         ./modules/nvidia.nix
-        { environment.binsh = "${pkgs.dash}/bin/dash"; }
+        ({ pkgs, ... }: { environment.binsh = "${pkgs.dash}/bin/dash"; })
       ];
 
-      shears = lib.mkDesktop inputs "x86_64-linux" "shears" [
+      shears = self.lib.mkDesktop inputs "x86_64-linux" "shears" [
         (lib.mkKeys self "hunter")
         ./modules/cache.nix
       ];
 
-      blueberry = lib.mkHost inputs "x86_64-linux" "blueberry" [
+      blueberry = self.lib.mkHost inputs "x86_64-linux" "blueberry" [
         ./modules/nginx.nix
         ./modules/nas.nix
         ./modules/hydra.nix
         blog.nixosModules.blog
-        (lib.mkKeys self "hunter")
+        (self.lib.mkKeys self "hunter")
         agenix.nixosModules.default
       ];
     };
 
-    nixosConfigurations.container = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        (lib.mkKeys self "hunter")
-        ./modules/default/openssh.nix
-        ./modules/default/tmux.nix
-        ({ pkgs, ... }: {
-          users.users.hunter = {
-            isNormalUser = true;
-            password = "hunter";
-          };
-          boot.isContainer = true;
-          system.stateVersion = "23.11";
-          networking.useDHCP = false;
-          networking.firewall.allowedTCPPorts = [ 80 3000 ];
-        })
-      ];
-    };
+    nixosConfigurations.container = nixpkgs.lib.nixosSystem
+      {
+        system = "x86_64-linux";
+        modules = [
+          (self.lib.mkKeys self "hunter")
+          ./modules/default/openssh.nix
+          ./modules/default/tmux.nix
+          ({ pkgs, ... }: {
+            users.users.hunter = {
+              isNormalUser = true;
+              password = "hunter";
+            };
+            boot.isContainer = true;
+            system.stateVersion = "23.11";
+            networking.useDHCP = false;
+            networking.firewall.allowedTCPPorts = [ 80 3000 ];
+          })
+        ];
+      };
 
-  };
+  } // (flake-utils.lib.eachDefaultSystem (system: {
+    packages = import ./pkgs nixpkgs.legacyPackages.${system};
+  }));
 }
