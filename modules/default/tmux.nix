@@ -27,6 +27,7 @@
       set -g status-keys emacs
       set -g mouse on
       set -g @jump-key 'C-j'
+      set -g status-right "=>> #H %H:%M"
     '';
     plugins = with pkgs.tmuxPlugins; [
       extrakto

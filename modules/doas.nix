@@ -1,9 +1,14 @@
-users: {
-  security.doas.enable = true;
+{ pkgs, ... }: {
   security.sudo.enable = false;
-  security.doas.extraRules = [{
-    inherit users;
-    keepEnv = true;
-    persist = true;
-  }];
+  security.doas = {
+    enable = true;
+    extraRules = [
+      {
+        groups = [ "wheel" ];
+        keepEnv = true;
+        persist = true;
+        noPass = false;
+      }
+    ];
+  };
 }

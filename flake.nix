@@ -60,7 +60,7 @@
         ];
 
       desktop.imports = [
-        (import ./modules/doas.nix [ "hunter" ])
+        ./modules/doas.nix
         ./modules/i3.nix
         ./modules/pipewire.nix
       ];

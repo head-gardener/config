@@ -43,14 +43,20 @@
       };
     };
 
+    settings = {
+      trusted-users = [ "hunter" ];
+    };
+
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
+
     optimise = {
       automatic = true;
     };
+
     extraOptions = ''
       experimental-features = nix-command flakes repl-flake
     '';
