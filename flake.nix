@@ -5,6 +5,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hydra.inputs.nixpkgs.follows = "nixpkgs";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
+    nixd.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     agenix.url = "github:ryantm/agenix";
@@ -14,6 +15,7 @@
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     hydra.url = "github:NixOS/hydra";
     musnix.url = "github:musnix/musnix";
+    nixd.url = "github:nix-community/nixd";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     sops-nix.url = "github:Mic92/sops-nix";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -22,6 +24,8 @@
   outputs = inputs: with inputs; {
 
     lib = import ./lib.nix nixpkgs.lib;
+
+    formatter = nixpkgs.legacyPackages."x86_64-linux".nixpkgs-fmt;
 
     overlays =
       self.lib.mkOverlays inputs ./overlays // {
@@ -36,7 +40,10 @@
           useGlobalPkgs = true;
           useUserPackages = true;
           users.hunter = import ./modules/home.nix;
-          extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = {
+            inherit inputs;
+            system = "x86_64-linux";
+          };
         };
       };
 

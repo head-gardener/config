@@ -13,6 +13,10 @@
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups/")))
 
+;; editorconfig
+(require 'editorconfig)
+(editorconfig-mode 1)
+
 ;; Initialize Org Mode
 (require 'org)
 

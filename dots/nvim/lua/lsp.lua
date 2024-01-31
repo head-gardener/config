@@ -38,6 +38,11 @@ lspconfig.hls.setup {
   capabilities = capabilities;
 }
 
+lspconfig.nixd.setup {
+  on_attach = on_attach;
+  capabilities = capabilities;
+}
+
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-lspconfig").setup_handlers {

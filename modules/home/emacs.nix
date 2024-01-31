@@ -4,10 +4,13 @@
   programs.emacs = {
     enable = true;
     extraPackages = epkgs: with epkgs; [
-      nordic-night-theme
-      org
-      ob-mermaid
+      editorconfig
       magit
+      nix-mode
+      nordic-night-theme
+      ob-mermaid
+      ob-nix
+      org
     ];
     extraConfig = ''
       ${builtins.readFile "${inputs.self}/dots/emacs/init.el"}

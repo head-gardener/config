@@ -1,12 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, inputs, system, ... }:
 {
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
-    plugins = [{
-      plugin = pkgs.vimPlugins.lazy-nvim;
-    }];
+    extraPackages = with pkgs; [
+      nixd
+      nixpkgs-fmt
+    ];
+    plugins = with pkgs.vimPlugins; [
+      lazy-nvim
+    ];
   };
 }

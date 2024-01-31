@@ -21,7 +21,7 @@ rec {
   mkHost = inputs: system: hostname: extraMods:
     lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit inputs; };
+      specialArgs = { inherit inputs system; };
       modules = [
         ./hosts/${hostname}/configuration.nix
         { networking.hostName = hostname; }

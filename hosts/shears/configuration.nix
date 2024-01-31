@@ -27,7 +27,7 @@
 
   users.users.hunter = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" ];
   };
 
   environment = {
