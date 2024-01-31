@@ -44,6 +44,7 @@
     };
 
     settings = {
+      experimental-features = [ "nix-command" "flakes" "repl-flake" ];
       trusted-users = [ "hunter" ];
     };
 
@@ -56,9 +57,5 @@
     optimise = {
       automatic = true;
     };
-
-    extraOptions = ''
-      experimental-features = nix-command flakes repl-flake
-    '';
   };
 }

@@ -36,6 +36,8 @@ rec {
       inputs.self.nixosModules.home
     ] ++ extraMods);
 
+  addPkgs = f: { pkgs, ... }: { environment.systemPackages = f pkgs; };
+
   systems = [ "x86_64-linux" ];
 
   importAll = path: genAttrsFromDir path import;

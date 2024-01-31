@@ -25,14 +25,20 @@
 
     lib = import ./lib.nix nixpkgs.lib;
 
-    formatter = nixpkgs.legacyPackages."x86_64-linux".nixpkgs-fmt;
-
     overlays =
       self.lib.mkOverlays inputs ./overlays // {
         packages = final: prev: import ./pkgs final;
       };
 
-    hydraJobs = { inherit (self.packages) x86_64-linux; };
+    hydraJobs = {
+      inherit (self.packages) x86_64-linux;
+    };
+    # takes too long to evaluate
+    #// {
+    #  x86_64-linux = nixpkgs.lib.mapAttrs
+    #    (n: v: v.config.system.build.toplevel)
+    #    self.nixosConfigurations;
+    #};
 
     nixosModules = rec {
       home = { inputs, ... }: {
@@ -100,25 +106,30 @@
       ];
     };
 
-    nixosConfigurations.container = nixpkgs.lib.nixosSystem
-      {
-        system = "x86_64-linux";
-        modules = [
-          (self.lib.mkKeys self "hunter")
-          ./modules/default/openssh.nix
-          ./modules/default/tmux.nix
-          ({ pkgs, ... }: {
-            users.users.hunter = {
-              isNormalUser = true;
-              password = "hunter";
-            };
-            boot.isContainer = true;
-            system.stateVersion = "23.11";
-            networking.useDHCP = false;
-            networking.firewall.allowedTCPPorts = [ 80 3000 ];
-          })
-        ];
-      };
+    nixosConfigurations.container = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./modules/vm
+        (self.lib.mkKeys self "hunter")
+        ./modules/default/openssh.nix
+        ./modules/default/tmux.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
+    nixosConfigurations.xmonad = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./modules/vm
+        ./modules/vm/graphical.nix
+        ./modules/xmonad.nix
+        (self.lib.mkKeys self "hunter")
+        ./modules/default/openssh.nix
+        ./modules/default/tmux.nix
+        (self.lib.addPkgs (pkgs: with pkgs; [ dmenu self ]))
+      ];
+      specialArgs = { inherit inputs; };
+    };
 
   } // (flake-utils.lib.eachDefaultSystem (system: {
     packages = import ./pkgs nixpkgs.legacyPackages.${system};
