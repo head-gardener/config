@@ -75,6 +75,7 @@
       desktop.imports = [
         ./modules/doas.nix
         ./modules/i3.nix
+        ./modules/lightdm.nix
         ./modules/pipewire.nix
       ];
     };
