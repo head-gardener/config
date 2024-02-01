@@ -5,7 +5,6 @@
 
   home = {
     username = "hunter";
-    homeDirectory = "/home/hunter";
     stateVersion = "23.11";
     packages = with pkgs; [
       arkpandora_ttf

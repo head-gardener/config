@@ -33,9 +33,8 @@
       inherit (self.hydraJobs) x86_64-linux;
     };
 
-    hydraJobs = {
-      x86_64-linux =
-        { inherit (self.packages) x86_64-linux; }.x86_64-linux // {
+    hydraJobs.x86_64-linux =
+      { inherit (self.packages) x86_64-linux; }.x86_64-linux // {
         mkHost = nixpkgs.lib.nixos.runTest {
           name = "mkHost-test";
 
@@ -54,8 +53,31 @@
             machine.succeed("su hunter -c 'whoami'")
           '';
         };
+
+        mkDesktop = nixpkgs.lib.nixos.runTest {
+          name = "mkDesktop-test";
+
+          node.specialArgs = {
+            inherit inputs;
+            system = "x86_64-linux";
+          };
+          nodes.machine = {
+            imports = self.lib.mkHostModules "test" ++ self.lib.mkDesktopModules "test";
+          };
+
+          hostPkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          testScript = ''
+            start_all()
+            machine.wait_for_unit("multi-user.target")
+            machine.succeed("tmux -V")
+            machine.succeed("nix doctor")
+            machine.succeed("ss -lt | grep ssh")
+            machine.succeed("su hunter -c 'whoami'")
+            machine.wait_for_unit("display-manager.service")
+          '';
+        };
       };
-    };
     # takes too long to evaluate
     #// {
     #  x86_64-linux = nixpkgs.lib.mapAttrs

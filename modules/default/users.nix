@@ -9,5 +9,6 @@
     initialHashedPassword =
       "$6$oRQkOsmhP/Y3Kv6Z$tEDiTWye1Sqa5z.xorjpIBeHowfS01kLT3fo0F.2y831iWKfW4jAUMWM47118kpbZm62Oxw.mMPWub5FTAJKl.";
     extraGroups = [ "wheel" ];
+    home = "/home/hunter";
   };
 }
