@@ -31,11 +31,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706670828,
-        "narHash": "sha256-U5BKmNwOWQeC4ITmL0iSab8A+zM4Mj3axXe0Vcl7Qbo=",
+        "lastModified": 1706743309,
+        "narHash": "sha256-pVxXTgxz/Ci8pUf/xfh0RlGwHqFFFQu2CrOPf5wOtmM=",
         "owner": "head-gardener",
         "repo": "blog",
-        "rev": "47d721ee3fa461c3cc6cb99f5e9b6c1135962f2c",
+        "rev": "b741ea02fa80bb79ae531724dd73d8ff07c30205",
         "type": "github"
       },
       "original": {
@@ -446,11 +446,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1706371002,
-        "narHash": "sha256-dwuorKimqSYgyu8Cw6ncKhyQjUDOyuXoxDTVmAXq88s=",
+        "lastModified": 1706550542,
+        "narHash": "sha256-UcsnCG6wx++23yeER4Hg18CXWbgNpqNXcHIo5/1Y+hc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c002c6aa977ad22c60398daaa9be52f2203d0006",
+        "rev": "97b17f32362e475016f942bbdfda4a4a72a8a652",
         "type": "github"
       },
       "original": {
