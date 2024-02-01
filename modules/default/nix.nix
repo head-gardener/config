@@ -45,7 +45,7 @@
 
     settings = {
       experimental-features = [ "nix-command" "flakes" "repl-flake" ];
-      trusted-users = [ "hunter" ];
+      trusted-users = [ "root" "hunter" ];
     };
 
     gc = {

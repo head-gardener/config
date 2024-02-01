@@ -63,6 +63,7 @@
           };
           nodes.machine = {
             imports = self.lib.mkHostModules "test" ++ self.lib.mkDesktopModules "test";
+            home-manager.users.hunter.manual.manpages.enable = false;
           };
 
           hostPkgs = nixpkgs.legacyPackages.x86_64-linux;
