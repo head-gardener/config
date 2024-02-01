@@ -1,0 +1,39 @@
+spec-version: 0.35.1
+name: xmonad-cfg
+version: 0.1.0.0
+
+ghc-options:
+  - -Wall
+
+language: GHC2021
+default-extensions:
+  - OverloadedStrings
+
+dependencies:
+  - base >= 4.12 && < 5
+  - text
+  - mtl
+  - xmonad
+  - xmonad-contrib
+
+# library:
+#   source-dirs: src
+#   generated-other-modules: Paths_bookshelf
+#   dependencies:
+#     - utf8-string
+#     - transformers
+#     - magic
+#     - cityhash
+#     - base64-bytestring
+#     - bytestring
+#     - binary
+#     - directory
+#     - filepath
+#     - zlib
+#     - tar
+#     - containers
+
+executables:
+  xmonad:
+    source-dirs: .
+    main: xmonad.hs

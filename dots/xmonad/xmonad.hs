@@ -1,6 +1,8 @@
 import XMonad
+import XMonad.Config.Desktop
 
-main = xmonad defaultConfig
-  { terminal    = "urxvt"
-  -- , modMask     = mod4Mask
+main :: IO ()
+main = xmonad desktopConfig
+  { terminal    = "kitty"
+  , modMask     = mod4Mask
   }
