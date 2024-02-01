@@ -23,15 +23,37 @@
 
   outputs = inputs: with inputs; {
 
-    lib = import ./lib.nix nixpkgs.lib;
+    lib = import ./lib.nix inputs nixpkgs.lib;
 
-    overlays =
-      self.lib.mkOverlays inputs ./overlays // {
-        packages = final: prev: import ./pkgs final;
-      };
+    overlays = self.lib.mkOverlays inputs ./overlays // {
+      packages = final: prev: import ./pkgs final;
+    };
+
+    checks = {
+      inherit (self.hydraJobs) x86_64-linux;
+    };
 
     hydraJobs = {
-      inherit (self.packages) x86_64-linux;
+      x86_64-linux =
+        { inherit (self.packages) x86_64-linux; }.x86_64-linux // {
+        mkHost = nixpkgs.lib.nixos.runTest {
+          name = "mkHost-test";
+
+          nodes.machine = {
+            imports = self.lib.mkHostModules "test";
+          };
+
+          hostPkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          testScript = ''
+            start_all()
+            machine.wait_for_unit("multi-user.target")
+            machine.succeed("tmux -V")
+            machine.succeed("nix doctor")
+            machine.succeed("ss -lt | grep ssh")
+          '';
+        };
+      };
     };
     # takes too long to evaluate
     #// {
@@ -67,9 +89,7 @@
 
       default.imports =
         (self.lib.ls ./modules/default) ++ [
-          {
-            nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays;
-          }
+          { nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays; }
         ];
 
       desktop.imports = [
@@ -81,7 +101,7 @@
     };
 
     nixosConfigurations = {
-      distortion = self.lib.mkDesktop inputs "x86_64-linux" "distortion" [
+      distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [
         musnix.nixosModules.musnix
         {
           musnix.enable = true;
@@ -92,12 +112,12 @@
         ({ pkgs, ... }: { environment.binsh = "${pkgs.dash}/bin/dash"; })
       ];
 
-      shears = self.lib.mkDesktop inputs "x86_64-linux" "shears" [
+      shears = self.lib.mkDesktop "x86_64-linux" "shears" [
         (self.lib.mkKeys self "hunter")
         ./modules/cache.nix
       ];
 
-      blueberry = self.lib.mkHost inputs "x86_64-linux" "blueberry" [
+      blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
         ./modules/nginx.nix
         ./modules/nas.nix
         ./modules/hydra.nix
@@ -114,6 +134,7 @@
         (self.lib.mkKeys self "hunter")
         ./modules/default/openssh.nix
         ./modules/default/tmux.nix
+        { boot.isContainer = true; }
       ];
       specialArgs = { inherit inputs; };
     };
@@ -133,6 +154,6 @@
     };
 
   } // (flake-utils.lib.eachDefaultSystem (system: {
-    packages = import ./pkgs nixpkgs.legacyPackages.${system};
+    packages = import ./pkgs (self.lib.nixpkgsFor system);
   }));
 }

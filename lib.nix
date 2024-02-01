@@ -1,4 +1,4 @@
-lib:
+inputs: lib:
 with lib;
 rec {
   # a function is functorial over its return
@@ -14,27 +14,41 @@ rec {
       (builtins.attrNames (builtins.readDir path))
       (p: f "${path}/${p}");
 
+  nixpkgsFor = system: import inputs.nixpkgs {
+    inherit system;
+    overlays = attrValues inputs.self.overlays;
+  };
+
   mkKeys = self: user: {
     users.users.${user}.openssh.authorizedKeys.keyFiles = ls "${self}/ssh/${user}";
   };
 
-  mkHost = inputs: system: hostname: extraMods:
+  mkHostModules = hostname: [
+    ./hosts/${hostname}/configuration.nix
+    { networking.hostName = hostname; }
+    inputs.self.nixosModules.default
+  ];
+
+  mkDesktopModules = hostname: [
+    inputs.self.nixosModules.desktop
+    inputs.home-manager.nixosModules.home-manager
+    inputs.self.nixosModules.home
+  ];
+
+  # generate configuration by setting net hostname,
+  # adding default module and importing config from
+  # hosts dir.
+  mkHost = system: hostname: extraMods:
     lib.nixosSystem {
       inherit system;
       specialArgs = { inherit inputs system; };
-      modules = [
-        ./hosts/${hostname}/configuration.nix
-        { networking.hostName = hostname; }
-        inputs.self.nixosModules.default
-      ] ++ extraMods;
+      modules = (mkHostModules hostname) ++ extraMods;
     };
 
-  mkDesktop = inputs: system: hostname: extraMods:
-    mkHost inputs system hostname ([
-      inputs.self.nixosModules.desktop
-      inputs.home-manager.nixosModules.home-manager
-      inputs.self.nixosModules.home
-    ] ++ extraMods);
+  # same as mkHost but include desktop, hoe and
+  # home-manager modules
+  mkDesktop = system: hostname: extraMods:
+    mkHost system hostname ((mkDesktopModules hostname) ++ extraMods);
 
   addPkgs = f: { pkgs, ... }: { environment.systemPackages = f pkgs; };
 
