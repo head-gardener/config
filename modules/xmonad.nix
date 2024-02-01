@@ -1,18 +1,22 @@
 { pkgs, inputs, ... }: {
   services.urxvtd.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    cpanel
+    dmenu
+    dunst
+    feh
+    i3lock-color
+    i3status
+    kitty
+    main-menu
+    picom
+    scrot
+  ];
+
   services.xserver = {
-    enable = true;
-
-    desktopManager = {
-      xterm.enable = false;
-    };
-
     displayManager = {
       defaultSession = "none+xmonad";
-      lightdm = {
-        enable = true;
-      };
     };
 
     windowManager.xmonad = {

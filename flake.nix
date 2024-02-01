@@ -95,9 +95,9 @@
 
       desktop.imports = [
         ./modules/doas.nix
-        ./modules/i3.nix
         ./modules/lightdm.nix
         ./modules/pipewire.nix
+        ./modules/xserver.nix
       ];
     };
 
@@ -110,12 +110,14 @@
         }
         ./modules/cache.nix
         ./modules/nvidia.nix
+        ./modules/i3.nix
         ({ pkgs, ... }: { environment.binsh = "${pkgs.dash}/bin/dash"; })
       ];
 
       shears = self.lib.mkDesktop "x86_64-linux" "shears" [
         (self.lib.mkKeys self "hunter")
         ./modules/cache.nix
+        ./modules/xmonad.nix
       ];
 
       blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
@@ -145,7 +147,9 @@
       modules = [
         ./modules/vm
         ./modules/vm/graphical.nix
+        ./modules/xserver.nix
         ./modules/xmonad.nix
+        "${nixpkgs}/nixos/modules/virtualisation/qemu-vm.nix"
         (self.lib.mkKeys self "hunter")
         ./modules/default/openssh.nix
         ./modules/default/tmux.nix

@@ -12,6 +12,7 @@ in
       ll = "ls -l";
       la = "ls -al";
       mux = "tmuxinator";
+      ip = "ip -c";
     };
     shellAbbrs = {
       sys = "systemctl";
@@ -28,6 +29,7 @@ in
       forgit-no-grc
       fzf-fish
       gitnow
+      puffer
       spark
     ]);
   };
