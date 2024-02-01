@@ -1,4 +1,10 @@
 { lib, pkgs, ... }:
+let
+  nixplug = src: {
+    name = "${src.pname}-${src.version}";
+    src = src.src;
+  };
+in
 {
   programs.fish = {
     enable = true;
@@ -15,18 +21,14 @@
     interactiveShellInit = ''
       ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
     '';
-    plugins =
-      let
-        nixplug = src: {
-          name = "${src.pname}-${src.version}";
-          src = src.src;
-        };
-      in
-      builtins.map nixplug (with pkgs.fishPlugins; [
-        autopair
-        done
-        fzf-fish
-        puffer
-      ]);
+    plugins = map nixplug (with pkgs.fishPlugins; [
+      abbreviation-tips
+      autopair
+      done
+      forgit-no-grc
+      fzf-fish
+      gitnow
+      spark
+    ]);
   };
 }
