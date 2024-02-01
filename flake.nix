@@ -51,6 +51,7 @@
             machine.succeed("tmux -V")
             machine.succeed("nix doctor")
             machine.succeed("ss -lt | grep ssh")
+            machine.succeed("su hunter -c 'whoami'")
           '';
         };
       };

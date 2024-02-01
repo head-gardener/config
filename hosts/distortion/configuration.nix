@@ -32,11 +32,6 @@
     ];
   };
 
-  users.users.hunter = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-  };
-
   programs = {
     mtr.enable = true;
     gnupg.agent = {

@@ -14,11 +14,6 @@
 
   networking.networkmanager.enable = false;
 
-  users.users.hunter = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-  };
-
   environment.systemPackages = with pkgs; [
     ntfs3g
   ];
