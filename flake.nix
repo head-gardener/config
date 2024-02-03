@@ -144,6 +144,7 @@
         (self.lib.mkKeys self "hunter")
         ./modules/cache.nix
         ./modules/xmonad.nix
+        ./modules/upower.nix
       ];
 
       blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
