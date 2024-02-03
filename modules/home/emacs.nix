@@ -1,13 +1,15 @@
 { pkgs, inputs, ... }:
 {
-
   programs.emacs = {
     enable = true;
     extraPackages = epkgs: with epkgs; [
       editorconfig
+      haskell-mode
       magit
       nix-mode
       nordic-night-theme
+      fzf
+      use-package
       ob-mermaid
       ob-nix
       org
@@ -17,5 +19,4 @@
       (setq ob-mermaid-cli-path "${pkgs.mermaid-cli}/bin/mmdc")
     '';
   };
-
 }
