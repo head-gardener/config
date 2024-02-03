@@ -12,6 +12,7 @@
     main-menu
     picom
     scrot
+    xorg.xmessage
   ];
 
   services.xserver = {
@@ -24,6 +25,7 @@
       enableContribAndExtras = true;
       config = builtins.readFile "${inputs.self}/dots/xmonad/xmonad.hs";
       extraPackages = hpkgs: with hpkgs; [
+        libnotify
       ];
     };
   };

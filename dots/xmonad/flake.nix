@@ -13,7 +13,7 @@
         haskellProjects.default = {
           devShell = {
             tools = hp: {
-              inherit (pkgs);
+              inherit (pkgs) hpack;
               inherit (hp);
             };
 
@@ -21,7 +21,7 @@
           };
         };
 
-        packages.default = self'.packages.xmonad-cfg;
+        packages.default = self'.packages.my-xmonad;
       };
     };
 }

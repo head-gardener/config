@@ -1,5 +1,5 @@
 spec-version: 0.35.1
-name: xmonad-cfg
+name: my-xmonad
 version: 0.1.0.0
 
 ghc-options:
@@ -15,6 +15,7 @@ dependencies:
   - mtl
   - xmonad
   - xmonad-contrib
+  - libnotify
 
 # library:
 #   source-dirs: src

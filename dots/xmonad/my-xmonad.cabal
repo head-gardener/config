@@ -4,14 +4,14 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 
-name:           xmonad-cfg
+name:           my-xmonad
 version:        0.1.0.0
 build-type:     Simple
 
 executable xmonad
   main-is: xmonad.hs
   other-modules:
-      Paths_xmonad_cfg
+      Paths_my_xmonad
   hs-source-dirs:
       ./
   default-extensions:
@@ -19,6 +19,7 @@ executable xmonad
   ghc-options: -Wall
   build-depends:
       base >=4.12 && <5
+    , libnotify
     , mtl
     , text
     , xmonad
