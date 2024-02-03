@@ -12,8 +12,14 @@
     main-menu
     picom
     scrot
+    xcolor
     xorg.xmessage
   ];
+
+  services.xmobar = {
+    enable = true;
+    config = builtins.readFile "${inputs.self}/dots/xmobar/xmobarrc";
+  };
 
   services.xserver = {
     displayManager = {

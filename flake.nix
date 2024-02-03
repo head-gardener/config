@@ -135,7 +135,6 @@
         (self.lib.mkKeys self "hunter")
         ./modules/cache.nix
         ./modules/xmonad.nix
-        ./modules/xmobar.nix
         ./modules/upower.nix
         { boot.kernel.sysctl = { "vm.swappiness" = 20; }; }
       ];
