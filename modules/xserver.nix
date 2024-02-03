@@ -3,6 +3,8 @@
     HandlePowerKey=suspend
   '';
 
+  services.unclutter-xfixes.enable = true;
+
   services.xserver = {
     libinput.enable = true;
 

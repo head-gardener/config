@@ -21,8 +21,6 @@ set $term kitty
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 
-exec --no-startup-id picom -b
-
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
@@ -213,7 +211,7 @@ exec --no-startup-id "setxkbmap -option caps:super"
 
 exec --no-startup-id feh --bg-scale ~/Pictures/11.png
 
-client.focused          #444444 #222222 #ffffff #555555   #444444 
+client.focused          #444444 #222222 #ffffff #555555   #444444
 client.focused_inactive #444444 #222222 #888888 #555555   #444444
 client.unfocused        #444444 #222222 #888888 #555555   #444444
 client.urgent           #444444 #222222 #ffffff #555555   #444444

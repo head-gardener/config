@@ -62,7 +62,9 @@
             system = "x86_64-linux";
           };
           nodes.machine = {
-            imports = self.lib.mkHostModules "test" ++ self.lib.mkDesktopModules "test";
+            imports = [ ] ++
+              self.lib.mkHostModules "test" ++
+              self.lib.mkDesktopModules "test";
             home-manager.users.hunter.manual.manpages.enable = false;
           };
 
@@ -121,6 +123,7 @@
         ./modules/lightdm.nix
         ./modules/pipewire.nix
         ./modules/xserver.nix
+        ./modules/picom.nix
       ];
     };
 
