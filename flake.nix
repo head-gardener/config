@@ -150,18 +150,6 @@
       ];
     };
 
-    nixosConfigurations.container = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./modules/vm
-        (self.lib.mkKeys self "hunter")
-        ./modules/default/openssh.nix
-        ./modules/default/tmux.nix
-        { boot.isContainer = true; }
-      ];
-      specialArgs = { inherit inputs; };
-    };
-
   } // (flake-utils.lib.eachDefaultSystem (system: {
     packages = import ./pkgs (self.lib.nixpkgsFor system);
   }));
