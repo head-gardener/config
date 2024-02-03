@@ -162,22 +162,6 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.xmonad = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./modules/vm
-        ./modules/vm/graphical.nix
-        ./modules/xserver.nix
-        ./modules/xmonad.nix
-        "${nixpkgs}/nixos/modules/virtualisation/qemu-vm.nix"
-        (self.lib.mkKeys self "hunter")
-        ./modules/default/openssh.nix
-        ./modules/default/tmux.nix
-        (self.lib.addPkgs (pkgs: with pkgs; [ dmenu self ]))
-      ];
-      specialArgs = { inherit inputs; };
-    };
-
   } // (flake-utils.lib.eachDefaultSystem (system: {
     packages = import ./pkgs (self.lib.nixpkgsFor system);
   }));
