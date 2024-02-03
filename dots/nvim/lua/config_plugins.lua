@@ -2,6 +2,22 @@ local function clock()
   return os.date("%H:%M:%S")
 end
 
+vim.api.nvim_create_autocmd("FileType", { pattern = "TelescopeResults", command = [[setlocal nofoldenable]] })
+require("telescope").setup {
+  extensions = {
+    hoogle = {
+      render = 'default',
+      renders = {
+        treesitter = {
+          remove_wrap = false
+        }
+      }
+    }
+  },
+}
+
+require('telescope').load_extension('hoogle')
+
 require('neoscroll').setup({
   hide_cursor = false,         -- Hide cursor while scrolling
   stop_eof = true,             -- Stop at <EOF> when scrolling downwards

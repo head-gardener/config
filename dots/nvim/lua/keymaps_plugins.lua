@@ -87,6 +87,9 @@ require 'nvim-treesitter.configs'.setup {
   },
 }
 
+-- Telescope
+vim.keymap.set('n', '<Space>th', ":Telescope hoogle list<CR>", { noremap = true })
+
 -- CMP thing
 local cmp = require('cmp')
 local feedkey = function(key, mode)

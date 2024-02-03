@@ -1,6 +1,7 @@
 require('lazy').setup({
   -- project mng
   'lewis6991/gitsigns.nvim',
+  'direnv/direnv.vim',
 
   -- deps
   'nvim-lua/plenary.nvim',
@@ -29,6 +30,7 @@ require('lazy').setup({
   },
   'williamboman/mason.nvim',
   'williamboman/mason-lspconfig.nvim',
+  'psiska/telescope-hoogle.nvim',
 
   -- snippets
   'hrsh7th/vim-vsnip',
@@ -54,6 +56,7 @@ require('lazy').setup({
   'folke/todo-comments.nvim',
   'enddeadroyal/symbols-outline.nvim',
   'srstevenson/vim-picker',
+  'nvim-telescope/telescope.nvim',
 
   -- misc
   'head-gardener/catalyst',
