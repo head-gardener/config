@@ -1,0 +1,32 @@
+Config { overrideRedirect = False
+       , font     = "xft:LilexNerdFont-10"
+       , alpha = 0
+       , bgColor  = "#3c3c3c"
+       , fgColor  = "#f8f8f2"
+       , position = TopW L 100
+       , commands = [ Run Weather "UMMS"
+                        [ "--template", "<weather> <tempC>°C"
+                        , "-L", "0"
+                        , "-H", "25"
+                        , "--low"   , "lightblue"
+                        , "--normal", "#f8f8f2"
+                        , "--high"  , "red"
+                        ] 36000
+                    , Run Cpu
+                        [ "-L", "3"
+                        , "-H", "50"
+                        , "--high"  , "red"
+                        , "--normal", "magenta"
+                        ] 10
+                    , Run Memory ["--template", "Mem: <usedratio>%"] 10
+                    , Run Swap [] 10
+                    , Run Date "%a %Y-%m-%d <fc=#8be9fd>%H:%M</fc>" "date" 10
+                    , Run Battery [] 10
+                    , Run DiskU [("/", "<free>"), ("/home", "<free>")] [] 20
+                    , Run DiskIO [("/", "r<read> w<write>"), ("/home", "r<read> w<write>")] [] 10
+                    , Run XMonadLog
+                    ]
+       , sepChar  = "%"
+       , alignSep = "}{"
+       , template = "%XMonadLog% }{ %disku% - %diskio% | %cpu% | %memory% * %swap% | %battery% | %UMMS% | %date% "
+       }
