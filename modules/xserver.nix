@@ -1,9 +1,14 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
   services.logind.extraConfig = ''
     HandlePowerKey=suspend
   '';
 
   services.unclutter-xfixes.enable = true;
+
+  services.conky = {
+    enable = true;
+    config = builtins.readFile "${inputs.self}/dots/conky/conkyrc";
+  };
 
   services.xserver = {
     libinput.enable = true;
