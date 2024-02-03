@@ -145,6 +145,7 @@
         ./modules/cache.nix
         ./modules/xmonad.nix
         ./modules/upower.nix
+        { boot.kernel.sysctl = { "vm.swappiness" = 20; }; }
       ];
 
       blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
