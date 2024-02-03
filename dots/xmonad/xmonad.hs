@@ -5,12 +5,13 @@ import XMonad
 import XMonad.Config.Desktop
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
-import XMonad.Util.EZConfig
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
-import XMonad.Util.Loggers
-import XMonad.Layout.Spacing
 import XMonad.Layout.NoBorders (noBorders)
+import XMonad.Layout.Spacing
+import XMonad.Util.EZConfig
+import XMonad.Util.Loggers
+import XMonad.Util.Run
 
 main :: IO ()
 main = do
@@ -24,14 +25,26 @@ myConfig =
   desktopConfig
     { terminal = term,
       modMask = mod4Mask,
+      manageHook = myManage,
       layoutHook = spacingWithEdge 10 layout,
       normalBorderColor = "#3c3c3c",
       focusedBorderColor = "black"
     }
     `additionalKeysP` myKeys
 
-popup :: String -> X ()
-popup s = liftIO $ void $ LN.display $ summary s
+myManage =
+  composeAll
+    [ className =? "Xmessage" --> doFloat,
+      className =? "Conky" --> doIgnore,
+      manageDocks
+    ]
+
+notif :: String -> X ()
+notif s =
+  liftIO $
+    void $
+      LN.display $
+        summary "XMonad notification" <> LN.body s
 
 myKeys :: [(String, X ())]
 myKeys =
@@ -39,7 +52,7 @@ myKeys =
     ("<Print>", spawn "scrot"),
     ( "M-r",
       do
-        popup "restarting"
+        notif "restarting"
         restart "/home/hunter/config/dots/xmonad/result/bin/xmonad" True
     ),
     ("M-d", spawn "main-menu"),
@@ -49,35 +62,41 @@ myKeys =
     ("<XF86AudioMute>", spawn "cpanel volmute"),
     ("<XF86MonBrightnessUp>", spawn "cpanel blup"),
     ("<XF86MonBrightnessDown>", spawn "cpanel bldown"),
-    ("M-C-<Return>", spawn (term ++ " " ++ shell))
+    ("M-C-<Return>", spawn (term ++ " " ++ shell)),
+    ( "M-C-p",
+      do
+        c <- runProcessWithInput "xcolor" [] ""
+        xmessage c
+    )
   ]
 
 myXmobarPP :: PP
-myXmobarPP = def
-    { ppSep             = magenta " • "
-    , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = wrap " " "" . xmobarBorder "Top" "#8be9fd" 2
-    , ppHidden          = white . wrap " " ""
-    , ppHiddenNoWindows = lowWhite . wrap " " ""
-    , ppUrgent          = red . wrap (yellow "!") (yellow "!")
-    , ppOrder           = \[ws, l, _, wins] -> [ws, l, wins]
-    , ppExtras          = [logTitles formatFocused formatUnfocused]
+myXmobarPP =
+  def
+    { ppSep = magenta " • ",
+      ppTitleSanitize = xmobarStrip,
+      ppCurrent = wrap " " "" . xmobarBorder "Top" "#8be9fd" 2,
+      ppHidden = white . wrap " " "",
+      ppHiddenNoWindows = lowWhite . wrap " " "",
+      ppUrgent = red . wrap (yellow "!") (yellow "!"),
+      ppOrder = \[ws, l, _, wins] -> [ws, l, wins],
+      ppExtras = [logTitles formatFocused formatUnfocused]
     }
   where
-    formatFocused   = wrap (white    "[") (white    "]") . magenta . ppWindow
-    formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue    . ppWindow
+    formatFocused = wrap (white "[") (white "]") . magenta . ppWindow
+    formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue . ppWindow
 
-    -- | Windows should have *some* title, which should not not exceed a
+    -- \| Windows should have *some* title, which should not not exceed a
     -- sane length.
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
 
     blue, lowWhite, magenta, red, white, yellow :: String -> String
-    magenta  = xmobarColor "#ff79c6" ""
-    blue     = xmobarColor "#bd93f9" ""
-    white    = xmobarColor "#f8f8f2" ""
-    yellow   = xmobarColor "#f1fa8c" ""
-    red      = xmobarColor "#ff5555" ""
+    magenta = xmobarColor "#ff79c6" ""
+    blue = xmobarColor "#bd93f9" ""
+    white = xmobarColor "#f8f8f2" ""
+    yellow = xmobarColor "#f1fa8c" ""
+    red = xmobarColor "#ff5555" ""
     lowWhite = xmobarColor "#bbbbbb" ""
 
 term, shell :: String
