@@ -88,44 +88,35 @@
     #    self.nixosConfigurations;
     #};
 
-    nixosModules = rec {
-      home = { inputs, ... }: {
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          users.hunter = import ./modules/home.nix;
-          extraSpecialArgs = {
-            inherit inputs;
-            system = "x86_64-linux";
+    nixosModules =
+      let
+        share = self.lib.genAttrsFromDir ./modules/share import;
+      in {
+        home = { inputs, ... }: {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.hunter = import ./modules/home.nix;
+            extraSpecialArgs = {
+              inherit inputs;
+              system = "x86_64-linux";
+            };
           };
         };
-      };
 
-      sops = {
-        imports = [ sops-nix.nixosModules.sops ];
-        sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-        sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-        sops.age.generateKey = true;
+        default.imports =
+          (self.lib.ls ./modules/default) ++ [
+            { nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays; }
+          ] ++ nixpkgs.lib.attrValues share;
 
-        sops.defaultSopsFile = ./secrets/cache.yaml;
-        # sops.secrets."cache-priv.pem" = { };
-        # sops.secrets."cache-pub.pem" = { };
-        sops.secrets."key" = { };
-      };
-
-      default.imports =
-        (self.lib.ls ./modules/default) ++ [
-          { nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays; }
+        desktop.imports = [
+          ./modules/doas.nix
+          ./modules/lightdm.nix
+          ./modules/pipewire.nix
+          ./modules/xserver.nix
+          ./modules/picom.nix
         ];
-
-      desktop.imports = [
-        ./modules/doas.nix
-        ./modules/lightdm.nix
-        ./modules/pipewire.nix
-        ./modules/xserver.nix
-        ./modules/picom.nix
-      ];
-    };
+      } // share;
 
     nixosConfigurations = {
       distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [

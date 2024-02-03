@@ -36,8 +36,8 @@ rec {
   ];
 
   # generate configuration by setting net hostname,
-  # adding default module and importing config from
-  # hosts dir.
+  # adding default module, importing shared module defs
+  # and config from hosts dir.
   mkHost = system: hostname: extraMods:
     lib.nixosSystem {
       inherit system;
@@ -57,6 +57,4 @@ rec {
   importAll = path: genAttrsFromDir path import;
 
   mkOverlays = imports: path: genAttrsFromDir path (p: (import p) imports);
-
-  forAllSystems = genAttrs systems;
 }
