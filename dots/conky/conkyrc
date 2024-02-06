@@ -1,5 +1,3 @@
-print("Loading Conky config")
-
 conky.config = {
   alignment = 'top_left',
   background = false,

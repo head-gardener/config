@@ -127,7 +127,7 @@
         }
         ./modules/cache.nix
         ./modules/nvidia.nix
-        ./modules/i3.nix
+        ./modules/xmonad.nix
         ({ pkgs, ... }: { environment.binsh = "${pkgs.dash}/bin/dash"; })
       ];
 

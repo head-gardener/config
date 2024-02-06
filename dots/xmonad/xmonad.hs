@@ -2,6 +2,12 @@ import Control.Monad
 import Libnotify
 import Libnotify qualified as LN
 import XMonad
+import XMonad.Actions.Commands
+import XMonad.Actions.CycleRecentWS (toggleRecentNonEmptyWS)
+import XMonad.Actions.DwmPromote (dwmpromote)
+import XMonad.Actions.EasyMotion
+import XMonad.Actions.FindEmptyWorkspace (tagToEmptyWorkspace, viewEmptyWorkspace)
+import XMonad.Actions.GridSelect
 import XMonad.Config.Desktop
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
@@ -9,6 +15,7 @@ import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Layout.NoBorders (noBorders)
 import XMonad.Layout.Spacing
+import XMonad.StackSet qualified as W
 import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.Run
@@ -30,7 +37,7 @@ myConfig =
       normalBorderColor = "#3c3c3c",
       focusedBorderColor = "black"
     }
-    `additionalKeysP` myKeys
+    `additionalKeysP` toKeys myKeys
 
 myManage =
   composeAll
@@ -46,29 +53,76 @@ notif s =
       LN.display $
         summary "XMonad notification" <> LN.body s
 
-myKeys :: [(String, X ())]
+toKeys :: [(String, String, X ())] -> [(String, X ())]
+toKeys = fmap (\(a, _, b) -> (a, b))
+
+toCommands :: [(String, String, X ())] -> [(String, X ())]
+toCommands = fmap (\(a, b, c) -> (a ++ ": " ++ b, c))
+
+myKeys :: [(String, String, X ())]
 myKeys =
-  [ ("C-<Print>", spawn "scrot -s"),
-    ("<Print>", spawn "scrot"),
+  [ ("C-<Print>", "screenshot select", spawn "scrot -s"),
+    ("<Print>", "screenshot", spawn "scrot"),
     ( "M-r",
+      "restart from dev dir",
       do
         notif "restarting"
         restart "/home/hunter/config/dots/xmonad/result/bin/xmonad" True
     ),
-    ("M-d", spawn "main-menu"),
-    ("M-n", liftIO $ void $ LN.display $ summary "hey"),
-    ("<XF86AudioRaiseVolume>", spawn "cpanel volup"),
-    ("<XF86AudioLowerVolume>", spawn "cpanel voldown"),
-    ("<XF86AudioMute>", spawn "cpanel volmute"),
-    ("<XF86MonBrightnessUp>", spawn "cpanel blup"),
-    ("<XF86MonBrightnessDown>", spawn "cpanel bldown"),
-    ("M-C-<Return>", spawn (term ++ " " ++ shell)),
+    ("M-d", "main menu", spawn "main-menu"),
+    ("<XF86AudioRaiseVolume>", "vol up", spawn "cpanel volup"),
+    ("<XF86AudioLowerVolume>", "vol down", spawn "cpanel voldown"),
+    ("<XF86AudioMute>", "vol mute", spawn "cpanel volmute"),
+    ("<XF86MonBrightnessUp>", "backlight up", spawn "cpanel blup"),
+    ("<XF86MonBrightnessDown>", "backlight down", spawn "cpanel bldown"),
+    ("M-C-<Return>", "spawn no-tmux shell", spawn (term ++ " " ++ shell)),
+    ("M-c", "run command", myCommands >>= runCommand),
+    ("M-a", "toggle non-empty ws", toggleRecentNonEmptyWS),
+    ("M-m", "dwm promote", dwmpromote),
+    ("M-e", "find empty", viewEmptyWorkspace),
+    ("M-S-e", "tag to empty", tagToEmptyWorkspace),
+    ("M-f", "easy motion", selectWindow myEasyMotion >>= (`whenJust` windows . W.focusWindow)),
+    ("M-g", "grid select goto", goToSelected myGSConfig),
     ( "M-C-p",
+      "colorpicker",
       do
         c <- runProcessWithInput "xcolor" [] ""
         xmessage c
     )
   ]
+
+myEasyMotion :: EasyMotionConfig
+myEasyMotion =
+  def
+    { txtCol = cs_white defaultCS,
+      bgCol = cs_black defaultCS,
+      borderCol = cs_white defaultCS,
+      overlayF = textSize,
+      cancelKey = xK_Escape,
+      emFont = "xft: LilexNerdFont-100"
+    }
+
+keyRef :: X ()
+keyRef = runCommand $ toCommands myKeys
+
+-- https://hackage.haskell.org/package/xmonad-contrib-0.18.0/docs/XMonad-Actions-GridSelect.html
+myGSConfig :: GSConfig a
+myGSConfig =
+  (buildDefaultGSConfig colorizer)
+    { gs_navigate = navNSearch,
+      gs_cellwidth = 130,
+      gs_cellheight = 80,
+      gs_font = "xft:LilexNerdFont-medium-9",
+      gs_bordercolor = cs_white defaultCS
+    }
+  where
+    colorizer _ True = return (cs_darkgrey defaultCS, cs_white defaultCS)
+    colorizer _ False = return (cs_black defaultCS, cs_blue defaultCS)
+
+myCommands :: X [(String, X ())]
+myCommands = (++ other) <$> defaultCommands
+  where
+    other = [("key-ref", keyRef)]
 
 myXmobarPP :: PP
 myXmobarPP =
@@ -89,19 +143,35 @@ myXmobarPP =
     -- \| Windows should have *some* title, which should not not exceed a
     -- sane length.
     ppWindow :: String -> String
-    ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
+    ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 20
 
     blue, lowWhite, magenta, red, white, yellow :: String -> String
-    magenta = xmobarColor "#ff79c6" ""
-    blue = xmobarColor "#bd93f9" ""
-    white = xmobarColor "#f8f8f2" ""
-    yellow = xmobarColor "#f1fa8c" ""
-    red = xmobarColor "#ff5555" ""
-    lowWhite = xmobarColor "#bbbbbb" ""
+    magenta = xmobarColor (cs_pink defaultCS) ""
+    blue = xmobarColor (cs_blue defaultCS) ""
+    white = xmobarColor (cs_white defaultCS) ""
+    yellow = xmobarColor (cs_yellow defaultCS) ""
+    red = xmobarColor (cs_red defaultCS) ""
+    lowWhite = xmobarColor (cs_grey defaultCS) ""
 
 term, shell :: String
 term = "kitty"
 shell = "fish"
+
+data ColorScheme = ColorScheme
+  { cs_white,
+    cs_black,
+    cs_darkgrey,
+    cs_grey,
+    cs_red,
+    cs_pink,
+    cs_blue,
+    cs_magenta,
+    cs_yellow ::
+      String
+  }
+
+defaultCS :: ColorScheme
+defaultCS = ColorScheme "#b3afaf" "#1c1c1c" "#3c3c3c" "#9a9a9a" "#905050" "#d0a4a4" "#87afaf" "#f1fa8c" "#ffa500"
 
 layout = tiled ||| Mirror tiled ||| noBorders Full
   where
