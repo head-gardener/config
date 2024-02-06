@@ -136,6 +136,7 @@
         ./modules/cache.nix
         ./modules/xmonad.nix
         ./modules/upower.nix
+        { services.easyeffects.enable = true; }
         { boot.kernel.sysctl = { "vm.swappiness" = 20; }; }
       ];
 
