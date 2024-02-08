@@ -3,7 +3,7 @@ let
   users = [ hunter ];
 
   distortion = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFeKWUEkTCsPQaXzoUc/5JF0BecasFaiSt/f/HavHJPo";
-  blueberry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpw2yiiKX6H+XzVxl6rQIU5sVVI/4AePwULt8vIY5S8";
+  blueberry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIELJrb6Drbgtrg3jRcvevq8kG1N03cji3k3FkmwUFxo+";
   systems = [ distortion blueberry ];
 in
 {
