@@ -1,4 +1,5 @@
 import Control.Monad
+import Data.Semigroup (Endo)
 import Libnotify
 import Libnotify qualified as LN
 import XMonad
@@ -8,11 +9,14 @@ import XMonad.Actions.DwmPromote (dwmpromote)
 import XMonad.Actions.EasyMotion
 import XMonad.Actions.FindEmptyWorkspace (tagToEmptyWorkspace, viewEmptyWorkspace)
 import XMonad.Actions.GridSelect
+import XMonad.Actions.Search
 import XMonad.Config.Desktop
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
+import XMonad.Layout.Circle
+import XMonad.Layout.DecorationMadness (circleDefault, circleSimpleDefault)
 import XMonad.Layout.NoBorders (noBorders)
 import XMonad.Layout.Spacing
 import XMonad.StackSet qualified as W
@@ -82,6 +86,9 @@ myKeys =
     ("M-e", "find empty", viewEmptyWorkspace),
     ("M-S-e", "tag to empty", tagToEmptyWorkspace),
     ("M-f", "easy motion", selectWindow myEasyMotion >>= (`whenJust` windows . W.focusWindow)),
+    ("M-s", "search", do
+      eng <- gridselect myGSConfig searchEngines
+      maybe (return ()) (promptSearch def) eng),
     ("M-g", "grid select goto", goToSelected myGSConfig),
     ( "M-C-p",
       "colorpicker",
@@ -89,6 +96,16 @@ myKeys =
         c <- runProcessWithInput "xcolor" [] ""
         xmessage c
     )
+  ]
+
+searchEngines :: [(String, SearchEngine)]
+searchEngines =
+  [ ("duck", duckduckgo),
+    ("github", github),
+    ("home-manager", searchEngine "home-manager" "https://mipmip.github.io/home-manager-option-search/?query="),
+    ("nixos-packages", searchEngine "nixos packages" "https://search.nixos.org/packages?channel=23.11&from=0&size=50&sort=relevance&type=packages&query="),
+    ("nixos-options", searchEngine "nixos options" "https://search.nixos.org/options?channel=23.11&size=50&sort=relevance&type=packages&query="),
+    ("stackage", stackage)
   ]
 
 myEasyMotion :: EasyMotionConfig
