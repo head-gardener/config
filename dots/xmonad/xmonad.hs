@@ -19,6 +19,8 @@ import XMonad.Layout.Circle
 import XMonad.Layout.DecorationMadness (circleDefault, circleSimpleDefault)
 import XMonad.Layout.NoBorders (noBorders)
 import XMonad.Layout.Spacing
+import XMonad.Prompt
+import XMonad.Prompt.Ssh (sshPrompt)
 import XMonad.StackSet qualified as W
 import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
@@ -86,9 +88,12 @@ myKeys =
     ("M-e", "find empty", viewEmptyWorkspace),
     ("M-S-e", "tag to empty", tagToEmptyWorkspace),
     ("M-f", "easy motion", selectWindow myEasyMotion >>= (`whenJust` windows . W.focusWindow)),
-    ("M-s", "search", do
-      eng <- gridselect myGSConfig searchEngines
-      maybe (return ()) (promptSearch def) eng),
+    ( "M-s",
+      "search",
+      do
+        eng <- gridselect myGSConfig searchEngines
+        maybe (return ()) (promptSearch myXPConfig) eng
+    ),
     ("M-g", "grid select goto", goToSelected myGSConfig),
     ( "M-C-p",
       "colorpicker",
@@ -141,7 +146,22 @@ myGSConfig =
 myCommands :: X [(String, X ())]
 myCommands = (++ other) <$> defaultCommands
   where
-    other = [("key-ref", keyRef)]
+    other =
+      [ ("key-ref", keyRef),
+        ("ssh-prompt", sshPrompt myXPConfig)
+      ]
+
+myXPConfig :: XPConfig
+myXPConfig =
+  def
+    { bgColor = cs_black defaultCS,
+      fgColor = cs_white defaultCS,
+      bgHLight = cs_blue defaultCS,
+      fgHLight = cs_darkgrey defaultCS,
+      borderColor = cs_grey defaultCS,
+      font = "xft:LilexNerdFont-medium-9",
+      promptBorderWidth = 0
+    }
 
 myXmobarPP :: PP
 myXmobarPP =
@@ -190,7 +210,18 @@ data ColorScheme = ColorScheme
   }
 
 defaultCS :: ColorScheme
-defaultCS = ColorScheme "#b3afaf" "#1c1c1c" "#3c3c3c" "#9a9a9a" "#905050" "#d0a4a4" "#87afaf" "#f1fa8c" "#ffa500"
+defaultCS =
+  ColorScheme
+    { cs_white = "#b3afaf",
+      cs_black = "#1c1c1c",
+      cs_darkgrey = "#3c3c3c",
+      cs_grey = "#9a9a9a",
+      cs_red = "#905050",
+      cs_pink = "#d0a4a4",
+      cs_blue = "#87afaf",
+      cs_magenta = "#f1fa8c",
+      cs_yellow = "#ffa500"
+    }
 
 layout = tiled ||| Mirror tiled ||| noBorders Full
   where
