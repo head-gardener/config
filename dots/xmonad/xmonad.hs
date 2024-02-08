@@ -105,7 +105,9 @@ searchEngines =
     ("home-manager", searchEngine "home-manager" "https://mipmip.github.io/home-manager-option-search/?query="),
     ("nixos-packages", searchEngine "nixos packages" "https://search.nixos.org/packages?channel=23.11&from=0&size=50&sort=relevance&type=packages&query="),
     ("nixos-options", searchEngine "nixos options" "https://search.nixos.org/options?channel=23.11&size=50&sort=relevance&type=packages&query="),
-    ("stackage", stackage)
+    ("stackage", stackage),
+    ("phind", searchEngine "phind" "https://www.phind.com/search?q="),
+    ("vocabulary", vocabulary)
   ]
 
 myEasyMotion :: EasyMotionConfig
