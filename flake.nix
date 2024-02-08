@@ -19,6 +19,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     sops-nix.url = "github:Mic92/sops-nix";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    dmenu-conf.url = "github:head-gardener/dmenu-conf";
   };
 
   outputs = inputs: with inputs; {

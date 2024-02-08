@@ -1,6 +1,7 @@
 inputs: final: prev:
 
-let patch_url = "https://tools.suckless.org/dmenu/patches/";
+let
+  patch_url = "https://tools.suckless.org/dmenu/patches/";
 in
 {
   dmenu-patch-highlight = final.fetchurl {
@@ -18,16 +19,12 @@ in
     sha256 = "09j9z2mx16wii3xz1cfmin42ms7ci3dig64c8sgvv7yd9nc0nv1b";
   };
 
-  dmenu = prev.dmenu.overrideAttrs (old: {
+  dmenu = inputs.dmenu-conf.legacyPackages.x86_64-linux.dmenu.override ({
     patches = with final; [
       dmenu-patch-highlight
       dmenu-patch-center
       dmenu-patch-border
     ];
-
-    postPatch = ''
-      cp ${./config.h} config.h -v
-      ${old.postPatch}
-    '';
+    conf = ./config.h;
   });
 }

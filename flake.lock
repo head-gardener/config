@@ -66,6 +66,21 @@
         "type": "github"
       }
     },
+    "dmenu-conf": {
+      "locked": {
+        "lastModified": 1707403745,
+        "narHash": "sha256-JhOuEfE++8AcUndMk5YPIFhCp1VtJ8YtbU+pnPTxEFw=",
+        "owner": "head-gardener",
+        "repo": "dmenu-conf",
+        "rev": "300bd8f3d7dcc3860f96555349fc5082b2846469",
+        "type": "github"
+      },
+      "original": {
+        "owner": "head-gardener",
+        "repo": "dmenu-conf",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -368,6 +383,7 @@
       "inputs": {
         "agenix": "agenix",
         "blog": "blog",
+        "dmenu-conf": "dmenu-conf",
         "flake-utils": "flake-utils_2",
         "home-manager": "home-manager_2",
         "hydra": "hydra",
