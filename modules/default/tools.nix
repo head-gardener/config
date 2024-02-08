@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    atop
     bat
     entr
     fd
@@ -14,5 +13,7 @@
     rsync
     tree
     wget
+    atop
+    ripgrep
   ];
 }

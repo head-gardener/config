@@ -60,12 +60,6 @@
   };
 
   programs = {
-    git = {
-      enable = true;
-      userName = "Head Gardener";
-      userEmail = "trashbin2019np@gmail.com";
-    };
-
     direnv = {
       enable = true;
       nix-direnv.enable = true;
