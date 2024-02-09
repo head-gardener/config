@@ -39,16 +39,22 @@ myConfig =
     { terminal = term,
       modMask = mod4Mask,
       manageHook = myManage,
+      workspaces = myWorkspaces,
       layoutHook = spacingWithEdge 10 layout,
       normalBorderColor = "#3c3c3c",
       focusedBorderColor = "black"
     }
     `additionalKeysP` toKeys myKeys
 
+myWorkspaces :: [String]
+myWorkspaces = ["work", "web", "msg", "4", "5", "6", "mail", "8", "9"]
+
 myManage =
   composeAll
     [ className =? "Xmessage" --> doFloat,
       className =? "Conky" --> doIgnore,
+      className =? "thunderbird" --> doShift "mail",
+      className =? "TelegramDesktop" --> doShift "msg",
       manageDocks
     ]
 
@@ -110,7 +116,7 @@ searchEngines =
     ("home-manager", searchEngine "home-manager" "https://mipmip.github.io/home-manager-option-search/?query="),
     ("nixos-packages", searchEngine "nixos packages" "https://search.nixos.org/packages?channel=23.11&from=0&size=50&sort=relevance&type=packages&query="),
     ("nixos-options", searchEngine "nixos options" "https://search.nixos.org/options?channel=23.11&size=50&sort=relevance&type=packages&query="),
-    ("stackage", stackage),
+    ("hackage", hackage),
     ("phind", searchEngine "phind" "https://www.phind.com/search?q="),
     ("vocabulary", vocabulary)
   ]
@@ -177,7 +183,7 @@ myXmobarPP =
     }
   where
     formatFocused = wrap (white "[") (white "]") . magenta . ppWindow
-    formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue . ppWindow
+    formatUnfocused = wrap (white "[") (white "]") . blue . ppWindow
 
     -- \| Windows should have *some* title, which should not not exceed a
     -- sane length.
@@ -190,7 +196,7 @@ myXmobarPP =
     white = xmobarColor (cs_white defaultCS) ""
     yellow = xmobarColor (cs_yellow defaultCS) ""
     red = xmobarColor (cs_red defaultCS) ""
-    lowWhite = xmobarColor (cs_grey defaultCS) ""
+    lowWhite = xmobarColor (cs_darkgrey defaultCS) ""
 
 term, shell :: String
 term = "kitty"
