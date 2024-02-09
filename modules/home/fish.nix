@@ -1,16 +1,11 @@
 { lib, pkgs, ... }:
+let
+  nixplug = src: {
+    name = "${src.pname}-${src.version}";
+    src = src.src;
+  };
+in
 {
-  environment.systemPackages = with pkgs.fishPlugins; [
-    abbreviation-tips
-    autopair
-    done
-    forgit-no-grc
-    fzf-fish
-    gitnow
-    puffer
-    spark
-  ];
-
   programs.fish = {
     enable = true;
     shellAliases = {
@@ -27,5 +22,15 @@
     interactiveShellInit = ''
       ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
     '';
+    plugins = map nixplug (with pkgs.fishPlugins; [
+      abbreviation-tips
+      autopair
+      done
+      forgit-no-grc
+      fzf-fish
+      gitnow
+      puffer
+      spark
+    ]);
   };
 }
