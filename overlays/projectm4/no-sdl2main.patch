@@ -1,0 +1,12 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 0309873..4488d17 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -51,7 +51,6 @@ target_link_libraries(projectMSDL
+         libprojectM::playlist
+         Poco::Util
+         SDL2::SDL2$<$<STREQUAL:${SDL2_LINKAGE},static>:-static>
+-        SDL2::SDL2main
+         )
+ 
+ if(MSVC)

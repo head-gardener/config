@@ -3,6 +3,8 @@ pkgs: {
 
   main-menu = pkgs.callPackage ./menu { };
 
+  projectMSDL = pkgs.projectmsdl.override { preset = pkgs.projectm-presets-en-d; };
+
   lilex =
     let
       patcher = pkgs.callPackage ./fonts/nerdPatched.nix { };
