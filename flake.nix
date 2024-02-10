@@ -92,7 +92,8 @@
     nixosModules =
       let
         share = self.lib.genAttrsFromDir ./modules/share import;
-      in {
+      in
+      {
         home = { inputs, ... }: {
           home-manager = {
             useGlobalPkgs = true;
@@ -139,6 +140,11 @@
         ./modules/upower.nix
         { services.easyeffects.enable = true; }
         { boot.kernel.sysctl = { "vm.swappiness" = 20; }; }
+      ];
+
+      apple = self.lib.mkHost "x86_64-linux" "apple" [
+        (self.lib.mkKeys self "hunter")
+        ./modules/cache.nix
       ];
 
       blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [

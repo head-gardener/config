@@ -8,7 +8,8 @@ let
 
   configFile = pkgs.writeText "xmobarrc" cfg.config;
 
-in {
+in
+{
 
   options.services.xmobar = {
     enable = mkEnableOption "xmobar";
@@ -32,7 +33,7 @@ in {
 
     args = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
       example = [
         "-b \"#3c3c3c\""
         "-t \"%whoami% }{ %date%\""

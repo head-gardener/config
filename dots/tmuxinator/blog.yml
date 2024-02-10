@@ -1,0 +1,14 @@
+name: blog
+root: ~/blog/
+
+windows:
+  - server:
+      panes:
+        - fd | entr nix build .#blog-render
+        - serve
+  - editor: firefox localhost:8000 && emacs .
+  - config:
+      layout: main-horizontal
+      panes:
+        - nvim
+        - ~

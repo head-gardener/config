@@ -6,7 +6,8 @@ let
 
   cfg = config.services.easyeffects;
 
-in {
+in
+{
 
   options.services.easyeffects = {
     enable = mkEnableOption "easyeffects";
@@ -15,7 +16,7 @@ in {
 
     args = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
       example = [
         "--load-preset music"
         "--bypass 2"
