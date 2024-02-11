@@ -1,5 +1,4 @@
 import Control.Monad
-import Data.Semigroup (Endo)
 import Libnotify
 import Libnotify qualified as LN
 import XMonad
@@ -15,8 +14,6 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
-import XMonad.Layout.Circle
-import XMonad.Layout.DecorationMadness (circleDefault, circleSimpleDefault)
 import XMonad.Layout.NoBorders (noBorders)
 import XMonad.Layout.Spacing
 import XMonad.Prompt
@@ -45,6 +42,13 @@ myConfig =
       focusedBorderColor = "black"
     }
     `additionalKeysP` toKeys myKeys
+  where
+    layout = tiled ||| Mirror tiled ||| noBorders Full
+      where
+        tiled = Tall nmaster delta ratio
+        nmaster = 1
+        ratio = 13 / 21
+        delta = 3 / 100
 
 myWorkspaces :: [String]
 myWorkspaces = ["work", "web", "msg", "4", "5", "6", "mail", "8", "9"]
@@ -55,6 +59,7 @@ myManage =
       className =? "Conky" --> doIgnore,
       className =? "thunderbird" --> doShift "mail",
       className =? "TelegramDesktop" --> doShift "msg",
+      className =? "easyeffects" --> doShift "6",
       manageDocks
     ]
 
@@ -113,9 +118,21 @@ searchEngines :: [(String, SearchEngine)]
 searchEngines =
   [ ("duck", duckduckgo),
     ("github", github),
-    ("home-manager", searchEngine "home-manager" "https://mipmip.github.io/home-manager-option-search/?query="),
-    ("nixos-packages", searchEngine "nixos packages" "https://search.nixos.org/packages?channel=23.11&from=0&size=50&sort=relevance&type=packages&query="),
-    ("nixos-options", searchEngine "nixos options" "https://search.nixos.org/options?channel=23.11&size=50&sort=relevance&type=packages&query="),
+    ( "home-manager",
+      searchEngine
+        "home-manager"
+        "https://mipmip.github.io/home-manager-option-search/?query="
+    ),
+    ( "nixos-packages",
+      searchEngine
+        "nixos packages"
+        "https://search.nixos.org/packages?channel=23.11&from=0&size=50&sort=relevance&type=packages&query="
+    ),
+    ( "nixos-options",
+      searchEngine
+        "nixos options"
+        "https://search.nixos.org/options?channel=23.11&size=50&sort=relevance&type=packages&query="
+    ),
     ("hackage", hackage),
     ("phind", searchEngine "phind" "https://www.phind.com/search?q="),
     ("vocabulary", vocabulary)
@@ -228,10 +245,3 @@ defaultCS =
       cs_magenta = "#f1fa8c",
       cs_yellow = "#ffa500"
     }
-
-layout = tiled ||| Mirror tiled ||| noBorders Full
-  where
-    tiled = Tall nmaster delta ratio
-    nmaster = 1
-    ratio = 13 / 21
-    delta = 3 / 100
