@@ -1,6 +1,8 @@
+{ pkgs, ... }:
 {
   services.picom = {
     enable = true;
+    package = pkgs.picom-next;
     settings = {
       shadow = true;
       shadow-radius = 7;
