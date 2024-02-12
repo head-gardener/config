@@ -3,8 +3,6 @@ let
   myxmonad = inputs.xmonad.packages.${system}.default;
 in
 {
-  services.urxvtd.enable = true;
-
   environment.systemPackages = with pkgs; [
     cpanel
     dmenu
@@ -28,15 +26,14 @@ in
 
   services.xserver = {
     displayManager = {
-      defaultSession = "none+xmonad";
+      session = [{
+        manage = "window";
+        name = "xmonad";
+        start = ''
+          systemd-cat -t xmonad -- ${lib.getExe myxmonad} &
+          waitPID=$!
+        '';
+      }];
     };
-
-    windowManager.session = [{
-      name = "xmonad";
-      start = ''
-        systemd-cat -t xmonad -- ${lib.getExe myxmonad} &
-        waitPID=$!
-      '';
-    }];
   };
 }
