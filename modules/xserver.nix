@@ -10,6 +10,10 @@
     config = builtins.readFile "${inputs.self}/dots/conky/conkyrc";
   };
 
+  environment.systemPackages = with pkgs; [
+    networkmanager_dmenu
+  ];
+
   services.xserver = {
     libinput.enable = true;
 
