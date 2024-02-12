@@ -115,6 +115,24 @@
         "type": "github"
       }
     },
+    "flake-parts_2": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib_2"
+      },
+      "locked": {
+        "lastModified": 1706830856,
+        "narHash": "sha256-a0NYyp+h9hlb7ddVz4LUn1vT/PLwqfrWYcHMvFB1xYg=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "b253292d9c0a5ead9bc98c4e9a26c6312e27d69f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems_2"
@@ -347,6 +365,24 @@
         "type": "github"
       }
     },
+    "nixpkgs-lib_2": {
+      "locked": {
+        "dir": "lib",
+        "lastModified": 1706550542,
+        "narHash": "sha256-UcsnCG6wx++23yeER4Hg18CXWbgNpqNXcHIo5/1Y+hc=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "97b17f32362e475016f942bbdfda4a4a72a8a652",
+        "type": "github"
+      },
+      "original": {
+        "dir": "lib",
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-regression": {
       "locked": {
         "lastModified": 1643052045,
@@ -391,7 +427,8 @@
         "nixd": "nixd",
         "nixpkgs": "nixpkgs",
         "sops-nix": "sops-nix",
-        "unstable": "unstable"
+        "unstable": "unstable",
+        "xmonad": "xmonad"
       }
     },
     "sops-nix": {
@@ -473,6 +510,27 @@
         "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "xmonad": {
+      "inputs": {
+        "flake-parts": "flake-parts_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1707733798,
+        "narHash": "sha256-+LPRRjBYvUPvvEp0i+DtUeKqBVFE2Kx6QlkVjYwfVjU=",
+        "owner": "head-gardener",
+        "repo": "xmonad",
+        "rev": "4671327e940c948386fc3086665a5e8c130a95d6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "head-gardener",
+        "repo": "xmonad",
         "type": "github"
       }
     }

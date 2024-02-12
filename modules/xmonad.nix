@@ -1,4 +1,8 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, lib, system, ... }:
+let
+  myxmonad = inputs.xmonad.packages.${system}.default;
+in
+{
   services.urxvtd.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -10,6 +14,7 @@
     i3status
     kitty
     main-menu
+    myxmonad
     picom
     scrot
     xcolor
@@ -26,13 +31,12 @@
       defaultSession = "none+xmonad";
     };
 
-    windowManager.xmonad = {
-      enable = true;
-      enableContribAndExtras = true;
-      config = builtins.readFile "${inputs.self}/dots/xmonad/xmonad.hs";
-      extraPackages = hpkgs: with hpkgs; [
-        libnotify
-      ];
-    };
+    windowManager.session = [{
+      name = "xmonad";
+      start = ''
+        systemd-cat -t xmonad -- ${lib.getExe myxmonad} &
+        waitPID=$!
+      '';
+    }];
   };
 }

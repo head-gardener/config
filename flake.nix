@@ -7,10 +7,12 @@
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixd.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    xmonad.inputs.nixpkgs.follows = "nixpkgs";
 
     agenix.url = "github:ryantm/agenix";
     blog.url = "github:head-gardener/blog";
     # blog.url = "/home/hunter/Blog/";
+    dmenu-conf.url = "github:head-gardener/dmenu-conf";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     hydra.url = "github:NixOS/hydra";
@@ -19,7 +21,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     sops-nix.url = "github:Mic92/sops-nix";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    dmenu-conf.url = "github:head-gardener/dmenu-conf";
+    xmonad.url = "github:head-gardener/xmonad";
+    # xmonad.url = "/home/hunter/xmonad/";
   };
 
   outputs = inputs: with inputs; {
