@@ -50,6 +50,7 @@ vim.keymap.set('n', '<Space>g', 'za', { noremap = true })
 -- Shortcuts
 vim.keymap.set('n', '<Space>p', ':b#<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>a', ':wa<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>q', ':q<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>hh', ':noh<CR>', { noremap = true })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
