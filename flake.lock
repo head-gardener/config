@@ -521,11 +521,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1707768280,
-        "narHash": "sha256-rCGZHmT0wm/uGvbopEp/swQKHSowAmu8c32/7cbSNeQ=",
+        "lastModified": 1707776519,
+        "narHash": "sha256-/0Z1SRivPbuNdxdGUikYoUiQ8hDqtnQ5gO+wQQ1nfVw=",
         "owner": "head-gardener",
         "repo": "xmonad",
-        "rev": "2b7ff966b89f2fbe25b0d88444158f772d88a80b",
+        "rev": "7e0469a98037ba0b700a7dc84c54211c1fc19713",
         "type": "github"
       },
       "original": {

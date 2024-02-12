@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
+    atop
     bat
     entr
     fd
@@ -10,10 +11,10 @@
     less
     neovim
     nix-tree
+    nushell
+    ripgrep
     rsync
     tree
     wget
-    atop
-    ripgrep
   ];
 }

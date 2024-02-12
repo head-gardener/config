@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, inputs, ... }:
 let
   nixplug = src: {
     name = "${src.pname}-${src.version}";
@@ -6,6 +6,18 @@ let
   };
 in
 {
+  programs.dircolors = {
+    enable = true;
+    extraConfig = builtins.readFile "${inputs.self}/dots/dir_colors";
+  };
+
+  programs.yazi.enable = true;
+
+  programs.zoxide = {
+    enable = true;
+    options = [ "--cmd j" ];
+  };
+
   programs.fish = {
     enable = true;
     shellAliases = {
@@ -18,6 +30,9 @@ in
       sys = "systemctl";
       sus = "systemctl --user";
       n = "nix";
+      nbl = "nix build .";
+      nbn = "nix build nixpkgs";
+      nrn = "nix run nixpkgs#";
     };
     interactiveShellInit = ''
       ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
