@@ -5,11 +5,6 @@
       enable = true;
     };
 
-    dircolors = {
-      enable = true;
-      extraConfig = builtins.readFile "${inputs.self}/dots/dir_colors";
-    };
-
     direnv = {
       enable = true;
       nix-direnv.enable = true;
