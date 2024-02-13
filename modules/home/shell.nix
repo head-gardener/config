@@ -16,7 +16,7 @@
         add_newline = true;
         format = ''
           $username$hostname$directory$git_branch$git_state$git_status$cmd_duration$nix_shell
-          $character
+          $shell $shlvl$character
         '';
         character = {
           success_symbol = "[❯](cyan)";
@@ -42,6 +42,18 @@
           pure_msg = "[pure shell](bold green)";
           unknown_msg = "[unknown shell](bold yellow)";
           format = "in [☃️ $state( \($name\))](bold blue) ";
+        };
+        shell = {
+          disabled = false;
+          format = "[$indicator]($style)";
+        };
+        shlvl = {
+          disabled = false;
+          format = "[$symbol]($style)";
+          repeat = true;
+          symbol = "❯";
+          repeat_offset = 1;
+          threshold = 0;
         };
       };
     };
