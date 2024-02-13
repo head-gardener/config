@@ -2,6 +2,24 @@ local function clock()
   return os.date("%H:%M:%S")
 end
 
+require'nu'.setup{}
+
+local null_ls = require'null-ls'
+null_ls.setup{
+  sources = {
+    null_ls.builtins.completion.spell,
+    null_ls.builtins.code_actions.gitsigns,
+    null_ls.builtins.code_actions.proselint,
+    null_ls.builtins.code_actions.refactoring,
+    null_ls.builtins.code_actions.statix,
+    null_ls.builtins.code_actions.ts_node_action,
+    null_ls.builtins.diagnostics.commitlint,
+    null_ls.builtins.diagnostics.deadnix,
+    null_ls.builtins.diagnostics.dotenv_linter,
+    null_ls.builtins.diagnostics.editorconfig_checker,
+  }
+}
+
 vim.api.nvim_create_autocmd("FileType", { pattern = "TelescopeResults", command = [[setlocal nofoldenable]] })
 require("telescope").setup {
   extensions = {

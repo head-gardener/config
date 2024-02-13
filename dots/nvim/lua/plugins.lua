@@ -31,6 +31,8 @@ require('lazy').setup({
   'williamboman/mason.nvim',
   'williamboman/mason-lspconfig.nvim',
   'psiska/telescope-hoogle.nvim',
+  'LhKipp/nvim-nu',
+  'nvimtools/none-ls.nvim',
 
   -- snippets
   'hrsh7th/vim-vsnip',
