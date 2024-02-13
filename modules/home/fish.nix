@@ -6,18 +6,6 @@ let
   };
 in
 {
-  programs.dircolors = {
-    enable = true;
-    extraConfig = builtins.readFile "${inputs.self}/dots/dir_colors";
-  };
-
-  programs.yazi.enable = true;
-
-  programs.zoxide = {
-    enable = true;
-    options = [ "--cmd j" ];
-  };
-
   programs.fish = {
     enable = true;
     shellAliases = {

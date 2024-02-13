@@ -61,10 +61,7 @@
   };
 
   programs = {
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
+    yazi.enable = true;
 
     home-manager.enable = true;
   };
