@@ -17,7 +17,7 @@
     keyMode = "vi";
     newSession = true;
     shortcut = "a";
-    # this should be a punishable offence 
+    # this should be a punishable offence
     terminal = ''screen-256color"
       set -g default-shell "${pkgs.fish}/bin/fish'';
     extraConfigBeforePlugins = ''
@@ -28,6 +28,7 @@
       set -g mouse on
       set -g @jump-key 'C-j'
       set -g status-right "=>> #H %H:%M"
+      set -g allow-passthrough on
     '';
     plugins = with pkgs.tmuxPlugins; [
       extrakto
