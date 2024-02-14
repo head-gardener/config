@@ -32,14 +32,6 @@
     };
   };
 
-  services = {
-    btrfs.autoScrub = {
-      enable = true;
-      interval = "weekly";
-      fileSystems = [ "/" ];
-    };
-  };
-
   programs = {
     atop = {
       enable = true;
