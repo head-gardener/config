@@ -33,6 +33,7 @@ require('lazy').setup({
   'psiska/telescope-hoogle.nvim',
   'LhKipp/nvim-nu',
   'nvimtools/none-ls.nvim',
+  'ckolkey/ts-node-action',
 
   -- snippets
   'hrsh7th/vim-vsnip',

@@ -7,6 +7,7 @@
     fd
     git
     grc
+    jc
     jq
     less
     neovim

@@ -12,6 +12,10 @@
     extraPackages = with pkgs; [
       nixd
       nixpkgs-fmt
+      deadnix
+      statix
+      commitlint
+      editorconfig-checker
     ];
     plugins = with pkgs.vimPlugins; [
       lazy-nvim
