@@ -40,6 +40,7 @@ require('lazy').setup({
     version = '^3',
     ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
   },
+  'mfussenegger/nvim-dap',
 
   -- snippets
   'hrsh7th/vim-vsnip',
