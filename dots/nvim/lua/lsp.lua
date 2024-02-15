@@ -2,7 +2,7 @@ local lspconfig = require('lspconfig')
 local lsp_selection_range = require('lsp-selection-range')
 local null_ls = require('null-ls')
 
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   local bmap = function(mode, lhs, rhs, options)
     options = options or { noremap = true, silent = true, buffer = bufnr }
     vim.keymap.set(mode, lhs, rhs, options)
@@ -46,12 +46,33 @@ null_ls.setup{
   }
 }
 
-capabilities = lsp_selection_range.update_capabilities(
+local capabilities = lsp_selection_range.update_capabilities(
   require('cmp_nvim_lsp').default_capabilities()
 )
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.nixd.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+}
+
+lspconfig.lua_ls.setup {
+  settings = {
+    Lua = {
+      runtime = {
+        path = vim.split(package.path, ';'),
+      },
+      diagnostics = {
+        globals = { "vim", "describe", "it", "assert" },
+      },
+      workspace = {
+        -- library = { os.getenv('HOME') .. 'Source/luassert/src/' },
+      },
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
   capabilities = capabilities,
   on_attach = on_attach,
 }
@@ -86,26 +107,5 @@ require("mason-lspconfig").setup_handlers {
     }
   end,
   ["lua_ls"] = function()
-    lspconfig.lua_ls.setup {
-      settings = {
-        Lua = {
-          runtime = {
-            path = vim.split(package.path, ';'),
-          },
-          diagnostics = {
-            globals = { "vim", "describe", "it", "assert" },
-          },
-          workspace = {
-            -- library = { os.getenv('HOME') .. 'Source/luassert/src/' },
-          },
-          telemetry = {
-            enable = false,
-          },
-        },
-      },
-      cmd = { 'lua-language-server' },
-      capabilities = capabilites,
-      on_attach = on_attach,
-    }
   end,
 }
