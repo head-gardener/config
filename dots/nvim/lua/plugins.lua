@@ -35,6 +35,11 @@ require('lazy').setup({
   'nvimtools/none-ls.nvim',
   'ckolkey/ts-node-action',
   'camilledejoye/nvim-lsp-selection-range',
+  {
+    'mrcjkb/haskell-tools.nvim',
+    version = '^3',
+    ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+  },
 
   -- snippets
   'hrsh7th/vim-vsnip',

@@ -1,13 +1,17 @@
 local lspconfig = require('lspconfig')
 local lsp_selection_range = require('lsp-selection-range')
 local null_ls = require('null-ls')
+local ht = require('haskell-tools')
 
-local on_attach = function(_, bufnr)
-  local bmap = function(mode, lhs, rhs, options)
+local _bmap = function(bufnr)
+  return function(mode, lhs, rhs, options)
     options = options or { noremap = true, silent = true, buffer = bufnr }
     vim.keymap.set(mode, lhs, rhs, options)
   end
+end
 
+local on_attach = function(_, bufnr)
+  local bmap = _bmap(bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   bmap('n', 'vv', lsp_selection_range.trigger)
@@ -30,7 +34,21 @@ local on_attach = function(_, bufnr)
   end)
 end
 
-null_ls.setup{
+vim.g.haskell_tools = {
+  -- tools = {},
+  hls = {
+    on_attach = function(client, bufnr, _)
+      local bmap = _bmap(bufnr)
+      bmap('n', '<space>cl', vim.lsp.codelens.run)
+      bmap('n', '<space>hs', ht.hoogle.hoogle_signature)
+      bmap('n', '<space>ea', ht.lsp.buf_eval_all)
+      on_attach(client, bufnr)
+    end,
+  },
+  -- dap = {},
+}
+
+null_ls.setup {
   on_attach = on_attach,
   sources = {
     null_ls.builtins.code_actions.gitsigns,
