@@ -1,4 +1,5 @@
 local lspconfig = require('lspconfig')
+local lsp_selection_range = require('lsp-selection-range')
 local null_ls = require('null-ls')
 
 local on_attach = function(client, bufnr)
@@ -9,6 +10,8 @@ local on_attach = function(client, bufnr)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
+  bmap('n', 'vv', lsp_selection_range.trigger)
+  bmap('v', 'vv', lsp_selection_range.expand)
   bmap('n', '<space>e', vim.diagnostic.open_float)
   bmap('n', '[d', vim.diagnostic.goto_prev)
   bmap('n', ']d', vim.diagnostic.goto_next)
@@ -43,7 +46,9 @@ null_ls.setup{
   }
 }
 
-capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities = lsp_selection_range.update_capabilities(
+  require('cmp_nvim_lsp').default_capabilities()
+)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.nixd.setup {

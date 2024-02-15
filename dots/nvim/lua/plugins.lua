@@ -34,6 +34,7 @@ require('lazy').setup({
   'LhKipp/nvim-nu',
   'nvimtools/none-ls.nvim',
   'ckolkey/ts-node-action',
+  'camilledejoye/nvim-lsp-selection-range',
 
   -- snippets
   'hrsh7th/vim-vsnip',
