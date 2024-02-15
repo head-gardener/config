@@ -1,21 +1,20 @@
-{ pkgs, inputs, system, ... }:
+{ pkgs, ... }:
 {
-  # needed for telescopre-hoogle. can be done better by
-  # I can't be bothered.
-  home.packages = with pkgs; [ haskellPackages.hoogle ];
-
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     extraPackages = with pkgs; [
+      haskellPackages.hoogle
+      commitlint
+      deadnix
+      editorconfig-checker
+      lua-language-server
       nixd
       nixpkgs-fmt
-      deadnix
+      proselint
       statix
-      commitlint
-      editorconfig-checker
     ];
     plugins = with pkgs.vimPlugins; [
       lazy-nvim
