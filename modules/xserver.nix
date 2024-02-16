@@ -20,7 +20,7 @@
     enable = true;
 
     layout = "us,ru";
-    xkbOptions = "eurosign:e,caps:super,grp:ralt_rshift_toggle";
+    xkbOptions = "eurosign:e,ctrl:nocaps,grp:ralt_rshift_toggle";
 
     desktopManager = {
       xterm.enable = false;
