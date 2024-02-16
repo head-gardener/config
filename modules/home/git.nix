@@ -5,6 +5,7 @@
     userEmail = "trashbin2019np@gmail.com";
     extraConfig = {
       diff.tool = "nvimdiff";
+      merge.tool = "nvimdiff";
     };
   };
 }
