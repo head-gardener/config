@@ -21,8 +21,8 @@
         ids = [ "*" ];
         settings = {
           main = {
-            capslock = "overload(control, esc)";
-            space = "overload(meta, space)";
+            capslock = "overload(meta, esc)";
+            space = "overload(control, space)";
           };
         };
       };
