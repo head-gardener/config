@@ -30,6 +30,17 @@
           type = "github";
         };
       };
+      agenix = {
+        from = {
+          id = "agenix";
+          type = "indirect";
+        };
+        to = {
+          owner = "ryantm";
+          repo = "agenix";
+          type = "github";
+        };
+      };
       config = {
         from = {
           id = "config";
