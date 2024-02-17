@@ -80,7 +80,6 @@ null_ls.setup {
     null_ls.builtins.code_actions.statix,
     null_ls.builtins.code_actions.ts_node_action,
     null_ls.builtins.completion.spell,
-    null_ls.builtins.diagnostics.commitlint,
     null_ls.builtins.diagnostics.deadnix,
     null_ls.builtins.diagnostics.dotenv_linter,
     null_ls.builtins.diagnostics.editorconfig_checker,
