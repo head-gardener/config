@@ -17,6 +17,11 @@ vim.opt.fillchars = {
   fold = ' ',
 }
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "nix",
+  command = [[setlocal foldlevelstart=1]]
+})
+
 local function spacesl(s)
   return string.gsub(s, "^(%s*).-$", "%1")
 end

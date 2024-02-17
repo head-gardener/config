@@ -27,7 +27,10 @@ end
 
 require'nu'.setup{}
 
-vim.api.nvim_create_autocmd("FileType", { pattern = "TelescopeResults", command = [[setlocal nofoldenable]] })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "TelescopeResults",
+  command = [[setlocal nofoldenable]]
+})
 require("telescope").setup {
   extensions = {
     hoogle = {
