@@ -12,7 +12,7 @@
     agenix.url = "github:ryantm/agenix";
     blog.url = "github:head-gardener/blog";
     # blog.url = "/home/hunter/Blog/";
-    dmenu-conf.url = "github:head-gardener/dmenu-conf";
+    dmenu-conf.url = "github:head-gardener/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     hydra.url = "github:NixOS/hydra";

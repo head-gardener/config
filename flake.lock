@@ -71,13 +71,14 @@
         "lastModified": 1707426721,
         "narHash": "sha256-3Iq1QRmn7pCQ+kFyRIOCN5IF6WiviKdzLLkHwAcb2t0=",
         "owner": "head-gardener",
-        "repo": "dmenu-conf",
+        "repo": "nixpkgs",
         "rev": "90b209079a68bdcbbc7f9b48728a32eec4549327",
         "type": "github"
       },
       "original": {
         "owner": "head-gardener",
-        "repo": "dmenu-conf",
+        "ref": "master",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },
@@ -317,11 +318,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1707650010,
-        "narHash": "sha256-dOhphIA4MGrH4ElNCy/OlwmN24MsnEqFjRR6+RY7jZw=",
+        "lastModified": 1707978831,
+        "narHash": "sha256-UblFdWQ2MMZNzD9C/w8+7RjAJ2QIbebbzHUniQ/a44o=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "809cca784b9f72a5ad4b991e0e7bcf8890f9c3a6",
+        "rev": "c68a9fc85c2cb3a313be6ff40511635544dde8da",
         "type": "github"
       },
       "original": {
@@ -415,6 +416,22 @@
         "type": "github"
       }
     },
+    "pw-volume": {
+      "locked": {
+        "lastModified": 1708030557,
+        "narHash": "sha256-90SQgTy4NP+Q7aboRQ7tp1Q0g9bTKAKe6UFUmhkuLSE=",
+        "owner": "head-gardener",
+        "repo": "nixpkgs",
+        "rev": "a31953a1e05566ad05a4107b9fe04af48a5fb2cb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "head-gardener",
+        "ref": "pw-volume-fix",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -499,11 +516,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1707689078,
-        "narHash": "sha256-UUGmRa84ZJHpGZ1WZEBEUOzaPOWG8LZ0yPg1pdDF/yM=",
+        "lastModified": 1707956935,
+        "narHash": "sha256-ZL2TrjVsiFNKOYwYQozpbvQSwvtV/3Me7Zwhmdsfyu4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f9d39fb9aff0efee4a3d5f4a6d7c17701d38a1d8",
+        "rev": "a4d4fe8c5002202493e87ec8dbc91335ff55552c",
         "type": "github"
       },
       "original": {
@@ -518,14 +535,15 @@
         "flake-parts": "flake-parts_2",
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "pw-volume": "pw-volume"
       },
       "locked": {
-        "lastModified": 1707776519,
-        "narHash": "sha256-/0Z1SRivPbuNdxdGUikYoUiQ8hDqtnQ5gO+wQQ1nfVw=",
+        "lastModified": 1708032295,
+        "narHash": "sha256-NhVGy9xa3INDB0Txt54W8p8pm52K7SccVV6yzPXvsEg=",
         "owner": "head-gardener",
         "repo": "xmonad",
-        "rev": "7e0469a98037ba0b700a7dc84c54211c1fc19713",
+        "rev": "4c2275afcfab5bc3bb1d36107bc1e5b7ff827811",
         "type": "github"
       },
       "original": {
