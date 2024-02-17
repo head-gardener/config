@@ -19,3 +19,4 @@ $env.PATH = ($env.PATH |
 split row (char esep) |
 append /usr/bin/env
 )
+def gs [] { git status --porcelain | lines | split column -c " " state file }
