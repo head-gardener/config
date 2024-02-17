@@ -39,14 +39,6 @@ end, { noremap = true })
 vim.keymap.set('n', '<Space>th', function() iron.hide_repl('sh') end, { noremap = true })
 vim.keymap.set('n', '<Space>tk', function() iron.send('sh', '\27[A') end, { noremap = true })
 
--- Folds
-vim.keymap.set({ 'n', 'v' }, '<M-h>', '[z', { noremap = true })
-vim.keymap.set({ 'n', 'v' }, '<M-l>', ']z', { noremap = true })
-vim.keymap.set({ 'n', 'v' }, '<M-j>', 'zj', { noremap = true })
-vim.keymap.set({ 'n', 'v' }, '<M-k>', 'zk', { noremap = true })
-vim.keymap.set('n', '<Space>a', 'zA', { noremap = true })
-vim.keymap.set('n', '<Space>g', 'za', { noremap = true })
-
 -- Shortcuts
 vim.keymap.set('n', '<Space>p', ':b#<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })

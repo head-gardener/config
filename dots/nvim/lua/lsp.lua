@@ -3,6 +3,7 @@ local lsp_selection_range = require('lsp-selection-range')
 local null_ls = require('null-ls')
 local ht = require('haskell-tools')
 local dap = require('dap')
+local ufo = require('ufo')
 
 dap.adapters.haskell = {
   type = 'executable';
@@ -91,6 +92,10 @@ local capabilities = lsp_selection_range.update_capabilities(
   require('cmp_nvim_lsp').default_capabilities()
 )
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+}
 
 lspconfig.nixd.setup {
   capabilities = capabilities,

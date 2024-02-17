@@ -18,6 +18,11 @@ require("telescope").setup {
   },
 }
 
+require('ufo').setup({
+  open_fold_hl_timeout = 0,
+  close_fold_kinds = { 'comment', 'imports', 'region' },
+})
+
 require('telescope').load_extension('hoogle')
 
 require('neoscroll').setup({

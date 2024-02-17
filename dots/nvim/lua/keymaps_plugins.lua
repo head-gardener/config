@@ -1,3 +1,13 @@
+-- Folds
+local ufo = require('ufo')
+vim.keymap.set({ 'n', 'v' }, '<M-h>', '[z', { noremap = true })
+vim.keymap.set({ 'n', 'v' }, '<M-l>', ']z', { noremap = true })
+vim.keymap.set({ 'n', 'v' }, '<M-j>', 'zj', { noremap = true })
+vim.keymap.set({ 'n', 'v' }, '<M-k>', 'zk', { noremap = true })
+vim.keymap.set('n', '<Space>R', ufo.openAllFolds, { noremap = true })
+vim.keymap.set('n', '<Space>M', ufo.closeAllFolds, { noremap = true })
+vim.keymap.set('n', '<Space>g', 'za', { noremap = true })
+
 -- Syntax Tree Surfer
 local opts = { noremap = true, silent = true }
 

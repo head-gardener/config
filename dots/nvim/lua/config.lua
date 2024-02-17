@@ -20,9 +20,11 @@ Indenation(1)
 vim.o.copyindent = true
 
 -- Folds
-vim.opt.foldmethod = "indent"
-vim.opt.foldminlines = 2
-vim.opt.foldnestmax = 7
+vim.opt.foldcolumn = '0'
+vim.opt.foldenable = true
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 1
+vim.opt.foldmethod = 'indent'
 
 -- Display
 vim.o.signcolumn = "yes"
@@ -54,7 +56,7 @@ vim.g.c_syntax_for_h = 1                       -- .h are c files
 
 -- Highlights
 vim.cmd('hi Normal          guibg=NONE')
-vim.cmd('hi Normal          ctermbg=NONE')
+-- vim.cmd('hi Normal          ctermbg=NONE')
 -- vim.cmd('hi Comment         guifg=#9e9e9e')
 -- vim.cmd('hi VertSplit       guifg=#d0d0d0 guibg=NONE')
 -- vim.cmd('hi StatusLine      guibg=NONE')

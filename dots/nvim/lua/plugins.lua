@@ -41,6 +41,10 @@ require('lazy').setup({
     ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
   },
   'mfussenegger/nvim-dap',
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = { 'kevinhwang91/promise-async' }
+  },
 
   -- snippets
   'hrsh7th/vim-vsnip',
