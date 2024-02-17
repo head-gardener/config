@@ -1,3 +1,26 @@
+-- Colorscheme
+vim.cmd('set termguicolors')
+-- vim.cmd('colorscheme gruvbox')
+-- vim.cmd('colorscheme oxocarbon')
+-- vim.g.sierra_Sunset = 1
+vim.g.sierra_Twilight = 1
+-- vim.g.sierra_Midnight = 1
+-- vim.g.sierra_Pitch = 1
+vim.cmd('colorscheme sierra')
+-- vim.o.background = 'dark'
+
+-- Highlights
+vim.cmd('hi Normal          guibg=NONE')
+vim.cmd('hi Normal          ctermbg=NONE')
+-- vim.cmd('hi Comment         guifg=#9e9e9e')
+-- vim.cmd('hi VertSplit       guifg=#d0d0d0 guibg=NONE')
+-- vim.cmd('hi StatusLine      guibg=NONE')
+-- vim.cmd('hi NonText         guifg=#5d7d8c')
+-- vim.cmd('hi NeoTreeNormal   ctermbg=0')
+-- vim.cmd('hi NeoTreeBorder   ctermbg=0')
+-- vim.cmd('hi NeoTreeTitle    ctermbg=0')
+-- vim.cmd('hi NeoTreeTitleBar ctermbg=0')
+
 local function clock()
   return os.date("%H:%M:%S")
 end
