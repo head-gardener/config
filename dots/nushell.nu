@@ -19,4 +19,12 @@ $env.PATH = ($env.PATH |
 split row (char esep) |
 append /usr/bin/env
 )
-def gs [] { git status --porcelain | lines | split column -c " " state file }
+
+def gs [] {
+  git status --porcelain | lines | split column -c " " state file
+}
+
+def parse-vim-profile [path: string] {
+  open profile | lines | filter {$in =~ '^\d.*'} | parse "{clock}  {elapsed}: {message}"
+    | merge ($in.elapsed | split column '  ' 'elapsed' 'self')
+}
