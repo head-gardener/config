@@ -139,6 +139,7 @@
 
       shears = self.lib.mkDesktop "x86_64-linux" "shears" [
         (self.lib.mkKeys self "hunter")
+        xmonad.nixosModules.powerwatch
         ./modules/cache.nix
         ./modules/github.nix
         ./modules/xmonad.nix
