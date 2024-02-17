@@ -13,6 +13,34 @@ vim.opt.foldmethod = "indent"
 vim.opt.foldlevelstart = 0
 vim.opt.foldminlines = 2
 vim.opt.foldnestmax = 7
+vim.opt.fillchars = {
+  fold = ' ',
+}
+
+local function spacesl(s)
+  return string.gsub(s, "^(%s*).-$", "%1")
+end
+
+local function trim(s)
+  return string.gsub(s, "^%s*(.-)%s*$", "%1")
+end
+
+local function limit(s, n)
+  if string.len(s) <= n then
+    return s
+  else
+    return string.gsub(s, '^(' .. ('.'):rep(n) .. ').*$', '%1...')
+  end
+end
+
+function MyFoldText()
+  local line = vim.fn.getline(vim.v.foldstart)
+  local line_count = vim.v.foldend - vim.v.foldstart + 1
+  return spacesl(line) .. '=<< ' .. 'x' .. line_count
+      .. ': ' .. limit(trim(line), 30)
+end
+
+vim.opt.foldtext = 'v:lua.MyFoldText()'
 
 -- Display
 vim.o.signcolumn = "yes"
