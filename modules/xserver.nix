@@ -14,13 +14,28 @@
     networkmanager_dmenu
   ];
 
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      default = {
+        ids = [ "*" ];
+        settings = {
+          main = {
+            capslock = "overload(control, esc)";
+            space = "overload(meta, space)";
+          };
+        };
+      };
+    };
+  };
+
   services.xserver = {
     libinput.enable = true;
 
     enable = true;
 
     layout = "us,ru";
-    xkbOptions = "eurosign:e,ctrl:nocaps,grp:ralt_rshift_toggle";
+    xkbOptions = "eurosign:e,grp:ralt_rshift_toggle";
 
     desktopManager = {
       xterm.enable = false;
