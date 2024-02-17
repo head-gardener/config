@@ -133,12 +133,14 @@
         ./modules/cache.nix
         ./modules/nvidia.nix
         ./modules/xmonad.nix
+        ./modules/github.nix
         ({ pkgs, ... }: { environment.binsh = "${pkgs.dash}/bin/dash"; })
       ];
 
       shears = self.lib.mkDesktop "x86_64-linux" "shears" [
         (self.lib.mkKeys self "hunter")
         ./modules/cache.nix
+        ./modules/github.nix
         ./modules/xmonad.nix
         ./modules/upower.nix
         { services.easyeffects.enable = true; }

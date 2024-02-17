@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, inputs, ... }: {
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   security = {
@@ -9,7 +9,7 @@
   };
 
   age.secrets.cache = {
-    file = ../secrets/cache.age;
+    file = "${inputs.self}/secrets/cache.age";
     owner = "nix-serve";
     group = "users";
   };

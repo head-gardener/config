@@ -9,4 +9,5 @@ let
 in
 {
   "cache.age".publicKeys = [ hunter blueberry ];
+  "id_gh.age".publicKeys = [ hunter ] ++ systems;
 }
