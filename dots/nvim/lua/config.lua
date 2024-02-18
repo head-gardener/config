@@ -56,6 +56,8 @@ vim.o.hidden = true
 vim.o.number = false
 vim.o.cursorline = false
 vim.o.showmatch = true
+vim.opt.colorcolumn = { 90 }
+vim.opt.title = true
 
 -- Search
 vim.o.incsearch = true
@@ -74,6 +76,7 @@ vim.o.scrolloff = 5
 -- })
 
 -- Misc
+vim.opt.undofile = true
 vim.o.autoread = true                          -- listen for file updates
 vim.o.dir = os.getenv("HOME") .. "/.cache/vim" -- cache dir
 vim.g.c_syntax_for_h = 1                       -- .h are c files
