@@ -25,6 +25,20 @@ local function clock()
   return os.date("%H:%M:%S")
 end
 
+require("neorg").setup {
+  load = {
+    ["core.defaults"] = {},
+    ["core.concealer"] = {},
+    ["core.dirman"] = {
+      config = {
+        workspaces = {
+          notes = "~/notes",
+        },
+      },
+    },
+  },
+}
+
 require'nu'.setup{}
 
 vim.api.nvim_create_autocmd("FileType", {

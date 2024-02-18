@@ -70,6 +70,13 @@ require('lazy').setup({
 
   -- misc
   'head-gardener/catalyst',
+  {
+    "nvim-neorg/neorg",
+    build = ":Neorg sync-parsers",
+    lazy = false,
+    -- tag = "*",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
   'chrisbra/improvedft',
   'ja-ford/delaytrain.nvim',
   {
