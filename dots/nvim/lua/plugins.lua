@@ -67,6 +67,19 @@ require('lazy').setup({
   'enddeadroyal/symbols-outline.nvim',
   'srstevenson/vim-picker',
   'nvim-telescope/telescope.nvim',
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
 
   -- misc
   'head-gardener/catalyst',
@@ -79,12 +92,6 @@ require('lazy').setup({
   },
   'chrisbra/improvedft',
   'ja-ford/delaytrain.nvim',
-  {
-    "tversteeg/registers.nvim",
-    config = function()
-      require("registers").setup()
-    end,
-  },
   'folke/neodev.nvim',
   'fladson/vim-kitty',
   'yamatsum/nvim-cursorline',
