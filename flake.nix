@@ -117,9 +117,9 @@
         desktop.imports = [
           ./modules/doas.nix
           ./modules/lightdm.nix
+          ./modules/picom.nix
           ./modules/pipewire.nix
           ./modules/xserver.nix
-          ./modules/picom.nix
         ];
       } // share;
 
