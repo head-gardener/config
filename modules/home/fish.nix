@@ -9,18 +9,19 @@ in
   programs.fish = {
     enable = true;
     shellAliases = {
-      ll = "ls -l";
-      la = "ls -al";
-      mux = "tmuxinator";
       ip = "ip -c";
+      la = "ls -al";
+      ll = "ls -l";
+      mux = "tmuxinator";
     };
     shellAbbrs = {
-      sys = "systemctl";
-      sus = "systemctl --user";
+      loc = "XDG_CONFIG_HOME=~/config/dots";
       n = "nix";
       nbl = "nix build .";
       nbn = "nix build nixpkgs";
       nrn = "nix run nixpkgs#";
+      sus = "systemctl --user";
+      sys = "systemctl";
     };
     interactiveShellInit = ''
       ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
