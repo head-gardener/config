@@ -22,12 +22,15 @@ inputs: final: prev: rec {
     };
 
     forgit-no-grc = final.fishPlugins.forgit.overrideAttrs (old: {
-      src = final.stdenvNoCC.mkDerivation {
+      src = inputs.unstable.legacyPackages.${final.stdenv.system}.stdenvNoCC.mkDerivation {
         inherit (old.src) rev name;
         inherit (old) src;
 
         installPhase = ''
-          sed -i -e "s/grc/grvrc/" ./conf.d/forgit.plugin.fish
+          export file="./conf.d/forgit.plugin.fish"
+          test -f $file
+          substituteInPlace $file \
+            --replace-fail 'grc' 'grvrc'
           cp -r . $out
         '';
       };
