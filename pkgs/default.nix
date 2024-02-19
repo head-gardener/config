@@ -14,5 +14,5 @@ pkgs: {
     in
     patcher { inherit font; };
 
-  inherit (pkgs.fishPlugins) abbreviation-tips forgit-no-grc gitnow spark;
+  inherit (pkgs.fishPlugins) done abbreviation-tips forgit-no-grc gitnow spark;
 }

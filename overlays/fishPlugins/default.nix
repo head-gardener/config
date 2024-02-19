@@ -2,6 +2,21 @@ inputs: final: prev: rec {
   fishPlugins = prev.fishPlugins // fishPluginsOverlay;
 
   fishPluginsOverlay = {
+    done = prev.fishPlugins.done.overrideAttrs (old: {
+      src = inputs.unstable.legacyPackages.${final.stdenv.system}.stdenvNoCC.mkDerivation {
+        inherit (old.src) rev name;
+        inherit (old) src;
+
+        installPhase = ''
+          export file="./conf.d/done.fish"
+          test -f $file
+          substituteInPlace $file \
+            --replace-fail 'if set -q KITTY_WINDOW_ID' 'if false'
+          cp -r . $out
+        '';
+      };
+    });
+
     abbreviation-tips = final.fishPlugins.buildFishPlugin rec {
       pname = "abbreviation-tips";
       version = "v0.7.0";
