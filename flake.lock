@@ -501,11 +501,11 @@
         "pw-volume": "pw-volume"
       },
       "locked": {
-        "lastModified": 1708300385,
-        "narHash": "sha256-Dv7x2LffhQSMdxwtnTg+SyLmlc9L/I9zBeGG/KK2I9A=",
+        "lastModified": 1708309306,
+        "narHash": "sha256-iq4t0zTjoRiB4JpxuqROKvpZiUcbriAZQ2BTO+LyHt0=",
         "owner": "head-gardener",
         "repo": "xmonad",
-        "rev": "ab0a2f4fcbb1a60ea50f63793b21450e0ad18da1",
+        "rev": "ecf33eaa20215014b7d3c4e7a059f5ba44ab1730",
         "type": "github"
       },
       "original": {
