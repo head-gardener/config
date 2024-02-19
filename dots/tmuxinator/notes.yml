@@ -1,0 +1,6 @@
+name: notes
+root: ~/notes
+
+windows:
+  - git: ~
+  - sync: while true; nix run nixpkgs#git-sync; sleep $(math 60x 60); end
