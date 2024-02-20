@@ -16,6 +16,7 @@
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     hydra.url = "github:NixOS/hydra";
     musnix.url = "github:musnix/musnix";
+    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     nixd.url = "github:nix-community/nixd";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -113,6 +114,7 @@
           ] ++ nixpkgs.lib.attrValues share;
 
         desktop.imports = [
+          { nixpkgs.overlays = [ neovim-nightly.overlay ]; }
           ./modules/doas.nix
           ./modules/lightdm.nix
           ./modules/picom.nix
