@@ -40,6 +40,7 @@
     ] ++ [
       gimp-with-plugins
       gmic
+      graphviz
     ] ++ [
       firefox
       hunspell
