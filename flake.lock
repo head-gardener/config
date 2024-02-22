@@ -560,6 +560,22 @@
         "type": "github"
       }
     },
+    "notes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1708587156,
+        "narHash": "sha256-Hp1Zrz46AG6eH4aAx4eb1yW9plM1gFmrzXhRS5JTJp4=",
+        "owner": "head-gardener",
+        "repo": "notes",
+        "rev": "5c859dde655a104141f1625f870e794a3a236994",
+        "type": "github"
+      },
+      "original": {
+        "owner": "head-gardener",
+        "repo": "notes",
+        "type": "github"
+      }
+    },
     "pw-volume": {
       "locked": {
         "lastModified": 1708030557,
@@ -588,6 +604,7 @@
         "neovim-nightly": "neovim-nightly",
         "nixd": "nixd",
         "nixpkgs": "nixpkgs_2",
+        "notes": "notes",
         "unstable": "unstable",
         "xmonad": "xmonad"
       }

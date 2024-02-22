@@ -75,6 +75,9 @@ vim.o.scrolloff = 5
 --   end,
 -- })
 
+-- Colors
+-- vim.api.nvim_set_hl(0, 'TabLineFill', {fg = 'LightGreen', bg = 'DarkGreen'})
+
 -- Misc
 vim.opt.undofile = true
 vim.o.autoread = true                          -- listen for file updates

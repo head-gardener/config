@@ -8,6 +8,9 @@
     nixd.inputs.nixpkgs.follows = "nixpkgs";
     xmonad.inputs.nixpkgs.follows = "nixpkgs";
 
+    notes.url = "github:head-gardener/notes";
+    notes.flake = false;
+
     agenix.url = "github:ryantm/agenix";
     blog.url = "github:head-gardener/blog";
     # blog.url = "/home/hunter/Blog/";
