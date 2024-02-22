@@ -6,8 +6,10 @@ let
   blueberry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIELJrb6Drbgtrg3jRcvevq8kG1N03cji3k3FkmwUFxo+";
   shears = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYam2lNjh5m0eFyhc5Fn90J8/g/MspzIJqha/1YZsmg";
   systems = [ distortion blueberry shears ];
+  deploy = [ blueberry ];
 in
 {
-  "cache.age".publicKeys = [ hunter blueberry ];
+  "cache.age".publicKeys = [ hunter ] ++ deploy;
   "id_gh.age".publicKeys = [ hunter ] ++ systems;
+  "id_conf.age".publicKeys = [ hunter ] ++ deploy;
 }
