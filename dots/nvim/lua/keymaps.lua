@@ -46,9 +46,13 @@ vim.keymap.set({ 'n', 'v' }, '<M-j>', 'zj', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<M-k>', 'zk', { noremap = true })
 vim.keymap.set('n', '<Space>a', 'zA', { noremap = true })
 vim.keymap.set('n', '<Space>g', 'za', { noremap = true })
+-- lens
+vim.keymap.set('n', 'zl', 'zMzv', { noremap = true })
 
 -- Shortcuts
 vim.keymap.set('n', '<Space>p', ':b#<CR>', { noremap = true })
+vim.keymap.set('n', '<BS>', ':bprev<CR>', { noremap = true })
+vim.keymap.set('n', '<M-BS>', ':bnext<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>a', ':wa<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>q', ':q<CR>', { noremap = true })
