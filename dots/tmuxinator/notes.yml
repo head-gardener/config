@@ -3,4 +3,5 @@ root: ~/notes
 
 windows:
   - git: ~
-  - sync: while true; nix run nixpkgs#git-sync; sleep $(math 60x 60); end
+  - sync: source scripts/syncer.fish; syncer
+  - nu: nu -e "source scripts/graph.nu; source scripts/todos.nu"
