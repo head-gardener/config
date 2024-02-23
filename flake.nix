@@ -44,6 +44,11 @@
         mkHost = nixpkgs.lib.nixos.runTest {
           name = "mkHost-test";
 
+          node.specialArgs = {
+            inherit inputs;
+            system = "x86_64-linux";
+          };
+
           nodes.machine = {
             imports = self.lib.mkHostModules "test";
           };
@@ -67,6 +72,7 @@
             inherit inputs;
             system = "x86_64-linux";
           };
+
           nodes.machine = {
             imports = [ ] ++
               self.lib.mkHostModules "test" ++
