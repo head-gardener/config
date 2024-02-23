@@ -82,6 +82,10 @@ require('lazy').setup({
   },
 
   -- misc
+  {
+    'jumas-cola/cosco.nvim',
+    lazy = true,
+  },
   'head-gardener/catalyst',
   {
     "nvim-neorg/neorg",

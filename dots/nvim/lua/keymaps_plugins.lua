@@ -62,6 +62,15 @@ vim.keymap.set('n', '<Space>ze', ':ZenMode<CR>', { noremap = true })
 -- Twilight
 vim.keymap.set('n', '<Space>tw', ':Twilight<CR>', { noremap = true })
 
+-- Cosco
+vim.keymap.set("n", "<Space>;", function()
+  require("cosco").comma_or_semi_colon()
+end, {
+    noremap = true,
+    silent = true,
+    desc = "Auto comma or semicolon"
+})
+
 -- Telescope
 local tbuiltin = require('telescope.builtin')
 vim.keymap.set('n', '<Leader>fo', ":Telescope hoogle list<CR>", { noremap = true, desc = 'Telescope hoogle search'})
