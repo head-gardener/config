@@ -62,6 +62,15 @@ vim.keymap.set('n', '<Space>ze', ':ZenMode<CR>', { noremap = true })
 -- Twilight
 vim.keymap.set('n', '<Space>tw', ':Twilight<CR>', { noremap = true })
 
+-- Telescope
+local tbuiltin = require('telescope.builtin')
+vim.keymap.set('n', '<Leader>fo', ":Telescope hoogle list<CR>", { noremap = true, desc = 'Telescope hoogle search'})
+vim.keymap.set('n', '<Leader>ff', tbuiltin.find_files, { noremap = true, desc = "Telescope find file" })
+vim.keymap.set('n', '<Leader>fg', tbuiltin.live_grep, { noremap = true, desc = "Telescope live grep" })
+vim.keymap.set('n', '<Leader>fb', tbuiltin.buffers, { noremap = true, desc = "Telescope find buffers" })
+vim.keymap.set('n', '<Leader>fh', tbuiltin.help_tags, { noremap = true, desc = "Telescope help tags" })
+vim.keymap.set('n', '<Leader>ft', tbuiltin.treesitter, { noremap = true, desc = "Telescope treesitter search" })
+
 -- Gitsigns
 vim.keymap.set('n', '<Space>hs', ':Gitsigns stage_hunk<CR>', { noremap = true })
 vim.keymap.set('n', '<Space>nh', ':Gitsigns next_hunk<CR>', { noremap = true })
@@ -80,9 +89,6 @@ require 'nvim-treesitter.configs'.setup {
     disable = {},
   },
 }
-
--- Telescope
-vim.keymap.set('n', '<Space>th', ":Telescope hoogle list<CR>", { noremap = true })
 
 -- CMP thing
 local cmp = require('cmp')
