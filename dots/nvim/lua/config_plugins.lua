@@ -58,11 +58,15 @@ require("telescope").setup {
           remove_wrap = false
         }
       }
-    }
+    },
+    file_browser = {
+      hijack_netrw = true,
+    },
   },
 }
 
 require('telescope').load_extension('hoogle')
+require('telescope').load_extension('file_browser')
 
 require('neoscroll').setup({
   hide_cursor = false,         -- Hide cursor while scrolling
@@ -73,27 +77,6 @@ require('neoscroll').setup({
   pre_hook = nil,              -- Function to run before the scrolling animation starts
   post_hook = nil,             -- Function to run after the scrolling animation ends
   performance_mode = false,    -- Disable "Performance Mode" on all buffers.
-})
-
-vim.opt.runtimepath:prepend("~/Code/catalyst")
-require('catalyst').setup({
-  presets = {
-    cabal = { run = "cabal run app", build = "cabal build", test = "cabal test --test-show-details=direct" },
-    stack = { run = "stack run", build = "stack build", test = "stack test" },
-    cargo = { run = "cargo run", build = "cargo build", test = "cargo test" },
-    make = { run = "make build && build/bin", build = "make build", test = "make check" },
-    cmake = { run = "cmake run", build = "cmake build", test = "cmake check", watch = 'watchin' },
-    latex = { build = "", run = "zathura doc.pdf &", test = "", watch = "find . -name '*.tex' | entr -rc pdflatex /_" },
-  },
-  functions = {
-    { 'run',   '<Leader>mm' },
-    { 'test',  '<Leader>mt' },
-    { 'build', '<Leader>mb' },
-    { 'pick',  '<Leader>mp' },
-    { 'edit',  '<Leader>me' },
-    { 'watch', '<Leader>mw' },
-  },
-  shell = 'sh',
 })
 
 ---@diagnostic disable-next-line: unused-function, unused-local
