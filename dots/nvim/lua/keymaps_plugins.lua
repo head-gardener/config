@@ -85,10 +85,6 @@ vim.keymap.set('n', '<Space>hs', ':Gitsigns stage_hunk<CR>', { noremap = true })
 vim.keymap.set('n', '<Space>nh', ':Gitsigns next_hunk<CR>', { noremap = true })
 vim.keymap.set('n', '<Space>hr', ':Gitsigns reset_hunk<CR>', { noremap = true })
 
--- Neo-Tree
-vim.keymap.set('n', '<Leader>tr', ':Neotree focus<CR>', { noremap = true })
-vim.keymap.set('n', '<Leader>tt', ':Neotree float toggle<CR>', { noremap = true })
-
 require 'nvim-treesitter.configs'.setup {
   ensure_installed = {},
   sync_install = false,
