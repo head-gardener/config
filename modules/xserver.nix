@@ -35,7 +35,7 @@
     enable = true;
 
     layout = "us,ru";
-    xkbOptions = "eurosign:e,grp:ralt_rshift_toggle";
+    xkbOptions = "eurosign:e,grp:toggle";
 
     desktopManager = {
       xterm.enable = false;
