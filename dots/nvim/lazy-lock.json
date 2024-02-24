@@ -13,6 +13,7 @@
   "haskell-tools.nvim": { "branch": "master", "commit": "217cb7958ebbebf360f7c43efd5129e66d748042" },
   "improvedft": { "branch": "master", "commit": "1f0b78b55ba5fca70db0f584d8b5e56a35fd26f6" },
   "iron.nvim": { "branch": "master", "commit": "7f876ee3e1f4ea1e5284b1b697cdad5b256e8046" },
+  "langmapper.nvim": { "branch": "main", "commit": "9d98285b2e45d1c392c6a03e7adedde97d2aa71a" },
   "lsp_codelens_extensions.nvim": { "branch": "main", "commit": "b85138d185e2ae36cdde86e5ad18abf9add5e70c" },
   "lualine.nvim": { "branch": "master", "commit": "7d131a8d3ba5016229e8a1d08bf8782acea98852" },
   "mason-lspconfig.nvim": { "branch": "main", "commit": "21d33d69a81f6351e5a5f49078b2e4f0075c8e73" },

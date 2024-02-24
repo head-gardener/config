@@ -63,20 +63,42 @@ require('lazy').setup({
   'srstevenson/vim-picker',
   'nvim-telescope/telescope.nvim',
   {
+    enabled = false,
     "folke/which-key.nvim",
     event = "VeryLazy",
-    init = function()
+    dependencies = { 'Wansmer/langmapper.nvim' },
+    config = function()
       vim.o.timeout = true
       vim.o.timeoutlen = 300
-    end,
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    }
+
+      -- needed for binds to work with langmapper
+      local lmu = require('langmapper.utils')
+      local view = require('which-key.view')
+      local execute = view.execute
+
+      -- wrap `execute()` and translate sequence back
+      view.execute = function(prefix_i, mode, buf)
+        -- Translate back to English characters
+        prefix_i = lmu.translate_keycode(prefix_i, 'default', 'ru')
+        execute(prefix_i, mode, buf)
+      end
+
+      require('which-key').setup()
+    end
   },
 
   -- misc
+  {
+    'Wansmer/langmapper.nvim',
+    lazy = false,
+    priority = 1,
+    config = function()
+      require('langmapper').setup({})
+    end,
+    init = function ()
+      require('langmapper').automapping({ global = true, buffer = true })
+    end
+  },
   {
     'jumas-cola/cosco.nvim',
     lazy = true,
