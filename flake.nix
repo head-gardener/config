@@ -168,6 +168,8 @@
         ./modules/hydra.nix
         blog.nixosModules.blog
         (self.lib.mkKeys self "hunter")
+        agenix.nixosModules.default
+        ./modules/refresher-staging.nix
         ./modules/refresher-config.nix
       ];
     };

@@ -10,156 +10,160 @@ let
     github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
   '';
 
-  cfg = config.services.refresher;
+  mkServices = suffix: cfg:
+    let
+      updateCmd = (if lib.length cfg.inputs == 0
+      then "${lib.getExe pkgs.nix} flake update --commit-lock-file "
+      else "${lib.getExe pkgs.nix} flake lock --commit-lock-file ")
+      + lib.concatMapStrings (x: " --update-input " + x) cfg.inputs;
 
-  updateCmd = (if lib.length cfg.inputs == 0
-    then "${lib.getExe pkgs.nix} flake update --commit-lock-file "
-    else "${lib.getExe pkgs.nix} flake lock --commit-lock-file ")
-    + lib.concatMapStrings (x: " --update-input " + x) cfg.inputs;
+      sshCmd = "${lib.getExe pkgs.openssh} -i ${cfg.identity} -F ${pkgs.writeText "ssh_config" sshConfig}";
 
-  sshCmd = "${lib.getExe pkgs.openssh} -i ${cfg.identity} -F ${pkgs.writeText "ssh_config" sshConfig}";
+      sshConfig = ''
+        StrictHostKeyChecking=accept-new
+        UserKnownHostsFile=${pkgs.writeText "known_hosts" githubHK}
+        ${cfg.extraSSHConf}
+      '';
 
-  sshConfig = ''
-    StrictHostKeyChecking=accept-new
-    UserKnownHostsFile=${pkgs.writeText "known_hosts" githubHK}
-    ${cfg.extraSSHConf}
-  '';
+      name = "refresher" + (if lib.isString suffix then "-" + suffix else "");
 
-  name = "refresher" + (if lib.isString cfg.suffix then "-" + cfg.suffix else "");
+      ifStaging = s: lib.optionalString cfg.staging s;
 
-  ifStaging = s: lib.optionalString cfg.staging s;
+      script = ''
+        ${lib.getExe pkgs.git} clone ${cfg.repo} . --depth 1 ${ifStaging "--single-branch --branch staging"}
+        ${ifStaging "git pull origin master"}
+        ${updateCmd}
+        ${lib.getExe pkgs.git} push
+      '';
+    in
+    mkIf cfg.enable {
+      services.${name} = {
+        description = "Remote flake input updater"
+          + (if lib.isString suffix then ", suffix: ${suffix}" else "");
+        path = [ pkgs.git ];
 
-  script = ''
-    ${lib.getExe pkgs.git} clone ${cfg.repo} . --depth 1 ${ifStaging "--single-branch --branch staging"}
-    ${ifStaging "git pull origin master"}
-    ${updateCmd}
-    ${lib.getExe pkgs.git} push
-  '';
+        environment = {
+          HOME = "/run/${name}";
+          GIT_SSH_COMMAND = sshCmd;
+          GIT_AUTHOR_NAME = cfg.authorName;
+          GIT_COMMITTER_NAME = cfg.authorName;
+          EMAIL = cfg.authorEmail;
+        };
 
+        inherit script;
+
+        serviceConfig = {
+          RuntimeDirectory = name;
+          WorkingDirectory = "/run/${name}";
+          Type = "oneshot";
+          User = name;
+        };
+      };
+
+      timers.${name} = {
+        description = "Remote flake input updater"
+          + (if lib.isString suffix then ", suffix: ${suffix}" else "");
+        wantedBy = [ "timers.target" ];
+
+        timerConfig = {
+          OnCalendar = cfg.onCalendar;
+          Persistent = true;
+          Unit = name;
+        };
+      };
+    };
+
+  mkUsers = suffix: cfg:
+    let
+      name = "refresher" + (if lib.isString suffix then "-" + suffix else "");
+    in
+    mkIf cfg.enable {
+      users.${name} = {
+        isSystemUser = true;
+        group = name;
+      };
+
+      groups.${name} = { };
+    };
 in
 {
 
-  options.services.refresher = {
-    enable = mkEnableOption "refresher";
+  options.services.refresher = mkOption {
+    type = types.attrsOf (types.submodule {
+      options.enable = mkEnableOption "refresher";
 
-    repo = mkOption {
-      type = types.str;
-      example = "git@github.com:NixOS/nixpkgs";
-      description = lib.mdDoc ''
-        URL to the repo containing the flake. Must have write priviliges.
-      '';
-    };
+      options.repo = mkOption {
+        type = types.str;
+        example = "git@github.com:NixOS/nixpkgs";
+        description = lib.mdDoc ''
+          URL to the repo containing the flake. Must have write priviliges.
+        '';
+      };
 
-    onCalendar = mkOption {
-      type = types.str;
-      default = "06:00:00";
-      example = "hourly";
-      description = lib.mdDoc ''
-        Systemd timer's OnCalendar value.
-      '';
-    };
+      options.onCalendar = mkOption {
+        type = types.str;
+        default = "06:00:00";
+        example = "hourly";
+        description = lib.mdDoc ''
+          Systemd timer's OnCalendar value.
+        '';
+      };
 
-    suffix = mkOption {
-      type = types.str;
-      default = null;
-      example = "nixpkgs";
-      description = lib.mdDoc ''
-        Suffix to be added to services's and user's name, paths as such: "nixpkgs" -> "refresher-nixpkgs"
-      '';
-    };
+      options.inputs = mkOption {
+        type = types.listOf types.str;
+        example = [ "nixpkgs" ];
+        default = [ ];
+        description = lib.mdDoc ''
+          Inputs to update. Updates all by default.
+        '';
+      };
 
-    inputs = mkOption {
-      type = types.listOf types.str;
-      example = [ "nixpkgs" ];
-      default = [];
-      description = lib.mdDoc ''
-        Inputs to update. Updates all by default.
-      '';
-    };
+      options.identity = mkOption {
+        type = types.path;
+        example = "/etc/ssh/id_ed25519";
+        description = lib.mdDoc ''
+          Path to an identity file to use. Should be an absolute pass readable to refresher user.
+        '';
+      };
 
-    identity = mkOption {
-      type = types.path;
-      example = "/etc/ssh/id_ed25519";
-      description = lib.mdDoc ''
-        Path to an identity file to use. Should be an absolute pass readable to refresher user.
-      '';
-    };
+      options.extraSSHConf = mkOption {
+        type = types.lines;
+        default = "";
+        description = lib.mkDoc ''
+          Appended to SSH configuration used by the server's git command.
+          Use service's identity option if you want to specify id to be used.
+        '';
+      };
 
-    extraSSHConf = mkOption {
-      type = types.lines;
-      default = "";
-      description = lib.mkDoc ''
-        Appended to SSH configuration used by the server's git command.
-        Use service's identity option if you want to specify id to be used.
-      '';
-    };
+      options.authorName = mkOption {
+        type = types.str;
+        default = "refresher";
+        description = lib.mkDoc ''
+          Who authored the commit.
+        '';
+      };
 
-    authorName = mkOption {
-      type = types.str;
-      default = "refresher";
-      description = lib.mkDoc ''
-        Who authored the commit.
-      '';
-    };
+      options.authorEmail = mkOption {
+        type = types.str;
+        default = "refresher@example.com";
+        description = lib.mkDoc ''
+          Email of the commit's author.
+        '';
+      };
 
-    authorEmail = mkOption {
-      type = types.str;
-      default = "refresher@example.com";
-      description = lib.mkDoc ''
-        Email of the commit's author.
-      '';
-    };
-
-    staging = mkOption {
-      type = types.bool;
-      default = false;
-      description = lib.mkDoc ''
-        Whether operate on a separate staging branch.
-      '';
-    };
+      options.staging = mkOption {
+        type = types.bool;
+        default = false;
+        description = lib.mkDoc ''
+          Whether operate on a separate staging branch.
+        '';
+      };
+    });
+    default = { };
   };
 
-  config = mkIf cfg.enable {
-    users.users.${name} = {
-      isSystemUser = true;
-      group = name;
-    };
-
-    users.groups.${name} = { };
-
-    systemd.services.${name} = {
-      description = "Remote flake input updater"
-        + (if lib.isString cfg.suffix then ", suffix: ${cfg.suffix}" else "");
-      path = [ pkgs.git ];
-
-      environment = {
-        HOME = "/run/${name}";
-        GIT_SSH_COMMAND = sshCmd;
-        GIT_AUTHOR_NAME = cfg.authorName;
-        GIT_COMMITTER_NAME = cfg.authorName;
-        EMAIL = cfg.authorEmail;
-      };
-
-      inherit script;
-
-      serviceConfig = {
-        RuntimeDirectory = name;
-        WorkingDirectory = "/run/${name}";
-        Type = "oneshot";
-        User = name;
-      };
-    };
-
-    systemd.timers.${name} = {
-      description = "Remote flake input updater"
-        + (if lib.isString cfg.suffix then ", suffix: ${cfg.suffix}" else "");
-      wantedBy = [ "timers.target" ];
-
-      timerConfig = {
-        OnCalendar = cfg.onCalendar;
-        Persistent = true;
-        Unit = name;
-      };
-    };
+  config = {
+    users = lib.mkMerge (lib.mapAttrsToList mkUsers config.services.refresher);
+    systemd = lib.mkMerge (lib.mapAttrsToList mkServices config.services.refresher);
   };
 }
