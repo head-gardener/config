@@ -6,7 +6,6 @@
   };
 
   services.refresher.config = {
-    enable = true;
     inputs = [ "notes" ];
     repo = "git@github.com:head-gardener/config";
     identity = config.age.secrets.id_conf.path;

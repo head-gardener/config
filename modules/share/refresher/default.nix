@@ -90,7 +90,13 @@ in
 
   options.services.refresher = mkOption {
     type = types.attrsOf (types.submodule {
-      options.enable = mkEnableOption "refresher";
+      options.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = lib.mdDoc ''
+          Whether to enable this refresher's instance and create its environment.
+        '';
+      };
 
       options.repo = mkOption {
         type = types.str;
