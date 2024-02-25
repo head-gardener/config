@@ -47,6 +47,7 @@ require('lazy').setup({
   'hrsh7th/cmp-vsnip',
 
   -- ui
+  { 'sindrets/diffview.nvim', lazy = false },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' }
