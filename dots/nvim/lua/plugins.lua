@@ -64,7 +64,7 @@ require('lazy').setup({
   'srstevenson/vim-picker',
   'nvim-telescope/telescope.nvim',
   {
-    enabled = false,
+    enabled = true,
     "folke/which-key.nvim",
     event = "VeryLazy",
     dependencies = { 'Wansmer/langmapper.nvim' },
@@ -103,6 +103,7 @@ require('lazy').setup({
     priority = 1,
     config = function()
       require('langmapper').setup({})
+      require('langmapper').hack_get_keymap()
     end,
     init = function()
       require('langmapper').automapping({ global = true, buffer = true })
