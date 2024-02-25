@@ -89,13 +89,21 @@ require('lazy').setup({
 
   -- misc
   {
+    'Wansmer/sibling-swap.nvim',
+    requires = { 'nvim-treesitter' },
+    lazy = false,
+    config = function()
+      require('sibling-swap').setup({ --[[ your config ]] })
+    end,
+  },
+  {
     'Wansmer/langmapper.nvim',
     lazy = false,
     priority = 1,
     config = function()
       require('langmapper').setup({})
     end,
-    init = function ()
+    init = function()
       require('langmapper').automapping({ global = true, buffer = true })
     end
   },
