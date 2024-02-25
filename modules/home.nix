@@ -36,7 +36,7 @@
       nixfmt
       stack
       stack
-      inputs.unstable.legacyPackages."x86_64-linux".cargo
+      inputs.unstable.legacyPackages.${system}.cargo
     ] ++ [
       gimp-with-plugins
       gmic

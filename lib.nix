@@ -41,7 +41,7 @@ rec {
   mkHost = system: hostname: extraMods:
     lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit inputs system; };
+      specialArgs = { inherit inputs; };
       modules = (mkHostModules hostname) ++ extraMods;
     };
 
@@ -51,8 +51,6 @@ rec {
     mkHost system hostname ((mkDesktopModules hostname) ++ extraMods);
 
   addPkgs = f: { pkgs, ... }: { environment.systemPackages = f pkgs; };
-
-  systems = [ "x86_64-linux" ];
 
   importAll = path: genAttrsFromDir path import;
 

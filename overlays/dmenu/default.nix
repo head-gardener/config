@@ -19,7 +19,7 @@ in
     sha256 = "09j9z2mx16wii3xz1cfmin42ms7ci3dig64c8sgvv7yd9nc0nv1b";
   };
 
-  dmenu = inputs.dmenu-conf.legacyPackages.x86_64-linux.dmenu.override ({
+  dmenu = inputs.dmenu-conf.legacyPackages.${final.system}.dmenu.override ({
     patches = with final; [
       dmenu-patch-highlight
       dmenu-patch-center

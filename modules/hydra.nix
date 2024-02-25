@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   networking.firewall.allowedTCPPorts = [ 3000 ];
   services.hydra = {
@@ -11,7 +11,7 @@
   nix.buildMachines = [
     {
       hostName = "localhost";
-      system = "x86_64-linux";
+      inherit (pkgs) system;
       supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
       maxJobs = 8;
     }

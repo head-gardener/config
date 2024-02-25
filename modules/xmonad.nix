@@ -1,6 +1,6 @@
-{ pkgs, inputs, lib, system, ... }:
+{ pkgs, inputs, lib, ... }:
 let
-  myxmonad = inputs.xmonad.packages.${system}.default;
+  myxmonad = inputs.xmonad.packages.${pkgs.system}.default;
 in
 {
   environment.systemPackages = with pkgs; [
