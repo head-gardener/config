@@ -2,6 +2,8 @@
   inputs = {
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     blog.inputs.nixpkgs.follows = "nixpkgs";
+    ez-configs.inputs.nixpkgs.follows = "nixpkgs";
+    ez-configs.inputs.flake-parts.follows = "flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hydra.inputs.nixpkgs.follows = "nixpkgs";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
@@ -15,6 +17,8 @@
     blog.url = "github:head-gardener/blog";
     # blog.url = "/home/hunter/Blog/";
     dmenu-conf.url = "github:head-gardener/nixpkgs/master";
+    # ez-configs.url = "github:ehllie/ez-configs";
+    ez-configs.url = "/home/hunter/source/ez-configs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     hydra.url = "github:NixOS/hydra";
@@ -28,6 +32,25 @@
   };
 
   outputs = inputs: with inputs; flake-parts.lib.mkFlake { inherit inputs; } {
+    imports = [
+      ez-configs.flakeModule
+    ];
+
+    ezConfigs = rec {
+      root = ./.;
+      # globalArgs = { inherit inputs; };
+      home = {
+        extraSpecialArgs = {};
+        # modulesDirectory = "${root}/modules-home1";
+        # configurationsDirectory = "${root}/confs-home";
+      };
+      nixos = {
+        specialArgs = { inherit inputs; };
+        # modulesDirectory = "${root}/modules1";
+        # configurationsDirectory = "${root}/confs";
+      };
+    };
+
     flake = {
       lib = import ./lib.nix inputs nixpkgs.lib;
 
@@ -40,18 +63,6 @@
           share = self.lib.genAttrsFromDir ./modules/share import;
         in
         {
-          home = { inputs, ... }: {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.hunter = import ./modules/home.nix;
-              extraSpecialArgs = {
-                inherit inputs;
-                system = "x86_64-linux";
-              };
-            };
-          };
-
           default.imports =
             (self.lib.ls ./modules/default) ++ [
               { nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays; }
@@ -69,45 +80,45 @@
         } // share;
 
       nixosConfigurations = {
-        distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [
-          musnix.nixosModules.musnix
-          {
-            musnix.enable = true;
-            users.users.hunter.extraGroups = [ "audio" ];
-          }
-          ./modules/cache.nix
-          ./modules/nvidia.nix
-          ./modules/xmonad.nix
-          ./modules/github.nix
-          ({ pkgs, ... }: { environment.binsh = "${pkgs.dash}/bin/dash"; })
-        ];
+        # distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [
+        #   musnix.nixosModules.musnix
+        #   {
+        #     musnix.enable = true;
+        #     users.users.hunter.extraGroups = [ "audio" ];
+        #   }
+        #   ./modules/cache.nix
+        #   ./modules/nvidia.nix
+        #   ./modules/xmonad.nix
+        #   ./modules/github.nix
+        #   ({ pkgs, ... }: { environment.binsh = "${pkgs.dash}/bin/dash"; })
+        # ];
 
-        shears = self.lib.mkDesktop "x86_64-linux" "shears" [
-          (self.lib.mkKeys self "hunter")
-          xmonad.nixosModules.powerwatch
-          ./modules/cache.nix
-          ./modules/github.nix
-          ./modules/xmonad.nix
-          ./modules/upower.nix
-          { services.easyeffects.enable = true; }
-          { boot.kernel.sysctl = { "vm.swappiness" = 20; }; }
-        ];
+#         shears = self.lib.mkDesktop "x86_64-linux" "shears" [
+#           (self.lib.mkKeys self "hunter")
+#           xmonad.nixosModules.powerwatch
+#           ./modules/cache.nix
+#           ./modules/github.nix
+#           ./modules/xmonad.nix
+#           ./modules/upower.nix
+#           { services.easyeffects.enable = true; }
+#           { boot.kernel.sysctl = { "vm.swappiness" = 20; }; }
+#         ];
 
-        apple = self.lib.mkHost "x86_64-linux" "apple" [
-          (self.lib.mkKeys self "hunter")
-          ./modules/cache.nix
-        ];
+#         apple = self.lib.mkHost "x86_64-linux" "apple" [
+#           (self.lib.mkKeys self "hunter")
+#           ./modules/cache.nix
+#         ];
 
-        blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
-          ./modules/nginx.nix
-          ./modules/nas.nix
-          ./modules/hydra.nix
-          blog.nixosModules.blog
-          (self.lib.mkKeys self "hunter")
-          agenix.nixosModules.default
-          ./modules/refresher-staging.nix
-          ./modules/refresher-config.nix
-        ];
+#         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
+          # ./modules/nginx.nix
+          # ./modules/nas.nix
+          # ./modules/hydra.nix
+          # blog.nixosModules.blog
+          # (self.lib.mkKeys self "hunter")
+          # agenix.nixosModules.default
+          # ./modules/refresher-staging.nix
+          # ./modules/refresher-config.nix
+        # ];
       };
     };
 

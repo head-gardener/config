@@ -82,6 +82,30 @@
         "type": "github"
       }
     },
+    "ez-configs": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dirtyRev": "84c60a73eba0b5405943580d52b1581de5b1ee7c-dirty",
+        "dirtyShortRev": "84c60a7-dirty",
+        "lastModified": 1706611666,
+        "narHash": "sha256-UZsvQ34djJyBjSzBVo/gEjMDZCf1tNGULOTAQSaVMaA=",
+        "shallow": true,
+        "type": "git",
+        "url": "file:///home/hunter/source/ez-configs"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "file:///home/hunter/source/ez-configs"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -615,6 +639,7 @@
         "agenix": "agenix",
         "blog": "blog",
         "dmenu-conf": "dmenu-conf",
+        "ez-configs": "ez-configs",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager_2",
         "hydra": "hydra",

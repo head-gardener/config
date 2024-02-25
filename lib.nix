@@ -30,9 +30,18 @@ rec {
   ];
 
   mkDesktopModules = hostname: [
+    ( { inputs, ... }: {
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        users.hunter = import ./modules/home.nix;
+        extraSpecialArgs = {
+          inherit inputs;
+        };
+      };
+    })
     inputs.self.nixosModules.desktop
     inputs.home-manager.nixosModules.home-manager
-    inputs.self.nixosModules.home
   ];
 
   # generate configuration by setting net hostname,
