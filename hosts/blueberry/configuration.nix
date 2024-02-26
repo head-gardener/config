@@ -40,8 +40,13 @@
       netatop.enable = true;
       settings = {
         interval = 5;
-        flags = "a1f";
+        flags = "1fA";
       };
     };
+  };
+
+  zramSwap = {
+    enable = true;
+    memoryPercent = 70;
   };
 }
