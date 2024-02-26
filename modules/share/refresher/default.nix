@@ -31,7 +31,7 @@ let
 
       script = ''
         ${lib.getExe pkgs.git} clone ${cfg.repo} . --depth 1 ${ifStaging "--single-branch --branch staging"}
-        ${ifStaging "git pull origin master"}
+        ${ifStaging "git pull origin master --rebase"}
         ${updateCmd}
         ${lib.getExe pkgs.git} push
       '';
