@@ -110,7 +110,7 @@
       };
     };
 
-    systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
+    systems = [ "x86_64-linux" ];
 
     perSystem = { pkgs, system, self', ... }: {
       # TODO: doesn't work!
