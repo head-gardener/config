@@ -119,6 +119,26 @@ require('lazy').setup({
     lazy = false,
     -- tag = "*",
     dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      load = {
+        ["core.defaults"] = {},
+        ["core.concealer"] = {
+          config = {
+            icon_preset = "diamond",
+          },
+        },
+        ["core.dirman"] = {
+          config = {
+            workspaces = {
+              notes = "~/notes",
+            },
+          },
+        },
+        ["core.export"] = {
+          -- config = { export_dir = "./build" },
+        },
+      },
+    }
   },
   'chrisbra/improvedft',
   'ja-ford/delaytrain.nvim',
