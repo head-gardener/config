@@ -175,6 +175,8 @@
           '';
         };
       };
+
+      legacyPackages = self.lib.nixpkgsFor system;
     };
   };
 }
