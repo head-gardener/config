@@ -59,6 +59,7 @@
 
           desktop.imports = [
             { nixpkgs.overlays = [ neovim-nightly.overlay ]; }
+            ./modules/fonts.nix
             ./modules/doas.nix
             ./modules/lightdm.nix
             ./modules/picom.nix
@@ -113,16 +114,9 @@
     systems = [ "x86_64-linux" ];
 
     perSystem = { pkgs, system, self', ... }: {
-      # TODO: doesn't work!
-      # _module.args.pkgs = import inputs.nixpkgs {
-      #   inherit system;
-      #   overlays = [
-      #     self.overlays.packages
-      #   ];
-      # };
-      # packages = import ./pkgs pkgs;
+      _module.args.pkgs = self.lib.nixpkgsFor system;
 
-      packages = import ./pkgs (self.lib.nixpkgsFor system);
+      packages = import ./pkgs pkgs;
 
       checks = self'.packages // {
         mkHost = nixpkgs.lib.nixos.runTest {
@@ -176,7 +170,7 @@
         };
       };
 
-      legacyPackages = self.lib.nixpkgsFor system;
+      legacyPackages = pkgs;
     };
   };
 }
