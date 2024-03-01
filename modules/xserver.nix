@@ -23,6 +23,7 @@
           main = {
             capslock = "overload(meta, esc)";
             space = "overload(control, space)";
+            tab = "overload(alt, tab)";
           };
         };
       };
