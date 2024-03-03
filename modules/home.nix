@@ -45,6 +45,7 @@
       firefox
       hunspell
       hunspellDicts.ru_RU
+      ktouch
       libreoffice
       telegram-desktop
       thunderbird

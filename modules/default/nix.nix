@@ -1,3 +1,4 @@
+{ inputs, ... }:
 {
   system = {
     stateVersion = "23.11";
@@ -52,6 +53,7 @@
           type = "github";
         };
       };
+      s.flake = inputs.self;
     };
 
     settings = {
