@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, lib, ... }: {
   services.logind.extraConfig = ''
     HandlePowerKey=suspend
   '';
@@ -19,13 +19,25 @@
     keyboards = {
       default = {
         ids = [ "*" ];
-        settings = {
-          main = {
-            capslock = "overload(meta, esc)";
-            space = "overload(control, space)";
-            tab = "overload(alt, tab)";
+        settings =
+          let
+            mkNums = pref: keys: lib.attrsets.mergeAttrsList
+              (map
+                ({ fst, snd }: { "${pref}+${snd}" = toString fst; })
+                (lib.zipLists
+                  (lib.range 0 100)
+                  (lib.stringToCharacters keys)));
+          in
+          {
+            main = {
+              capslock = "overload(meta, esc)";
+              # "macro(aa)" = "C-a";
+              space = "overload(control, space)";
+              tab = "overload(alt, tab)";
+              z = "overload(alt, z)";
+              m = "overloadt(meta, m, 300)";
+            } // mkNums "n" "asdfghjkl;";
           };
-        };
       };
     };
   };
