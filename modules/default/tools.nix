@@ -12,6 +12,7 @@
     jq
     less
     neovim
+    nix-output-monitor
     nix-tree
     nushell
     ripgrep
