@@ -36,6 +36,25 @@ inputs: final: prev: rec {
       };
     };
 
+    nix-completions = final.fishPlugins.buildFishPlugin rec {
+      pname = "nix-completions";
+      version = "cd8a43b";
+
+      src = final.fetchFromGitHub {
+        owner = "kedonng";
+        repo = "nix-completions-fish";
+        rev = version;
+        hash = "sha256-F1t81VliD+v6WEWqj1c1ehFBXzqLyumx5vV46s/FZRU=";
+      };
+
+      meta = with final.lib; {
+        description = "Fish completions for Nix.";
+        homepage = "https://github.com/kidonng/nix-completions.fish";
+        license = licenses.mit;
+        maintainers = with maintainers; [ ];
+      };
+    };
+
     forgit-no-grc = final.fishPlugins.forgit.overrideAttrs (old: {
       src = inputs.unstable.legacyPackages.${final.stdenv.system}.stdenvNoCC.mkDerivation {
         inherit (old.src) rev name;
