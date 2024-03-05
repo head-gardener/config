@@ -19,10 +19,16 @@ in
     sha256 = "09j9z2mx16wii3xz1cfmin42ms7ci3dig64c8sgvv7yd9nc0nv1b";
   };
 
+  dmenu-patch-fuzzymatch = final.fetchurl {
+    url = patch_url + "fuzzymatch/dmenu-fuzzymatch-4.9.diff";
+    sha256 = "2aHnWc1Rg0j8N8LIP70JcjIJhWLr/R7fhbUUE/9SS3k=";
+  };
+
   dmenu = inputs.dmenu-conf.legacyPackages.${final.system}.dmenu.override ({
     patches = with final; [
-      dmenu-patch-highlight
+      dmenu-patch-fuzzymatch
       dmenu-patch-center
+      dmenu-patch-highlight
       dmenu-patch-border
     ];
     conf = ./config.h;
