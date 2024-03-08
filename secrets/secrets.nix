@@ -13,4 +13,5 @@ in
   "cache.age".publicKeys = [ hunter ] ++ deploy;
   "id_gh.age".publicKeys = [ hunter ] ++ systems;
   "id_conf.age".publicKeys = [ hunter ] ++ deploy;
+  "minio-creds.age".publicKeys = [ hunter ] ++ deploy;
 }

@@ -11,6 +11,7 @@
     jc
     jq
     less
+    minio-client
     neovim
     nix-output-monitor
     nix-tree
