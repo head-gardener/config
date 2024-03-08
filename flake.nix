@@ -76,6 +76,7 @@
             users.users.hunter.extraGroups = [ "audio" ];
           }
           ./modules/cache.nix
+          ./modules/android-debug.nix
           ./modules/nvidia.nix
           ./modules/xmonad.nix
           ./modules/github.nix
@@ -91,6 +92,7 @@
           ./modules/upower.nix
           { services.easyeffects.enable = true; }
           { boot.kernel.sysctl = { "vm.swappiness" = 20; }; }
+          ./modules/android-debug.nix
         ];
 
         apple = self.lib.mkHost "x86_64-linux" "apple" [
