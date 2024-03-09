@@ -16,6 +16,8 @@
     nix-output-monitor
     nix-tree
     nushell
+    nvd
+    pastel
     ripgrep
     rsync
     tree

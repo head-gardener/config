@@ -3,9 +3,9 @@ root: ~/config
 
 windows:
   - editor:
-      layout: main-horizontal
+      layout: main-vertical
       panes:
-        - nvim .
         - ~
+        - nvim .
   - log:
     - grc journalctl -ef
