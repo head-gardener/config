@@ -2,7 +2,7 @@
   (require 'use-package))
 
 ;; Appearance
-(load-theme 'nordic-night)
+; (load-theme 'nordic-night)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)

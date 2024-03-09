@@ -17,7 +17,7 @@ let
     (map (p: { name = ".config/${p}"; value = mkPath p; }) ps);
 in
 {
-  home.file = mkPaths [ "dunst" "fish" "i3" "nvim" ] //
+  home.file = mkPaths [ "dunst" "fish" "nvim" ] //
     {
       "Pictures/11.png".source = "${inputs.self}/dots/static/11.png";
     };

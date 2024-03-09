@@ -1,0 +1,18 @@
+scheme: "Default"
+author: "head-gardener"
+base00: "121212" # background
+base01: "212526" # line cursor
+base02: "38403f" # statusline
+base03: "47433e" # line numbers
+base04: "6e78a1" # selected line number
+base05: "b3afaf" # foreground
+base06: "d8a9a9" # function
+base07: "fcf4de" # bright yellow
+base08: "a74049" # cyan
+base09: "d35f5a" # blue
+base0A: "ac5d5d" # yellow
+base0B: "9f7b7b" # string green
+base0C: "3a877e" # comment green
+base0D: "686995" # purple
+base0E: "84abab" # orange
+base0F: "9e446f" # gray

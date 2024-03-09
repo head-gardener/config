@@ -56,10 +56,6 @@
 
   gtk = {
     enable = true;
-    theme = {
-      name = "Graphite";
-      package = pkgs.graphite-gtk-theme;
-    };
   };
 
   programs = {

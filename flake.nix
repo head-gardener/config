@@ -6,6 +6,7 @@
     hydra.inputs.nixpkgs.follows = "nixpkgs";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixd.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
     xmonad.inputs.nixpkgs.follows = "nixpkgs";
 
     notes.url = "github:head-gardener/notes";
@@ -22,6 +23,7 @@
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     nixd.url = "github:nix-community/nixd";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    stylix.url = "github:danth/stylix/release-23.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     xmonad.url = "github:head-gardener/xmonad";
     # xmonad.url = "/home/hunter/xmonad/";
@@ -55,6 +57,7 @@
           default.imports =
             (self.lib.ls ./modules/default) ++ [
               { nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays; }
+              inputs.stylix.nixosModules.stylix
             ] ++ nixpkgs.lib.attrValues share;
 
           desktop.imports = [

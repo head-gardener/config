@@ -25,19 +25,10 @@ in
       sus = "systemctl --user";
       sys = "systemctl";
     };
-    interactiveShellInit = ''
-      ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+    interactiveShellInit =
+      (builtins.readFile "${inputs.self}/dots/config.fish") + ''
+      # ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
       setenv LS_COLORS "${builtins.readFile pkgs.ls_colors}"
-
-      function nom-rebuild-d --wraps nixos-rebuild --description "nom-wrapped doas nixos-rebuild"
-        doas w > /dev/null
-        doas nixos-rebuild $argv --log-format internal-json -v 2>| nom --json
-      end
-
-      function nom-rebuild --wraps nixos-rebuild --description "nom-wrapped nixos-rebuild"
-        nixos-rebuild $argv --log-format internal-json -v 2>| nom --json
-      end
-
     '';
     plugins = map nixplug (with pkgs.fishPlugins; [
       abbreviation-tips
