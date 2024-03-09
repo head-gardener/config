@@ -87,6 +87,13 @@ require('lazy').setup({
       require('which-key').setup()
     end
   },
+  {
+    'brenoprata10/nvim-highlight-colors',
+    init = function()
+      vim.api.nvim_command('set t_Co=256')
+    end,
+    opts = {},
+  },
 
   -- misc
   {
