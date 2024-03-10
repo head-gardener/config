@@ -32,6 +32,7 @@ in
       function fish_right_prompt_loading_indicator
         echo (set_color '#aaa')' … '(set_color normal)
       end
+      set sponge_delay 5
     '';
     plugins = map nixplug (with pkgs.fishPlugins; [
       abbreviation-tips
@@ -43,6 +44,7 @@ in
       gitnow
       puffer
       spark
+      sponge
     ]);
   };
 }
