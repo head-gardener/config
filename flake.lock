@@ -781,11 +781,11 @@
     "notes": {
       "flake": false,
       "locked": {
-        "lastModified": 1709898375,
-        "narHash": "sha256-1WNLysZ77/hP6TDEvVqco0DS9pjcLlGkMla6TyXAbYk=",
+        "lastModified": 1709999252,
+        "narHash": "sha256-Hq2u62mUr8i3lmjMP4ejkyiYjBgmNGVUce+a6kV6ewA=",
         "owner": "head-gardener",
         "repo": "notes",
-        "rev": "bb84c28efe4beaa40a31e366cd7374e432a76c0d",
+        "rev": "6250ab60897d0d9aeed463119ac45181c031704f",
         "type": "github"
       },
       "original": {
