@@ -62,7 +62,6 @@
 
           desktop.imports = [
             { nixpkgs.overlays = [ neovim-nightly.overlay ]; }
-            ./modules/fonts.nix
             ./modules/doas.nix
             ./modules/lightdm.nix
             ./modules/picom.nix
