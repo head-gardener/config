@@ -16,8 +16,11 @@
       settings = {
         add_newline = true;
         format = ''
-          $username$hostname$directory$git_branch$git_state$git_status$cmd_duration$nix_shell
+          $username$hostname$directory$git_branch$git_state$git_status$cmd_duration
           $shell $shlvl$character
+        '';
+        right_format = ''
+          $nix_shell
         '';
         character = {
           success_symbol = "[❯](cyan)";

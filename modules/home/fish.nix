@@ -27,11 +27,15 @@ in
     };
     interactiveShellInit =
       (builtins.readFile "${inputs.self}/dots/config.fish") + ''
-      # ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
       setenv LS_COLORS "${builtins.readFile pkgs.ls_colors}"
+      enable_transience
+      function fish_right_prompt_loading_indicator
+        echo (set_color '#aaa')' … '(set_color normal)
+      end
     '';
     plugins = map nixplug (with pkgs.fishPlugins; [
       abbreviation-tips
+      async-prompt # doesn't work
       autopair
       done
       forgit-no-grc
