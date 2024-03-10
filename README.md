@@ -1,6 +1,6 @@
 # DOTFILES
 
-![screenshot](./2023-11-02_04:30:42.png)
+![screenshot](./screenshot.png)
 
 Perpetual WIP.
 
