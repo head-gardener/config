@@ -41,10 +41,10 @@ inputs: final: prev: rec {
       version = "cd8a43b";
 
       src = final.fetchFromGitHub {
-        owner = "kedonng";
-        repo = "nix-completions-fish";
+        owner = "kidonng";
+        repo = "nix-completions.fish";
         rev = version;
-        hash = "sha256-F1t81VliD+v6WEWqj1c1ehFBXzqLyumx5vV46s/FZRU=";
+        hash = "sha256-spnLmde41qQt8uJZFwiH0igFuVqZ6SvkwdA9Kbe2yz8=";
       };
 
       meta = with final.lib; {
