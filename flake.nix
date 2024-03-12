@@ -113,6 +113,23 @@
           ./modules/refresher-staging.nix
           ./modules/refresher-config.nix
         ];
+
+        installer = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            ({ pkgs, modulesPath, lib, ... }: {
+              imports = [
+                "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
+              ];
+              boot.kernelPackages = pkgs.linuxPackages_latest;
+              boot.supportedFilesystems = lib.mkForce [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+            })
+            (self.lib.mkKeys' self "nixos" "hunter")
+            ./modules/default/tmux.nix
+            ./modules/default/tools.nix
+          ];
+        };
       };
     };
 

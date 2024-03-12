@@ -19,9 +19,12 @@ rec {
     overlays = attrValues inputs.self.overlays;
   };
 
-  mkKeys = self: user: {
-    users.users.${user}.openssh.authorizedKeys.keyFiles = ls "${self}/ssh/${user}";
+  # make keys for dst from src's stash.
+  mkKeys' = self: dst: src: {
+    users.users.${dst}.openssh.authorizedKeys.keyFiles = ls "${self}/ssh/${src}";
   };
+
+  mkKeys = self: user: mkKeys' self user user;
 
   mkHostModules = hostname: [
     ./hosts/${hostname}/configuration.nix
@@ -29,7 +32,7 @@ rec {
     inputs.self.nixosModules.default
   ];
 
-  mkDesktopModules = hostname: [
+  mkDesktopModules = _: [
     inputs.self.nixosModules.desktop
     inputs.home-manager.nixosModules.home-manager
     inputs.self.nixosModules.home
