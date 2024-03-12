@@ -114,6 +114,12 @@
           ./modules/refresher-config.nix
         ];
 
+        cherry = self.lib.mkHost "x86_64-linux" "cherry" [
+          ./modules/minio.nix
+          (self.lib.mkKeys self "hunter")
+          agenix.nixosModules.default
+        ];
+
         installer = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
