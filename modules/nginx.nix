@@ -51,6 +51,15 @@
 
     commonHttpConfig = "limit_req_zone $binary_remote_addr zone=common:10m rate=10r/s;";
     virtualHosts = rec {
+      "s3.backyard-hg.xyz" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://cherry:9000";
+        };
+      };
+
       "cache.backyard-hg.xyz" = blueberry // {
         enableACME = true;
         forceSSL = true;
