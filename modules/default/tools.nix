@@ -2,6 +2,7 @@
 {
   environment.systemPackages = with pkgs; [
     atop
+    awscli
     bat
     entr
     fd
@@ -21,6 +22,7 @@
     pastel
     ripgrep
     rsync
+    s3fs
     tree
     wget
   ];
