@@ -31,6 +31,13 @@ in
       options = [ "subvol=persistent" ];
     };
 
+  fileSystems."/var" =
+    {
+      device = btrfsRoot;
+      fsType = "btrfs";
+      options = [ "subvol=var" ];
+    };
+
   fileSystems."/nix" =
     {
       device = btrfsRoot;
