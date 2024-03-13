@@ -5,10 +5,5 @@ windows:
   - editor:
       panes:
         - ~
-  - atop: sudo atop
+  - atop: atop
   - logs: grc --colour=on journalctl -ef | grep -v hydra
-  - nginx:
-      layout: main-horizontal
-      panes:
-        - sudo grc tail -f /var/log/nginx/access.log -n 100
-        - sudo grc tail -f /var/log/nginx/error.log -n 100
