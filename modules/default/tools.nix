@@ -7,6 +7,7 @@
     fd
     git
     grc
+    haskellPackages.base91
     inputs.agenix.packages.${pkgs.stdenv.system}.default
     jc
     jq

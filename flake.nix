@@ -104,7 +104,6 @@
 
         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
           ./modules/nginx.nix
-          ./modules/minio.nix
           # ./modules/nas.nix
           ./modules/hydra.nix
           blog.nixosModules.blog

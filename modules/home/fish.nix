@@ -40,7 +40,7 @@ in
       done
       forgit-no-grc
       fzf-fish
-      gitnow
+      # gitnow
       puffer
       spark
       sponge
