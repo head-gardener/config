@@ -10,8 +10,6 @@
 
   age.secrets.cache = {
     file = "${inputs.self}/secrets/cache.age";
-    owner = "nix-serve";
-    group = "users";
   };
 
   services = {

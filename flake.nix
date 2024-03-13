@@ -19,6 +19,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     hydra.url = "github:NixOS/hydra";
+    impermanence.url = "github:nix-community/impermanence";
     musnix.url = "github:musnix/musnix";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     nixd.url = "github:nix-community/nixd";
@@ -103,6 +104,7 @@
         ];
 
         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
+          impermanence.nixosModules.impermanence
           ./modules/nginx.nix
           # ./modules/nas.nix
           ./modules/hydra.nix
