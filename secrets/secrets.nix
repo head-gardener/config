@@ -15,4 +15,6 @@ in
   "id_gh.age".publicKeys = [ hunter ] ++ systems;
   "id_conf.age".publicKeys = [ hunter ] ++ deploy;
   "minio-creds.age".publicKeys = [ hunter ] ++ deploy;
+  "s3-hunter.age".publicKeys = users ++ systems;
+  "s3-ro.age".publicKeys = users ++ systems;
 }
