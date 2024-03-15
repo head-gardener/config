@@ -1,6 +1,4 @@
 { config, inputs, ... }: {
-  imports = [ inputs.agenix.nixosModules.default ];
-
   age.secrets.id_gh = {
     file = "${inputs.self}/secrets/id_gh.age";
     owner = "hunter";

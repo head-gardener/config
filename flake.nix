@@ -58,6 +58,8 @@
           default.imports =
             (self.lib.ls ./modules/default) ++ [
               { nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays; }
+              inputs.impermanence.nixosModules.impermanence
+              inputs.agenix.nixosModules.default
               inputs.stylix.nixosModules.stylix
             ] ++ nixpkgs.lib.attrValues share;
 
@@ -104,13 +106,11 @@
         ];
 
         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
-          impermanence.nixosModules.impermanence
           ./modules/nginx.nix
           # ./modules/nas.nix
           ./modules/hydra.nix
           blog.nixosModules.blog
           (self.lib.mkKeys self "hunter")
-          agenix.nixosModules.default
           ./modules/refresher-staging.nix
           ./modules/refresher-config.nix
         ];
@@ -118,7 +118,6 @@
         cherry = self.lib.mkHost "x86_64-linux" "cherry" [
           ./modules/minio.nix
           (self.lib.mkKeys self "hunter")
-          agenix.nixosModules.default
         ];
 
         installer = nixpkgs.lib.nixosSystem {

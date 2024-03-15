@@ -19,29 +19,8 @@
           type = "github";
         };
       };
-      nixpkgs = {
-        from = {
-          id = "nixpkgs";
-          type = "indirect";
-        };
-        to = {
-          owner = "NixOS";
-          repo = "nixpkgs";
-          ref = "nixos-23.11";
-          type = "github";
-        };
-      };
-      agenix = {
-        from = {
-          id = "agenix";
-          type = "indirect";
-        };
-        to = {
-          owner = "ryantm";
-          repo = "agenix";
-          type = "github";
-        };
-      };
+      nixpkgs.flake = inputs.nixpkgs;
+      agenix.flake = inputs.self;
       s.flake = inputs.self;
     };
 
