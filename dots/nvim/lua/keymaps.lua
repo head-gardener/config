@@ -51,6 +51,10 @@ vim.keymap.set('n', 'zl', 'zMzv', { noremap = true })
 
 -- Shortcuts
 vim.keymap.set('n', '<Space>p', ':b#<CR>', { noremap = true })
+vim.keymap.set('n', 'gQ', ':cope<CR>', { noremap = true })
+vim.keymap.set('n', 'gq', ':cclose<CR>', { noremap = true })
+vim.keymap.set('n', ']q', ':cnext<CR>', { noremap = true })
+vim.keymap.set('n', '[q', ':cprev<CR>', { noremap = true })
 vim.keymap.set('n', '<BS>', ':bprev<CR>', { noremap = true })
 vim.keymap.set('n', '<M-BS>', ':bnext<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
