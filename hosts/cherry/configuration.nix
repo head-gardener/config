@@ -22,6 +22,31 @@
   networking.firewall.allowedUDPPorts = [ ];
   networking.firewall.allowPing = true;
 
+  services.btrbk = {
+    instances.default = {
+      settings = {
+        snapshot_preserve = "14d";
+        snapshot_preserve_min = "2d";
+        volume = {
+          "/mnt/btr_pool" = {
+            snapshot_dir = "snapshots";
+            snapshot_preserve_min = "all";
+            snapshot_create = "no";
+            subvolume = {
+              var = {
+                snapshot_create = "always";
+              };
+              root = {
+                snapshot_create = "always";
+              };
+            };
+            target = "/mnt/btr_backup/default";
+          };
+        };
+      };
+    };
+  };
+
   system = {
     autoUpgrade = {
       enable = true;
