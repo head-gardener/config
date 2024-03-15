@@ -39,7 +39,16 @@
 
   environment.persistence."/persistent" = {
     hideMounts = true;
-    directories = [ "/etc/ssh" ];
+    directories = [
+      "/etc/ssh"
+    ];
+    users.hunter = {
+      directories = [
+        ".local/share/fish"
+        ".local/share/kitty-ssh-kitten"
+        ".terminfo"
+      ];
+    };
     files = [ ];
   };
 
