@@ -29,13 +29,12 @@ rec {
   mkHostModules = hostname: [
     ./hosts/${hostname}/configuration.nix
     { networking.hostName = hostname; }
-    inputs.self.nixosModules.default
+    ./modules/default
   ];
 
   mkDesktopModules = _: [
-    inputs.self.nixosModules.desktop
-    inputs.home-manager.nixosModules.home-manager
-    inputs.self.nixosModules.home
+    ./modules/desktop
+    ./modules/home.nix
   ];
 
   # generate configuration by setting net hostname,

@@ -38,40 +38,7 @@
         packages = final: _: import ./pkgs final;
       };
 
-      nixosModules =
-        let
-          share = self.lib.genAttrsFromDir ./modules/share import;
-        in
-        {
-          home = { inputs, ... }: {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.hunter = import ./modules/home.nix;
-              extraSpecialArgs = {
-                inherit inputs;
-                system = "x86_64-linux";
-              };
-            };
-          };
-
-          default.imports =
-            (self.lib.ls ./modules/default) ++ [
-              { nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays; }
-              inputs.impermanence.nixosModules.impermanence
-              inputs.agenix.nixosModules.default
-              inputs.stylix.nixosModules.stylix
-            ] ++ nixpkgs.lib.attrValues share;
-
-          desktop.imports = [
-            { nixpkgs.overlays = [ neovim-nightly.overlay ]; }
-            ./modules/doas.nix
-            ./modules/lightdm.nix
-            ./modules/picom.nix
-            ./modules/pipewire.nix
-            ./modules/xserver.nix
-          ];
-        } // share;
+      nixosModules = self.lib.genAttrsFromDir ./modules/share lib.id;
 
       nixosConfigurations = {
         distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [
@@ -80,7 +47,6 @@
             musnix.enable = true;
             users.users.hunter.extraGroups = [ "audio" ];
           }
-          ./modules/cache.nix
           ./modules/android-debug.nix
           ./modules/nvidia.nix
           ./modules/xmonad.nix
@@ -91,7 +57,6 @@
         shears = self.lib.mkDesktop "x86_64-linux" "shears" [
           (self.lib.mkKeys self "hunter")
           xmonad.nixosModules.powerwatch
-          ./modules/cache.nix
           ./modules/github.nix
           ./modules/xmonad.nix
           ./modules/upower.nix
@@ -102,7 +67,7 @@
 
         apple = self.lib.mkHost "x86_64-linux" "apple" [
           (self.lib.mkKeys self "hunter")
-          ./modules/cache.nix
+          ./modules/desktop/cache.nix
         ];
 
         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
