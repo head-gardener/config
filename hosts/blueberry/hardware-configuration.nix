@@ -4,6 +4,7 @@
 { config, lib, modulesPath, ... }:
 let
   btrfsRoot = "/dev/disk/by-label/NIXOS";
+  backupRoot = "/dev/disk/by-label/BACKUP2";
 in
 {
   imports =
@@ -15,6 +16,18 @@ in
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
+  fileSystems."/mnt/btr_backup" =
+    { device = backupRoot;
+      fsType = "btrfs";
+      options = [ "subvolid=5" ];
+    };
+
+  fileSystems."/mnt/btr_pool" =
+    { device = btrfsRoot;
+      fsType = "btrfs";
+      options = [ "subvolid=5" ];
+    };
 
   fileSystems."/" =
     {

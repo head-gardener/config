@@ -5,12 +5,14 @@
     ./hardware-configuration.nix
     inputs.blog.nixosModules.blog
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    # "${inputs.self}/modules/nas.nix"
+    "${inputs.self}/modules/backup-local.nix"
     "${inputs.self}/modules/nginx.nix"
     "${inputs.self}/modules/hydra.nix"
     "${inputs.self}/modules/refresher-staging.nix"
     "${inputs.self}/modules/refresher-config.nix"
   ];
+
+  services.backup-local.subvols = [ "var" ];
 
   boot.loader.grub = {
     enable = true;
