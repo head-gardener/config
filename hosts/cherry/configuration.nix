@@ -5,7 +5,10 @@
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
     "${inputs.self}/modules/minio.nix"
+    "${inputs.self}/modules/backup-local.nix"
   ];
+
+  services.backup-local.subvols = [ "var" ];
 
   boot.loader.grub = {
     enable = true;
@@ -70,28 +73,6 @@
   networking.firewall.allowedTCPPorts = [ 3000 ];
   networking.firewall.allowedUDPPorts = [ ];
   networking.firewall.allowPing = true;
-
-  services.btrbk = {
-    instances.default = {
-      settings = {
-        snapshot_preserve = "14d";
-        snapshot_preserve_min = "2d";
-        volume = {
-          "/mnt/btr_pool" = {
-            snapshot_dir = "snapshots";
-            snapshot_preserve_min = "all";
-            snapshot_create = "no";
-            subvolume = {
-              var = {
-                snapshot_create = "always";
-              };
-            };
-            target = "/mnt/btr_backup/default";
-          };
-        };
-      };
-    };
-  };
 
   system = {
     autoUpgrade = {
