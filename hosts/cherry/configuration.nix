@@ -1,7 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    (inputs.self.lib.mkKeys inputs.self "hunter")
+    "${inputs.self}/modules/minio.nix"
+  ];
 
   boot.loader.grub = {
     enable = true;

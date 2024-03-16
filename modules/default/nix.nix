@@ -20,7 +20,7 @@
         };
       };
       nixpkgs.flake = inputs.nixpkgs;
-      agenix.flake = inputs.self;
+      agenix.flake = inputs.agenix;
       s.flake = inputs.self;
     };
 

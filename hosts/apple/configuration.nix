@@ -1,10 +1,11 @@
-{ config, pkgs, ... }:
+{ inputs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    (inputs.self.lib.mkKeys inputs.self "hunter")
+    "${inputs.self}/modules/desktop/cache.nix"
+  ];
 
   boot.loader.grub = {
     enable = true;
@@ -31,4 +32,3 @@
   #   HandleLidSwitchExternalPower=ignore
   # '';
 }
-

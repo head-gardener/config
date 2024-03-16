@@ -41,49 +41,15 @@
       nixosModules = self.lib.genAttrsFromDir ./modules/share lib.id;
 
       nixosConfigurations = {
-        distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [
-          musnix.nixosModules.musnix
-          {
-            musnix.enable = true;
-            users.users.hunter.extraGroups = [ "audio" ];
-          }
-          ./modules/android-debug.nix
-          ./modules/nvidia.nix
-          ./modules/xmonad.nix
-          ./modules/github.nix
-          ({ pkgs, ... }: { environment.binsh = "${pkgs.dash}/bin/dash"; })
-        ];
+        distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [ ];
 
-        shears = self.lib.mkDesktop "x86_64-linux" "shears" [
-          (self.lib.mkKeys self "hunter")
-          xmonad.nixosModules.powerwatch
-          ./modules/github.nix
-          ./modules/xmonad.nix
-          ./modules/upower.nix
-          { services.easyeffects.enable = true; }
-          { boot.kernel.sysctl = { "vm.swappiness" = 20; }; }
-          ./modules/android-debug.nix
-        ];
+        shears = self.lib.mkDesktop "x86_64-linux" "shears" [ ];
 
-        apple = self.lib.mkHost "x86_64-linux" "apple" [
-          (self.lib.mkKeys self "hunter")
-          ./modules/desktop/cache.nix
-        ];
+        apple = self.lib.mkHost "x86_64-linux" "apple" [ ];
 
-        blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [
-          ./modules/nginx.nix
-          # ./modules/nas.nix
-          ./modules/hydra.nix
-          blog.nixosModules.blog
-          (self.lib.mkKeys self "hunter")
-          ./modules/refresher-staging.nix
-          ./modules/refresher-config.nix
-        ];
+        blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [ ];
 
-        cherry = self.lib.mkHost "x86_64-linux" "cherry" [
-          ./modules/minio.nix
-          (self.lib.mkKeys self "hunter")
-        ];
+        cherry = self.lib.mkHost "x86_64-linux" "cherry" [ ];
 
         installer = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
