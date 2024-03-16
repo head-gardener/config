@@ -38,7 +38,7 @@ def changes [old, new] {
       | columns);
 
   def path [ref, conf] {
-    $".?rev=($ref)#nixosConfigurations.($conf).config.system.build.toplevel"
+    $".?ref=($ref)#nixosConfigurations.($conf).config.system.build.toplevel"
   };
 
   $confs | each {|c|
