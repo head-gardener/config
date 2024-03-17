@@ -7,6 +7,7 @@
     "${inputs.self}/modules/minio.nix"
     "${inputs.self}/modules/backup-local.nix"
     "${inputs.self}/modules/backup-s3.nix"
+    "${inputs.self}/modules/prometheus-node.nix"
   ];
 
   services.backup-local.subvols = [ "var" ];

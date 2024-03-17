@@ -12,6 +12,8 @@
     "${inputs.self}/modules/hydra.nix"
     "${inputs.self}/modules/refresher-staging.nix"
     "${inputs.self}/modules/refresher-config.nix"
+    "${inputs.self}/modules/prometheus.nix"
+    "${inputs.self}/modules/prometheus-node.nix"
   ];
 
   services.backup-local.subvols = [ "var" ];
