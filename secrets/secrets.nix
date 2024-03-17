@@ -17,4 +17,6 @@ in
   "minio-creds.age".publicKeys = [ hunter ] ++ deploy;
   "s3-hunter.age".publicKeys = users ++ systems;
   "s3-ro.age".publicKeys = users ++ systems;
+  "s3-backup.age".publicKeys = [ hunter ] ++ deploy;
+  "cherry-gpg.age".publicKeys = [ hunter cherry ];
 }
