@@ -49,6 +49,15 @@
 
     commonHttpConfig = "limit_req_zone $binary_remote_addr zone=common:10m rate=10r/s;";
     virtualHosts = rec {
+      "grafana.backyard-hg.xyz" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://127.0.0.1:2342";
+        };
+      };
+
       "s3.backyard-hg.xyz" = {
         enableACME = true;
         forceSSL = true;

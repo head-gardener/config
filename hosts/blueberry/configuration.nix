@@ -7,6 +7,7 @@
     (inputs.self.lib.mkKeys inputs.self "hunter")
     "${inputs.self}/modules/backup-s3.nix"
     "${inputs.self}/modules/backup-local.nix"
+    "${inputs.self}/modules/grafana.nix"
     "${inputs.self}/modules/nginx.nix"
     "${inputs.self}/modules/hydra.nix"
     "${inputs.self}/modules/refresher-staging.nix"
