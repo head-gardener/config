@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
     inputs.blog.nixosModules.blog
     (inputs.self.lib.mkKeys inputs.self "hunter")
+    "${inputs.self}/modules/backup-s3.nix"
     "${inputs.self}/modules/backup-local.nix"
     "${inputs.self}/modules/nginx.nix"
     "${inputs.self}/modules/hydra.nix"
@@ -13,6 +14,7 @@
   ];
 
   services.backup-local.subvols = [ "var" ];
+  services.backup-s3.subvols = [ "root" "var" ];
 
   boot.loader.grub = {
     enable = true;

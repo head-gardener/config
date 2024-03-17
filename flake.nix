@@ -42,15 +42,10 @@
 
       nixosConfigurations = {
         distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [ ];
-
         shears = self.lib.mkDesktop "x86_64-linux" "shears" [ ];
-
         apple = self.lib.mkHost "x86_64-linux" "apple" [ ];
-
         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [ ];
-
         cherry = self.lib.mkHost "x86_64-linux" "cherry" [ ];
-
         installer = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };

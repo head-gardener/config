@@ -19,4 +19,5 @@ in
   "s3-ro.age".publicKeys = users ++ systems;
   "s3-backup.age".publicKeys = [ hunter ] ++ deploy;
   "cherry-gpg.age".publicKeys = [ hunter cherry ];
+  "blueberry-gpg.age".publicKeys = [ hunter blueberry ];
 }
