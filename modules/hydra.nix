@@ -1,11 +1,15 @@
 { config, pkgs, ... }:
 {
-  networking.firewall.allowedTCPPorts = [ 3000 ];
+  networking.firewall.allowedTCPPorts = [ 3000 9198 ];
+
   services.hydra = {
     enable = true;
     hydraURL = "http://hydra:3000";
     notificationSender = "hydra@localhost";
     useSubstitutes = true;
+    extraConfig = ''
+      queue_runner_metrics_address = [::]:9198
+    '';
   };
 
   nix.buildMachines = [
