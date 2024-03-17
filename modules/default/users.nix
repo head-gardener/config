@@ -2,7 +2,7 @@
   users.mutableUsers = false;
 
   users.users.root.initialHashedPassword =
-    "$6$1SWrFhShtEbxYRoO$Twy9IF6IdsmbWGxbhzRvqJJHgcCMFp4q7GBJV0PSCGhlNLa2xGHPXAExGnv3GDWpWL5Bq/EIjfSFt9f/M3I8k/";
+    "$y$j9T$2qJiPOJ3kKfwkcp.iFaxM1$H8.ADznGEeJ4l2K1aQHz8URxkPNQuRB40r5t0EQ5eK.";
 
   users.users.hunter = {
     isNormalUser = true;
