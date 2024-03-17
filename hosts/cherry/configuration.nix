@@ -6,9 +6,11 @@
     (inputs.self.lib.mkKeys inputs.self "hunter")
     "${inputs.self}/modules/minio.nix"
     "${inputs.self}/modules/backup-local.nix"
+    "${inputs.self}/modules/backup-s3.nix"
   ];
 
   services.backup-local.subvols = [ "var" ];
+  services.backup-s3.subvols = [ "root" ];
 
   boot.loader.grub = {
     enable = true;
