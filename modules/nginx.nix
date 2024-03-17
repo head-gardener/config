@@ -56,6 +56,10 @@
           recommendedProxySettings = true;
           proxyPass = "http://cherry:9000";
         };
+        extraConfig = ''
+          # s3fs can exceed the limit sometimes
+          client_max_body_size 20m;
+        '';
       };
 
       "cache.backyard-hg.xyz" = blueberry // {
