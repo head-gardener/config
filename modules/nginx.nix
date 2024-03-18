@@ -29,8 +29,22 @@
     };
   };
 
+  services.prometheus = {
+    enable = true;
+    port = 4000;
+    exporters = {
+      nginx = {
+        enable = true;
+        openFirewall = true;
+        port = 9113;
+      };
+    };
+  };
+
   services.nginx = {
     enable = true;
+
+    statusPage = true;
 
     recommendedGzipSettings = true;
     recommendedOptimisation = true;
