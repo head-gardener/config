@@ -10,7 +10,7 @@
       {
         job_name = "hydra";
         static_configs = [{
-          targets = [ "blueberry:3000" "blueberry:9198" ];
+          targets = [ "127.0.0.1:3000" "blueberry:9198" ];
         }];
       }
       {
