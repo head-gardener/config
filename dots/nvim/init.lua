@@ -3,6 +3,7 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.g.mapleader = "\\"
 
+-- require('lazy-bootstrap')
 require('plugins')
 require('functions')
 require('config')
