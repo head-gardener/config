@@ -30,10 +30,15 @@ let
       ifStaging = s: lib.optionalString cfg.staging s;
 
       script = ''
-        ${lib.getExe pkgs.git} clone ${cfg.repo} . --depth 1 ${ifStaging "--single-branch --branch staging"}
-        ${ifStaging "git pull origin master --rebase"}
+        git clone ${cfg.repo} . --depth 1 ${ifStaging "--single-branch --branch staging"}
+        ${ifStaging ''
+          git switch --detach
+          git fetch origin master
+          git branch -f staging FETCH_HEAD
+          git switch staging
+        ''}
         ${updateCmd}
-        ${lib.getExe pkgs.git} push
+        git push -f
       '';
     in
     mkIf cfg.enable {
@@ -71,7 +76,7 @@ let
           OnCalendar = cfg.onCalendar;
           Persistent = true;
           Unit = name;
-       };
+        };
       };
     };
 in
