@@ -24,7 +24,7 @@ in
   ];
 
   config = {
-    environment.systemPackages = [ pkgs.gnupg ];
+    environment.systemPackages = [ pkgs.xz pkgs.gnupg ];
 
     age.secrets.gpg-backup-key = {
       file = "${inputs.self}/secrets/${config.networking.hostName}-gpg.age";
@@ -36,11 +36,17 @@ in
       ${lib.getExe pkgs.gnupg} --import ${config.age.secrets.gpg-backup-key.path}
     '';
 
+    # fuck it
+    systemd.services.btrbk-s3.serviceConfig.User = lib.mkForce "root";
+    systemd.services.btrbk-s3.serviceConfig.Group = lib.mkForce "root";
+
+    services.btrbk.extraPackages = [ pkgs.gnupg pkgs.xz ];
     services.btrbk.instances.s3 = {
       settings = {
         raw_target_compress = "xz";
         raw_target_encrypt = "gpg";
 
+        gpg_keyring = config.age.secrets.gpg-backup-key.path;
         gpg_recipient = config.networking.hostName;
 
         snapshot_create = "ondemand";

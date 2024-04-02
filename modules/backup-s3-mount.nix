@@ -11,6 +11,6 @@
     mountPoint = "/mnt/s3_backup";
     fsType = "fuse./run/current-system/sw/bin/s3fs";
     noCheck = true;
-    options = [ "_netdev" "allow_other" "use_path_request_style" "url=https://s3.backyard-hg.xyz" "passwd_file=${config.age.secrets.s3-backup.path}" "umask=0177" ];
+    options = [ "_netdev" "allow_other" "use_path_request_style" "url=https://s3.backyard-hg.xyz" "passwd_file=${config.age.secrets.s3-backup.path}" "umask=077" ];
   };
 }
