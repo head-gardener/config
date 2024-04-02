@@ -1,8 +1,6 @@
 { inputs, config, ... }: {
   age.secrets.id_conf = {
     file = "${inputs.self}/secrets/id_conf.age";
-    owner = "refresher-config";
-    group = "refresher-config";
   };
 
   services.refresher.config = {
