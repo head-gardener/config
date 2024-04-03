@@ -6,10 +6,11 @@
     viAlias = true;
     vimAlias = true;
     extraPackages = with pkgs; [
-      haskellPackages.hoogle
       commitlint
       deadnix
       editorconfig-checker
+      glow
+      haskellPackages.hoogle
       lua-language-server
       nixd
       nixpkgs-fmt

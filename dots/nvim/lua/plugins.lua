@@ -47,6 +47,11 @@ require('lazy').setup({
   'hrsh7th/cmp-vsnip',
 
   -- ui
+  {
+    'ellisonleao/glow.nvim',
+    config = true,
+    cmd = "Glow"
+  },
   { 'sindrets/diffview.nvim', lazy = false },
   {
     'nvim-lualine/lualine.nvim',
@@ -91,7 +96,7 @@ require('lazy').setup({
     'brenoprata10/nvim-highlight-colors',
     lazy = true,
     cmd = 'HighlightColors',
-    config = function ()
+    config = function()
       vim.api.nvim_command('set t_Co=256')
       require('nvim-highlight-colors').setup {}
     end,
