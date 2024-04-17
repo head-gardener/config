@@ -72,6 +72,19 @@
         };
       };
 
+      "s3c.backyard-hg.xyz" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://cherry:9001";
+        };
+        extraConfig = ''
+          # s3fs can exceed the limit sometimes
+          client_max_body_size 20m;
+        '';
+      };
+
       "s3.backyard-hg.xyz" = {
         enableACME = true;
         forceSSL = true;
