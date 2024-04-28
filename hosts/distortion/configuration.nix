@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }:
+{ inputs, lib, config, pkgs, ... }:
 
 {
   imports = [
@@ -8,6 +8,7 @@
     "${inputs.self}/modules/nvidia.nix"
     "${inputs.self}/modules/xmonad.nix"
     "${inputs.self}/modules/github.nix"
+    "${inputs.self}/modules/hp-lj-1018.nix"
   ];
 
   environment.binsh = "${pkgs.dash}/bin/dash";
