@@ -15,8 +15,8 @@ in
   };
 
   dmenu-patch-border = final.fetchurl {
-    url = patch_url + "border/dmenu-border-4.9.diff";
-    sha256 = "09j9z2mx16wii3xz1cfmin42ms7ci3dig64c8sgvv7yd9nc0nv1b";
+    url = patch_url + "/border/dmenu-border-20230512-0fe460d.diff";
+    sha256 = "12lahhbp9nwkzlbv4nbmvwb90sgnci93gspzq1cyspj21pd7azw5";
   };
 
   dmenu = inputs.dmenu-conf.legacyPackages.${final.system}.dmenu.override ({
