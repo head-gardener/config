@@ -27,6 +27,7 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" "repl-flake" ];
       trusted-users = [ "root" "hunter" ];
+      allowed-uris = [ "https://github.com/NixOS/nixpkgs/archive/" ];
     };
 
     gc = {
