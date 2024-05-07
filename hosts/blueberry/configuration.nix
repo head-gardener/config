@@ -14,6 +14,7 @@
     "${inputs.self}/modules/refresher-config.nix"
     "${inputs.self}/modules/prometheus.nix"
     "${inputs.self}/modules/prometheus-node.nix"
+    "${inputs.self}/modules/zram.nix"
   ];
 
   services.backup-local.subvols = [ "var" ];
@@ -104,10 +105,5 @@
         flags = "1fA";
       };
     };
-  };
-
-  zramSwap = {
-    enable = true;
-    memoryPercent = 70;
   };
 }
