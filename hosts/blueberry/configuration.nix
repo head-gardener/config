@@ -76,6 +76,7 @@
 
   environment.systemPackages = with pkgs; [
     ntfs3g
+    fish
   ];
 
   networking.firewall.allowedTCPPorts = [ 3000 ];

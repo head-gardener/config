@@ -8,6 +8,8 @@
     "${inputs.self}/modules/backup-local.nix"
     "${inputs.self}/modules/backup-s3.nix"
     "${inputs.self}/modules/prometheus-node.nix"
+    "${inputs.self}/modules/k3s-singleton.nix"
+    "${inputs.self}/modules/docker.nix"
   ];
 
   services.backup-local.subvols = [ "var" ];
@@ -71,6 +73,7 @@
 
   environment.systemPackages = with pkgs; [
     ntfs3g
+    fish
   ];
 
   networking.firewall.allowedTCPPorts = [ 3000 ];
