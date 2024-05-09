@@ -10,8 +10,10 @@
       deadnix
       editorconfig-checker
       glow
+      gnumake
       haskellPackages.hoogle
       lua-language-server
+      lua5_1
       nixd
       nixpkgs-fmt
       proselint

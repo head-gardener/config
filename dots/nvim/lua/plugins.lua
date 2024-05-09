@@ -5,6 +5,11 @@ require('lazy').setup({
 
   -- deps
   'nvim-lua/plenary.nvim',
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1000,
+    config = true,
+  },
 
   -- themes
   'ellisonleao/gruvbox.nvim',
@@ -129,7 +134,6 @@ require('lazy').setup({
   },
   {
     "nvim-neorg/neorg",
-    build = ":Neorg sync-parsers",
     lazy = false,
     -- tag = "*",
     dependencies = { "nvim-lua/plenary.nvim" },
