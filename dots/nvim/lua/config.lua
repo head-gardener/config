@@ -80,6 +80,7 @@ vim.o.scrolloff = 5
 -- vim.api.nvim_set_hl(0, 'TabLineFill', {fg = 'LightGreen', bg = 'DarkGreen'})
 
 -- Misc
+vim.o.exrc = true
 vim.opt.undofile = true
 vim.o.autoread = true                          -- listen for file updates
 vim.o.dir = os.getenv("HOME") .. "/.cache/vim" -- cache dir
