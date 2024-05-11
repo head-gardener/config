@@ -21,6 +21,22 @@ vim.cmd('hi Normal          ctermbg=NONE')
 -- vim.cmd('hi NeoTreeTitle    ctermbg=0')
 -- vim.cmd('hi NeoTreeTitleBar ctermbg=0')
 
+vim.cmd [[highlight NotifyDEBUGBorder guifg=#3a877e]]
+vim.cmd [[highlight NotifyDEBUGIcon guifg=#686995]]
+vim.cmd [[highlight NotifyDEBUGTitle guifg=#686995]]
+vim.cmd [[highlight NotifyERRORBorder guifg=#a95059]]
+vim.cmd [[highlight NotifyERRORIcon guifg=#d28484]]
+vim.cmd [[highlight NotifyERRORTitle guifg=#d28484]]
+vim.cmd [[highlight NotifyINFOBorder guifg=#38776e]]
+vim.cmd [[highlight NotifyINFOIcon guifg=#3a877e]]
+vim.cmd [[highlight NotifyINFOTitle guifg=#3a877e]]
+vim.cmd [[highlight NotifyTRACEBorder guifg=#242424]]
+vim.cmd [[highlight NotifyTRACEIcon guifg=#343434]]
+vim.cmd [[highlight NotifyTRACETitle guifg=#343434]]
+vim.cmd [[highlight NotifyWARNBorder guifg=#9f7b7b]]
+vim.cmd [[highlight NotifyWARNIcon guifg=#aa5c5c]]
+vim.cmd [[highlight NotifyWARNTitle guifg=#aa5c5c]]
+
 local function clock()
   return os.date("%H:%M:%S")
 end
