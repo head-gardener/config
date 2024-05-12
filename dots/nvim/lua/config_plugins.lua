@@ -48,6 +48,9 @@ vim.api.nvim_create_autocmd("FileType", {
   command = [[setlocal nofoldenable]]
 })
 require("telescope").setup {
+  defaults = require('telescope.themes').get_ivy {
+
+  },
   extensions = {
     hoogle = {
       render = 'default',

@@ -74,6 +74,7 @@ end, {
 -- Telescope
 local tbuiltin = require('telescope.builtin')
 vim.keymap.set('n', '<Leader>fo', ":Telescope hoogle list<CR>", { noremap = true, desc = 'Telescope hoogle search'})
+vim.keymap.set('n', '<Leader>fc', ":Telescope builtin<CR>", { noremap = true, desc = 'Telescope commands'})
 vim.keymap.set('n', '<Leader>ff', tbuiltin.find_files, { noremap = true, desc = "Telescope find file" })
 vim.keymap.set('n', '<Leader>fg', tbuiltin.live_grep, { noremap = true, desc = "Telescope live grep" })
 vim.keymap.set('n', '<Leader>fd', ":Telescope buffers<CR>", { noremap = true, desc = "Telescope buffer browser" })
