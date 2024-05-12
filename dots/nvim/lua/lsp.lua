@@ -1,7 +1,7 @@
 local lspconfig = require('lspconfig')
 local lsp_selection_range = require('lsp-selection-range')
 local null_ls = require('null-ls')
-local ht = require('haskell-tools')
+-- local ht = require('haskell-tools')
 local dap = require('dap')
 
 dap.adapters.haskell = {
@@ -57,19 +57,18 @@ local on_attach = function(_, bufnr)
   end)
 end
 
-vim.g.haskell_tools = {
-  -- tools = {},
-  hls = {
-    on_attach = function(client, bufnr, _)
-      local bmap = _bmap(bufnr)
-      bmap('n', '<space>cl', vim.lsp.codelens.run)
-      bmap('n', '<space>hs', ht.hoogle.hoogle_signature)
-      bmap('n', '<space>ea', ht.lsp.buf_eval_all)
-      on_attach(client, bufnr)
-    end,
-  },
-  -- dap = {},
-}
+-- vim.g.haskell_tools = {
+--   -- tools = {},
+--   hls = {
+--     on_attach = function(client, bufnr, _)
+--       local bmap = _bmap(bufnr)
+--       bmap('n', '<space>cl', vim.lsp.codelens.run)
+--       bmap('n', '<space>ea', ht.lsp.buf_eval_all)
+--       on_attach(client, bufnr)
+--     end,
+--   },
+--   -- dap = {},
+-- }
 
 null_ls.setup {
   on_attach = on_attach,
@@ -94,6 +93,12 @@ lspconfig.nixd.setup {
   capabilities = capabilities,
   on_attach = on_attach,
 }
+
+lspconfig.hls.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+}
+
 
 lspconfig.lua_ls.setup {
   settings = {

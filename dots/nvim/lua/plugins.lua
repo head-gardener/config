@@ -44,6 +44,7 @@ require('lazy').setup({
     'mrcjkb/haskell-tools.nvim',
     version = '^3',
     ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+    enabled = false,
   },
   'mfussenegger/nvim-dap',
 
