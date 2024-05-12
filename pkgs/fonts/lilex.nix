@@ -1,19 +1,19 @@
 { python3Packages, stdenv, fetchFromGitHub, python3, features ? [ ], ttfautohint }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "lilex";
-  version = "2.400";
+  version = "2.510";
 
   srcs = [
     (fetchFromGitHub {
       owner = "mishamyrt";
       repo = "Lilex";
-      rev = "0c63d0d919201078c6b8f2364c295a3c034da503";
-      hash = "sha256-WJcLhrEpl4Qy+Mhw7Sajh6GO1GpTCVB6bjnpjxlFnSI= ";
+      rev = version;
+      hash = "sha256-lzoSzBtWIaxza7N06BXrl2h8F6tly8VaoDJ4xywTVa8=";
     })
   ];
 
-  outputHash = "sha256-06G/WVskq3RihPfTa6reL31HUu8EayMcIjjJ/mzDx8o=";
+  outputHash = "sha256-mnaifg6UvPnOXtaP4xZyrqfq3hSv6X4+5mTXXotKxlw=";
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
 
