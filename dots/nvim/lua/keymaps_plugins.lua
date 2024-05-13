@@ -77,7 +77,7 @@ vim.keymap.set('n', '<Leader>fo', ":Telescope hoogle list<CR>", { noremap = true
 vim.keymap.set('n', '<Leader>fc', ":Telescope builtin<CR>", { noremap = true, desc = 'Telescope commands'})
 vim.keymap.set('n', '<Leader>ff', tbuiltin.find_files, { noremap = true, desc = "Telescope find file" })
 vim.keymap.set('n', '<Leader>fg', tbuiltin.live_grep, { noremap = true, desc = "Telescope live grep" })
-vim.keymap.set('n', '<Leader>fd', ":Telescope buffers<CR>", { noremap = true, desc = "Telescope buffer browser" })
+vim.keymap.set('n', '<Leader>fd', ":Telescope diagnostics<CR>", { noremap = true, desc = "Telescope diagnostics" })
 vim.keymap.set('n', '<Leader>fb', ":Telescope file_browser<CR>", { noremap = true, desc = "Telescope file browser" })
 vim.keymap.set('n', '<Leader>fh', tbuiltin.help_tags, { noremap = true, desc = "Telescope help tags" })
 vim.keymap.set('n', '<Leader>ft', tbuiltin.treesitter, { noremap = true, desc = "Telescope treesitter search" })
