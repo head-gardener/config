@@ -75,6 +75,12 @@
 
   networking.networkmanager.enable = false;
 
+  services.auspex = {
+    enable = true;
+    openFirewall = true;
+    port = 8090;
+  };
+
   environment.systemPackages = with pkgs; [
     ntfs3g
     fish

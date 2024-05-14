@@ -72,6 +72,15 @@
         };
       };
 
+      "auspex.backyard-hg.xyz" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://blueberry:8090";
+        };
+      };
+
       "s3.backyard-hg.xyz" = {
         enableACME = true;
         forceSSL = true;

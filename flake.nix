@@ -13,6 +13,7 @@
     notes.flake = false;
 
     agenix.url = "github:ryantm/agenix";
+    auspex.url = "github:head-gardener/auspex";
     blog.url = "github:head-gardener/blog";
     # blog.url = "/home/hunter/Blog/";
     dmenu-conf.url = "github:head-gardener/nixpkgs/master";
