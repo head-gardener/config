@@ -5,8 +5,8 @@ local null_ls = require('null-ls')
 local dap = require('dap')
 
 dap.adapters.haskell = {
-  type = 'executable';
-  command = 'haskell-debug-adapter';
+  type = 'executable',
+  command = 'haskell-debug-adapter',
 }
 dap.configurations.haskell = {
   {
@@ -22,7 +22,7 @@ dap.configurations.haskell = {
     ghciPrompt = "λ: ",
     -- Adjust the prompt to the prompt you see when you invoke the stack ghci command below
     ghciInitialPrompt = "λ: ",
-    ghciCmd= "stack ghci --test --no-load --no-build --main-is TARGET --ghci-options -fprint-evld-with-show",
+    ghciCmd = "stack ghci --test --no-load --no-build --main-is TARGET --ghci-options -fprint-evld-with-show",
   },
 }
 
@@ -84,10 +84,41 @@ null_ls.setup {
   }
 }
 
-local capabilities = lsp_selection_range.update_capabilities(
-  require('cmp_nvim_lsp').default_capabilities()
-)
+-- local capabilities = lsp_selection_range.update_capabilities(
+--   require('cmp_nvim_lsp').default_capabilities()
+-- )
+-- capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.preselectSupport = true
+capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = { "documentation", "detail", "additionalTextEdits" },
+}
+capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown" }
+capabilities.textDocument.codeAction = {
+  dynamicRegistration = true,
+  codeActionLiteralSupport = {
+    codeActionKind = {
+      valueSet = (function()
+        local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
+        table.sort(res)
+        return res
+      end)(),
+    },
+  },
+}
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  virtual_text = false,
+  underline = false,
+  signs = true,
+  update_in_insert = false,
+})
 
 lspconfig.nixd.setup {
   capabilities = capabilities,
@@ -99,6 +130,11 @@ lspconfig.hls.setup {
   on_attach = on_attach,
 }
 
+lspconfig.julials.setup {
+  settings = {},
+  capabilities = capabilities,
+  on_attach = on_attach,
+}
 
 lspconfig.lua_ls.setup {
   settings = {
