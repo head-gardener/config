@@ -202,6 +202,7 @@ require('lazy').setup({
   },
   'chrisbra/improvedft',
   'ja-ford/delaytrain.nvim',
+  'arthurxavierx/vim-unicoder',
   'folke/neodev.nvim',
   'fladson/vim-kitty',
   'yamatsum/nvim-cursorline',
