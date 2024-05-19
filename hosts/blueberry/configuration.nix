@@ -14,6 +14,7 @@
     "${inputs.self}/modules/refresher-config.nix"
     "${inputs.self}/modules/prometheus.nix"
     "${inputs.self}/modules/prometheus-node.nix"
+    "${inputs.self}/modules/loki.nix"
     "${inputs.self}/modules/zram.nix"
   ];
 

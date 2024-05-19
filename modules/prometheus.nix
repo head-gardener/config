@@ -20,15 +20,21 @@
         }];
       }
       {
-        job_name = "cherry";
+        job_name = "blueberry";
         static_configs = [{
-          targets = [ "cherry:${toString config.services.prometheus.exporters.node.port}" ];
+          targets = [
+            "blueberry:${toString config.services.loki.configuration.server.http_listen_port}"
+            "blueberry:${toString config.services.prometheus.exporters.node.port}"
+          ];
         }];
       }
       {
-        job_name = "blueberry";
+        job_name = "cherry";
         static_configs = [{
-          targets = [ "blueberry:${toString config.services.prometheus.exporters.node.port}" ];
+          targets = [
+            "cherry:${toString config.services.loki.configuration.server.http_listen_port}"
+            "cherry:${toString config.services.prometheus.exporters.node.port}"
+          ];
         }];
       }
     ];
