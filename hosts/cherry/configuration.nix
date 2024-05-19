@@ -11,6 +11,7 @@
     "${inputs.self}/modules/k3s-singleton.nix"
     "${inputs.self}/modules/docker.nix"
     "${inputs.self}/modules/zram.nix"
+    "${inputs.self}/modules/transmission-to-s3.nix"
   ];
 
   services.backup-local.subvols = [ "var" ];

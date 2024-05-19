@@ -40,6 +40,7 @@
   environment = {
     pathsToLink = [ "/libexec" ];
     systemPackages = with pkgs; [
+      transmission-gtk
       sshfs
       networkmanager-openvpn
     ];
