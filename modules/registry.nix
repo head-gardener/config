@@ -1,0 +1,5 @@
+{
+  services.dockerRegistry = {
+    enable = true;
+  };
+}
