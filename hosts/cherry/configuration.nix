@@ -11,6 +11,7 @@
     "${inputs.self}/modules/loki.nix"
     "${inputs.self}/modules/k3s-singleton.nix"
     "${inputs.self}/modules/docker.nix"
+    "${inputs.self}/modules/registry.nix"
     "${inputs.self}/modules/zram.nix"
     "${inputs.self}/modules/transmission-to-s3.nix"
   ];

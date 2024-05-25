@@ -9,7 +9,7 @@
     "${inputs.self}/modules/xmonad.nix"
     "${inputs.self}/modules/github.nix"
     "${inputs.self}/modules/hp-lj-1018.nix"
-    "${inputs.self}/modules/transmission.nix"
+    "${inputs.self}/modules/docker.nix"
   ];
 
   environment.binsh = "${pkgs.dash}/bin/dash";

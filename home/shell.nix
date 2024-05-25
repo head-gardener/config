@@ -17,11 +17,8 @@
       settings = {
         add_newline = true;
         format = ''
-          $username$hostname$directory$git_branch$git_state$git_status$cmd_duration
+          $username$hostname$directory$git_branch$git_state$git_status$nix_shell $cmd_duration
           $shell $shlvl$character
-        '';
-        right_format = ''
-          $nix_shell
         '';
         character = {
           success_symbol = "[❯](cyan)";
@@ -43,10 +40,10 @@
         };
         nix_shell = {
           disabled = false;
-          impure_msg = "[impure shell](bold red)";
-          pure_msg = "[pure shell](bold green)";
-          unknown_msg = "[unknown shell](bold yellow)";
-          format = "in [☃️ $state( \($name\))](bold blue) ";
+          impure_msg = "[-](bold red)";
+          pure_msg = "[+](bold green)";
+          unknown_msg = "[~](bold yellow)";
+          format = "[$state( \($name\))](bold blue)";
         };
         shell = {
           disabled = false;
