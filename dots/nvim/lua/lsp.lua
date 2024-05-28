@@ -84,6 +84,14 @@ null_ls.setup {
   }
 }
 
+-- some snippets here: https://github.com/budimanjojo/k8s-snippets/blob/master/snippets/k8s_io-api.json
+local cfg = require("yaml-companion").setup({
+  -- lspconfig = {
+  --   cmd = {"yaml-language-server"}
+  -- },
+})
+lspconfig.yamlls.setup(cfg)
+
 -- local capabilities = lsp_selection_range.update_capabilities(
 --   require('cmp_nvim_lsp').default_capabilities()
 -- )
