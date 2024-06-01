@@ -72,6 +72,15 @@
         };
       };
 
+      "ctf.backyard-hg.xyz" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://cherry:80";
+        };
+      };
+
       "auspex.backyard-hg.xyz" = {
         enableACME = true;
         forceSSL = true;
