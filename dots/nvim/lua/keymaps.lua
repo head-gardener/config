@@ -9,6 +9,10 @@ vim.keymap.set('n', 'gsg', ':call SynGroup()<CR>', { noremap = true })
 vim.keymap.set('n', 'gsc', ':PSourceCurrent<CR>', { noremap = true })
 vim.keymap.set('n', 'glu', ':PLookUp<CR>', { noremap = true })
 vim.keymap.set('n', '<Space>si', ':PSwitch<CR>', { noremap = true })
+vim.keymap.set('n', 'gka', ':! kubectl apply -f %<CR>', {
+  noremap = true,
+  desc = 'Apply current file to k8s'
+})
 
 -- Settings
 vim.keymap.set('n', '<Leader>sl', ':set list!<CR>', { noremap = true })
@@ -24,9 +28,9 @@ vim.keymap.set('n', '<Space>tb', function()
   local cfg = require('iron.config')
   local f = cfg.repl_open_cmd
   cfg.repl_open_cmd = "botright 20 split",
-  -- cfg should be read before using or cmd won't be set
-  -- or something idk, doesn't work without the assert.
-  assert(cfg.repl_open_cmd)
+      -- cfg should be read before using or cmd won't be set
+      -- or something idk, doesn't work without the assert.
+      assert(cfg.repl_open_cmd)
   iron.repl_for('sh')
   cfg.repl_open_cmd = f
 end, { noremap = true })
