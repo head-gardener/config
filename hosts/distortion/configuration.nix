@@ -10,6 +10,7 @@
     "${inputs.self}/modules/github.nix"
     "${inputs.self}/modules/hp-lj-1018.nix"
     "${inputs.self}/modules/docker.nix"
+    "${inputs.self}/modules/tailscale-client.nix"
   ];
 
   environment.binsh = "${pkgs.dash}/bin/dash";
