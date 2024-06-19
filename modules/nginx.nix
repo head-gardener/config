@@ -72,12 +72,21 @@
         };
       };
 
+      "casino.backyard-hg.xyz" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = "http://blueberry:3080";
+        };
+      };
+
       "ctf.backyard-hg.xyz" = {
         enableACME = true;
         forceSSL = true;
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = "http://cherry:80";
+          proxyPass = "http://blueberry:3080";
         };
       };
 
