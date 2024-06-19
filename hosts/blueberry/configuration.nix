@@ -16,6 +16,8 @@
     "${inputs.self}/modules/prometheus-node.nix"
     "${inputs.self}/modules/loki.nix"
     "${inputs.self}/modules/zram.nix"
+    "${inputs.self}/modules/k3s-singleton.nix"
+    "${inputs.self}/modules/docker.nix"
   ];
 
   services.backup-local.subvols = [ "var" ];
@@ -87,6 +89,7 @@
     fish
   ];
 
+  networking.firewall.enable = false;
   networking.firewall.allowedTCPPorts = [ 3000 ];
   networking.firewall.allowedUDPPorts = [ ];
   networking.firewall.allowPing = true;
