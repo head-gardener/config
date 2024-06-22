@@ -4,13 +4,13 @@
   imports = [
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    "${inputs.self}/modules/minio.nix"
     "${inputs.self}/modules/backup-local.nix"
     "${inputs.self}/modules/backup-s3.nix"
     "${inputs.self}/modules/prometheus-node.nix"
     "${inputs.self}/modules/loki.nix"
     "${inputs.self}/modules/zram.nix"
     "${inputs.self}/modules/transmission-to-s3.nix"
+    "${inputs.self}/modules/garage.nix"
   ];
 
   services.backup-local.subvols = [ "var" ];
