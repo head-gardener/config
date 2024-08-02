@@ -18,6 +18,7 @@
     "${inputs.self}/modules/zram.nix"
     "${inputs.self}/modules/k3s-singleton.nix"
     "${inputs.self}/modules/docker.nix"
+    "${inputs.self}/modules/tailscale-client.nix"
   ];
 
   services.backup-local.subvols = [ "var" ];
