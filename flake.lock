@@ -994,11 +994,11 @@
     "notes": {
       "flake": false,
       "locked": {
-        "lastModified": 1722798232,
-        "narHash": "sha256-ZhU1pudJ9lC0rM041L9At05qdKvK1r3w+YAKApNWjx4=",
+        "lastModified": 1722902501,
+        "narHash": "sha256-B0uHRTW+BCx4hQnxOkBG13O/So9zf9IAtPii86ZGQeA=",
         "owner": "head-gardener",
         "repo": "notes",
-        "rev": "a2cf04f71d32f617163e13bbdd01a3ff7acbe98f",
+        "rev": "983126e5c0e720e55b3bd8b16306a2207ed36df9",
         "type": "github"
       },
       "original": {
