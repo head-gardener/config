@@ -1,4 +1,4 @@
-inputs: final: prev:
+_: final: prev:
 
 let
   patch_url = "https://tools.suckless.org/dmenu/patches/";
@@ -19,12 +19,12 @@ in
     sha256 = "12lahhbp9nwkzlbv4nbmvwb90sgnci93gspzq1cyspj21pd7azw5";
   };
 
-  dmenu = inputs.dmenu-conf.legacyPackages.${final.system}.dmenu.override ({
+  dmenu = prev.dmenu.override {
     patches = with final; [
       dmenu-patch-highlight
       dmenu-patch-center
       dmenu-patch-border
     ];
     conf = ./config.h;
-  });
+  };
 }

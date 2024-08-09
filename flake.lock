@@ -203,22 +203,6 @@
         "type": "github"
       }
     },
-    "dmenu-conf": {
-      "locked": {
-        "lastModified": 1712863806,
-        "narHash": "sha256-2dxSS2P/2r0nrQycbdElZWA/DJ5ml6oM8j7OeKzFWbg=",
-        "owner": "head-gardener",
-        "repo": "nixpkgs",
-        "rev": "3afef03d135609f02ade38f5b8453ff7b5035eae",
-        "type": "github"
-      },
-      "original": {
-        "owner": "head-gardener",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "east-gate": {
       "inputs": {
         "flake-parts": "flake-parts_7",
@@ -1089,7 +1073,6 @@
         "agenix": "agenix",
         "auspex": "auspex",
         "blog": "blog",
-        "dmenu-conf": "dmenu-conf",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager_2",
         "hydra": "hydra",
