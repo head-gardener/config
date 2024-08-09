@@ -8,7 +8,7 @@
 
   home = {
     username = "hunter";
-    stateVersion = "23.11";
+    stateVersion = "24.05";
     packages = with pkgs; [
       arkpandora_ttf
       bemoji

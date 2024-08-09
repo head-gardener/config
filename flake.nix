@@ -18,14 +18,14 @@
     # blog.url = "/home/hunter/Blog/";
     dmenu-conf.url = "github:head-gardener/nixpkgs/master";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     hydra.url = "github:NixOS/hydra";
     impermanence.url = "github:nix-community/impermanence";
     musnix.url = "github:musnix/musnix";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     nixd.url = "github:nix-community/nixd";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    stylix.url = "github:danth/stylix/release-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    stylix.url = "github:danth/stylix/release-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     xmonad.url = "github:head-gardener/xmonad";
     # xmonad.url = "/home/hunter/xmonad/";

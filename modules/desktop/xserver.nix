@@ -42,13 +42,15 @@
     };
   };
 
-  services.xserver = {
-    libinput.enable = true;
+  services.libinput.enable = true;
 
+  services.xserver = {
     enable = true;
 
-    layout = "us,ru";
-    xkbOptions = "eurosign:e,grp:toggle";
+    xkb = {
+      layout = "us,ru";
+      options = "eurosign:e,grp:toggle";
+    };
 
     desktopManager = {
       xterm.enable = false;

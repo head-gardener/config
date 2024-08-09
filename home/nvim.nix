@@ -14,6 +14,7 @@
       haskellPackages.hoogle
       lua-language-server
       lua5_1
+      lua51Packages.luarocks
       nixd
       nixpkgs-fmt
       proselint

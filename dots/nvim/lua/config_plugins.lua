@@ -9,33 +9,21 @@ vim.g.sierra_Twilight = 1
 vim.cmd('colorscheme sierra')
 -- vim.o.background = 'dark'
 
--- Highlights
-vim.cmd('hi Normal          guibg=NONE')
-vim.cmd('hi Normal          ctermbg=NONE')
--- vim.cmd('hi Comment         guifg=#9e9e9e')
--- vim.cmd('hi VertSplit       guifg=#d0d0d0 guibg=NONE')
--- vim.cmd('hi StatusLine      guibg=NONE')
--- vim.cmd('hi NonText         guifg=#5d7d8c')
--- vim.cmd('hi NeoTreeNormal   ctermbg=0')
--- vim.cmd('hi NeoTreeBorder   ctermbg=0')
--- vim.cmd('hi NeoTreeTitle    ctermbg=0')
--- vim.cmd('hi NeoTreeTitleBar ctermbg=0')
-
-vim.cmd [[highlight NotifyDEBUGBorder guifg=#3a877e]]
-vim.cmd [[highlight NotifyDEBUGIcon guifg=#686995]]
-vim.cmd [[highlight NotifyDEBUGTitle guifg=#686995]]
-vim.cmd [[highlight NotifyERRORBorder guifg=#a95059]]
-vim.cmd [[highlight NotifyERRORIcon guifg=#d28484]]
-vim.cmd [[highlight NotifyERRORTitle guifg=#d28484]]
-vim.cmd [[highlight NotifyINFOBorder guifg=#38776e]]
-vim.cmd [[highlight NotifyINFOIcon guifg=#3a877e]]
-vim.cmd [[highlight NotifyINFOTitle guifg=#3a877e]]
-vim.cmd [[highlight NotifyTRACEBorder guifg=#242424]]
-vim.cmd [[highlight NotifyTRACEIcon guifg=#343434]]
-vim.cmd [[highlight NotifyTRACETitle guifg=#343434]]
-vim.cmd [[highlight NotifyWARNBorder guifg=#9f7b7b]]
-vim.cmd [[highlight NotifyWARNIcon guifg=#aa5c5c]]
-vim.cmd [[highlight NotifyWARNTitle guifg=#aa5c5c]]
+-- vim.cmd [[highlight NotifyDEBUGBorder guifg=#3a877e]]
+-- vim.cmd [[highlight NotifyDEBUGIcon guifg=#686995]]
+-- vim.cmd [[highlight NotifyDEBUGTitle guifg=#686995]]
+-- vim.cmd [[highlight NotifyERRORBorder guifg=#a95059]]
+-- vim.cmd [[highlight NotifyERRORIcon guifg=#d28484]]
+-- vim.cmd [[highlight NotifyERRORTitle guifg=#d28484]]
+-- vim.cmd [[highlight NotifyINFOBorder guifg=#38776e]]
+-- vim.cmd [[highlight NotifyINFOIcon guifg=#3a877e]]
+-- vim.cmd [[highlight NotifyINFOTitle guifg=#3a877e]]
+-- vim.cmd [[highlight NotifyTRACEBorder guifg=#242424]]
+-- vim.cmd [[highlight NotifyTRACEIcon guifg=#343434]]
+-- vim.cmd [[highlight NotifyTRACETitle guifg=#343434]]
+-- vim.cmd [[highlight NotifyWARNBorder guifg=#9f7b7b]]
+-- vim.cmd [[highlight NotifyWARNIcon guifg=#aa5c5c]]
+-- vim.cmd [[highlight NotifyWARNTitle guifg=#aa5c5c]]
 
 local function clock()
   return os.date("%H:%M:%S")
@@ -419,14 +407,21 @@ require('twilight').setup({
   exclude = {}, -- exclude these filetypes
 })
 
+vim.api.nvim_set_hl(0, 'GitSignsAdd', { link = 'Identifier' })
+vim.api.nvim_set_hl(0, 'GitSignsChange', { link = 'Special' })
+vim.api.nvim_set_hl(0, 'GitSignsChangedelete', { link = 'PreProc' })
+vim.api.nvim_set_hl(0, 'GitSignsDelete', { link = 'Type' })
+vim.api.nvim_set_hl(0, 'GitSignsTopdelete', { link = 'Constant' })
+vim.api.nvim_set_hl(0, 'GitSignsUntracked', { link = 'Underlined' })
+
 require('gitsigns').setup {
   signs                        = {
-    add          = { hl = 'Identifier', text = '│' },
-    change       = { hl = 'Special', text = '│' },
-    delete       = { hl = 'Type', text = '_' },
-    topdelete    = { hl = 'Constant', text = '‾' },
-    changedelete = { hl = 'PreProc', text = '~' },
-    untracked    = { hl = 'Underlined', text = '┆' },
+    add          = { text = '│' },
+    change       = { text = '│' },
+    delete       = { text = '_' },
+    topdelete    = { text = '‾' },
+    changedelete = { text = '~' },
+    untracked    = { text = '┆' },
   },
   signcolumn                   = true,  -- Toggle with `:Gitsigns toggle_signs`
   numhl                        = false, -- Toggle with `:Gitsigns toggle_numhl`
@@ -456,9 +451,6 @@ require('gitsigns').setup {
     relative = 'cursor',
     row = 0,
     col = 1
-  },
-  yadm                         = {
-    enable = false
   },
 }
 

@@ -65,6 +65,10 @@ require('lazy').setup({
 
   -- ui
   {
+    'xiyaowong/transparent.nvim',
+    lazy = false,
+  },
+  {
     "folke/noice.nvim",
     event = "VeryLazy",
     enabled = false,
@@ -187,34 +191,26 @@ require('lazy').setup({
   },
   {
     "nvim-neorg/neorg",
-    lazy = false,
-    -- tag = "*",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {
-      load = {
-        ["core.defaults"] = {},
-        ["core.concealer"] = {
-          config = {
-            icon_preset = "diamond",
-          },
-        },
-        ["core.dirman"] = {
-          config = {
-            workspaces = {
-              notes = "~/notes",
-            },
-          },
-        },
-        ["core.export"] = {
-          -- config = { export_dir = "./build" },
-        },
-      },
-    }
+    dependencies = {
+      'nvim-neorg/lua-utils.nvim',
+      'pysan3/pathlib.nvim',
+      'nvim-neotest/nvim-nio',
+    },
+    lazy = false,  -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    version = "*", -- Pin Neorg to the latest stable release
+    config = true,
   },
   'chrisbra/improvedft',
   'ja-ford/delaytrain.nvim',
   'arthurxavierx/vim-unicoder',
-  'folke/neodev.nvim',
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+      },
+    },
+  },
   'fladson/vim-kitty',
   'yamatsum/nvim-cursorline',
   'karb94/neoscroll.nvim',
