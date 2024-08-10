@@ -1,15 +1,18 @@
 { pkgs, inputs, ... }:
 {
   environment.systemPackages = with pkgs; [
+    ani-cli
     atop
     awscli
     bat
+    below
+    cloc
     entr
     fd
     git
     grc
     haskellPackages.base91
-    inputs.agenix.packages.${pkgs.stdenv.system}.default
+    inputs.agenix.packages.${system}.default
     jc
     jq
     less
@@ -19,11 +22,14 @@
     nix-tree
     nushell
     nvd
-    pastel
     ripgrep
     rsync
     s3fs
+    sd
+    tldr
     tree
+    unzip
     wget
+    zip
   ];
 }
