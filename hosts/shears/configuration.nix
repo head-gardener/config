@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    inputs.xmonad.nixosModules.powerwatch
     "${inputs.self}/modules/github.nix"
     "${inputs.self}/modules/xmonad.nix"
     "${inputs.self}/modules/upower.nix"
