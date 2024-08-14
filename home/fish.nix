@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, ... }:
+{ pkgs, inputs, ... }:
 let
   nixplug = src: {
     name = "${src.pname}-${src.version}";
@@ -20,19 +20,18 @@ in
       loc = "XDG_CONFIG_HOME=~/config/dots";
       n = "nix";
       nbl = "nix build .";
-      nbn = "nix build nixpkgs";
-      nrn = "nix run nixpkgs#";
       sus = "systemctl --user";
       sys = "systemctl";
+      xi = "xargs -i";
     };
     interactiveShellInit =
       (builtins.readFile "${inputs.self}/dots/config.fish") + ''
-      setenv LS_COLORS "${builtins.readFile pkgs.ls_colors}"
-      function fish_right_prompt_loading_indicator
-        echo (set_color '#aaa')' … '(set_color normal)
-      end
-      set sponge_delay 5
-    '';
+        setenv LS_COLORS "${builtins.readFile pkgs.ls_colors}"
+        function fish_right_prompt_loading_indicator
+          echo (set_color '#aaa')' … '(set_color normal)
+        end
+        set sponge_delay 8
+      '';
     plugins = map nixplug (with pkgs.fishPlugins; [
       abbreviation-tips
       # async-prompt # doesn't work
