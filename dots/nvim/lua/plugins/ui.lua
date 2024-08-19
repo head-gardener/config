@@ -63,7 +63,6 @@ return {
   'folke/twilight.nvim',
   'folke/todo-comments.nvim',
   'enddeadroyal/symbols-outline.nvim',
-  'srstevenson/vim-picker',
   'nvim-telescope/telescope.nvim',
   {
     enabled = true,
