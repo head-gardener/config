@@ -166,6 +166,24 @@ require('lazy').setup({
 
   -- misc
   {
+    'm-demare/attempt.nvim',
+    event = 'VeryLazy',
+    keys = function()
+      return {
+        { '<leader>an', require('attempt').new_select, desc = 'New attempt, selecting extension' },
+        { '<leader>ai', require('attempt').new_input_ext, desc = 'New attempt, inputing extension' },
+        { '<leader>ar', require('attempt').run, desc = 'Run attempt' },
+        { '<leader>ad', require('attempt').delete_buf, desc = 'Delete attempt from current buffer' },
+        { '<leader>ac', require('attempt').rename_buf, desc = 'Rename attempt from current buffer' },
+        { '<leader>al', '<cmd>Telescope attempt<cr>', desc = 'Open attempts with Telescope' },
+      }
+    end,
+    opts = {},
+    init = function()
+      require('telescope').load_extension('attempt')
+    end,
+  },
+  {
     'moyiz/git-dev.nvim',
     lazy = true,
     cmd = { "GitDevOpen", "GitDevToggleUI", "GitDevRecents", "GitDevCleanAll" },
