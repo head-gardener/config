@@ -26,6 +26,7 @@
     rsync
     s3fs
     sd
+    tcpdump
     tldr
     tree
     unzip
