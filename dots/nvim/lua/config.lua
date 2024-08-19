@@ -22,7 +22,7 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "nix",
-  command = [[setlocal foldlevelstart=1]]
+  command = [[setlocal foldlevelstart=2]]
 })
 
 local function spacesl(s)
