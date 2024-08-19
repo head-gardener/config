@@ -4,7 +4,8 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.mapleader = "\\"
 
 -- require('lazy-bootstrap')
-require('plugins')
+require('lazy').setup('plugins', {
+})
 require('functions')
 require('config')
 require('config_plugins')
