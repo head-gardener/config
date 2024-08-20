@@ -5,6 +5,11 @@ vim.g.mapleader = "\\"
 
 -- require('lazy-bootstrap')
 require('lazy').setup('plugins', {
+  dev = {
+    path = "~/Code",
+    patterns = {},
+    fallback = true,
+  }
 })
 require('functions')
 require('config')

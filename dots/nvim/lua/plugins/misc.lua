@@ -1,5 +1,47 @@
 return {
   {
+    'head-gardener/url-open',
+    -- dir = "/home/hunter/Code/url-open",
+    dev = true,
+    opts = {
+      highlight_url = {
+        all_urls = {
+          enabled = true,
+          fg = "text",
+          bg = nil,
+          underline = true,
+        },
+        cursor_move = {
+          enabled = true,
+          fg = "#598e9a",
+          bg = nil,
+          underline = true,
+        },
+      },
+      deep_pattern = false,
+      extra_patterns = {
+        -- github:NixOS/nixpkgs -> https://github.com/NixOS/nixpkgs
+        {
+          pattern = 'github:([-%w]*/[-%w]*)',
+          prefix = "https://github.com/",
+          suffix = "",
+          file_patterns = { ".*.nix" },
+          excluded_file_patterns = nil,
+          extra_condition = function(pat)
+            print(vim.inspect(pat))
+            return true
+          end,
+        },
+      },
+    },
+    -- doesn't highlight urls when lazy loaded until called.
+    -- cmd = "URLOpenUnderCursor",
+    event = "VeryLazy",
+    keys = {
+      { "gl", "<cmd>URLOpenUnderCursor<cr>", desc = "Open URL under cursor" },
+    },
+  },
+  {
     'm-demare/attempt.nvim',
     event = 'VeryLazy',
     keys = function()
