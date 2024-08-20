@@ -4,12 +4,12 @@ return {
     event = 'VeryLazy',
     keys = function()
       return {
-        { '<leader>an', require('attempt').new_select, desc = 'New attempt, selecting extension' },
+        { '<leader>an', require('attempt').new_select,    desc = 'New attempt, selecting extension' },
         { '<leader>ai', require('attempt').new_input_ext, desc = 'New attempt, inputing extension' },
-        { '<leader>ar', require('attempt').run, desc = 'Run attempt' },
-        { '<leader>ad', require('attempt').delete_buf, desc = 'Delete attempt from current buffer' },
-        { '<leader>ac', require('attempt').rename_buf, desc = 'Rename attempt from current buffer' },
-        { '<leader>al', '<cmd>Telescope attempt<cr>', desc = 'Open attempts with Telescope' },
+        { '<leader>ar', require('attempt').run,           desc = 'Run attempt' },
+        { '<leader>ad', require('attempt').delete_buf,    desc = 'Delete attempt from current buffer' },
+        { '<leader>ac', require('attempt').rename_buf,    desc = 'Rename attempt from current buffer' },
+        { '<leader>al', '<cmd>Telescope attempt<cr>',     desc = 'Open attempts with Telescope' },
       }
     end,
     opts = {},
@@ -43,6 +43,17 @@ return {
   },
   {
     'jumas-cola/cosco.nvim',
+    keys = function()
+      return {
+        {
+          "<Space>;",
+          function() require("cosco").comma_or_semi_colon() end,
+          noremap = true,
+          silent = true,
+          desc = "Auto comma or semicolon"
+        }
+      }
+    end,
     lazy = true,
   },
   {
@@ -68,10 +79,35 @@ return {
     },
   },
   'fladson/vim-kitty',
-  'yamatsum/nvim-cursorline',
-  'karb94/neoscroll.nvim',
+  {
+    'karb94/neoscroll.nvim',
+    opts = {
+      hide_cursor = false,         -- Hide cursor while scrolling
+      stop_eof = true,             -- Stop at <EOF> when scrolling downwards
+      respect_scrolloff = true,    -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+      cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+      easing_function = 'sine',    -- Default easing function
+      pre_hook = nil,              -- Function to run before the scrolling animation starts
+      post_hook = nil,             -- Function to run after the scrolling animation ends
+      performance_mode = false,    -- Disable 'Performance Mode' on all buffers.
+    },
+  },
   'tpope/vim-endwise',
   'tpope/vim-surround',
-  'windwp/nvim-autopairs',
-  'tpope/vim-commentary',
+  {
+    'windwp/nvim-autopairs',
+    opts = {
+      check_ts = true,
+    },
+  },
+  {
+    'tpope/vim-commentary',
+    keys = function()
+      return {
+        { '<C-/>', ':Commentary<CR>', mode = { 'n', 'v' }, noremap = true },
+        -- alt keymap for tmux - it sends C-/ as C-_
+        { '<C-_>', ':Commentary<CR>', mode = { 'n', 'v' }, noremap = true },
+      }
+    end,
+  },
 }

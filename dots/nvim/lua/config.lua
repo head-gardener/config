@@ -78,6 +78,7 @@ vim.o.scrolloff = 5
 
 -- Colors
 -- vim.api.nvim_set_hl(0, 'TabLineFill', {fg = 'LightGreen', bg = 'DarkGreen'})
+vim.cmd('set termguicolors')
 
 -- Misc
 vim.o.exrc = true

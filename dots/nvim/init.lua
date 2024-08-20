@@ -8,9 +8,7 @@ require('lazy').setup('plugins', {
 })
 require('functions')
 require('config')
-require('config_plugins')
 require('keymaps')
-require('keymaps_plugins')
 require('lsp')
 
 local function update_hl(group, tbl)
