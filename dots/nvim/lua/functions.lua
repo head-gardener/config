@@ -1,51 +1,3 @@
-local prev_indent_preset = 1
-local indentation_presets = {
-  [1] = {
-    apply = function()
-      vim.o.tabstop = 2
-      vim.o.softtabstop = 2
-      vim.o.shiftwidth = 2
-      vim.o.expandtab = true
-    end,
-    describe = function()
-      return '2 spaces'
-    end,
-  },
-  [2] = {
-    apply = function()
-      vim.o.tabstop = 8
-      vim.o.softtabstop = 8
-      vim.o.shiftwidth = 8
-      vim.o.expandtab = false
-    end,
-    describe = function()
-      return '8 tabs'
-    end,
-  },
-  [3] = {
-    apply = function()
-      vim.o.tabstop = 4
-      vim.o.softtabstop = 4
-      vim.o.shiftwidth = 4
-      vim.o.expandtab = false
-    end,
-    describe = function()
-      return '4 tabs'
-    end,
-  },
-  [4] = {
-    apply = function()
-      vim.o.tabstop = 2
-      vim.o.softtabstop = 2
-      vim.o.shiftwidth = 2
-      vim.o.expandtab = false
-    end,
-    describe = function()
-      return '2 tabs'
-    end,
-  },
-}
-
 -- Gets current highlight and somethings else idh
 -- TODO: rewrite to lua and ugh make this work idk
 vim.cmd([[
@@ -203,6 +155,54 @@ vim.api.nvim_create_user_command('PSwitch',
       })
   end,
   {})
+
+local prev_indent_preset = 1
+local indentation_presets = {
+  [1] = {
+    apply = function()
+      vim.o.tabstop = 2
+      vim.o.softtabstop = 2
+      vim.o.shiftwidth = 2
+      vim.o.expandtab = true
+    end,
+    describe = function()
+      return '2 spaces'
+    end,
+  },
+  [2] = {
+    apply = function()
+      vim.o.tabstop = 8
+      vim.o.softtabstop = 8
+      vim.o.shiftwidth = 8
+      vim.o.expandtab = false
+    end,
+    describe = function()
+      return '8 tabs'
+    end,
+  },
+  [3] = {
+    apply = function()
+      vim.o.tabstop = 4
+      vim.o.softtabstop = 4
+      vim.o.shiftwidth = 4
+      vim.o.expandtab = false
+    end,
+    describe = function()
+      return '4 tabs'
+    end,
+  },
+  [4] = {
+    apply = function()
+      vim.o.tabstop = 2
+      vim.o.softtabstop = 2
+      vim.o.shiftwidth = 2
+      vim.o.expandtab = false
+    end,
+    describe = function()
+      return '2 tabs'
+    end,
+  },
+}
 
 -- Sets indentation settings according to chosen preset
 Indenation = function(preset)

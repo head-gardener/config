@@ -10,6 +10,11 @@ require('functions')
 require('config')
 require('keymaps')
 
+local motd = require('lib.motd')
+require('notify').notify(motd.get_mapoftheday(), vim.log.levels.INFO, {
+  title = "Map Of The Day!",
+})
+
 local function update_hl(group, tbl)
   local old_hl = vim.api.nvim_get_hl_by_name(group, true)
   local new_hl = vim.tbl_extend('force', old_hl, tbl)
