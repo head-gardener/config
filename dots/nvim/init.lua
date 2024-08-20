@@ -9,7 +9,6 @@ require('lazy').setup('plugins', {
 require('functions')
 require('config')
 require('keymaps')
-require('lsp')
 
 local function update_hl(group, tbl)
   local old_hl = vim.api.nvim_get_hl_by_name(group, true)
