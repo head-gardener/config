@@ -18,12 +18,6 @@ return {
     end,
   },
   {
-    'moyiz/git-dev.nvim',
-    lazy = true,
-    cmd = { "GitDevOpen", "GitDevToggleUI", "GitDevRecents", "GitDevCleanAll" },
-    opts = {},
-  },
-  {
     'Wansmer/sibling-swap.nvim',
     requires = { 'nvim-treesitter' },
     lazy = false,

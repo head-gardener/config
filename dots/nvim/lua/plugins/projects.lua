@@ -1,5 +1,11 @@
 return {
   {
+    'moyiz/git-dev.nvim',
+    lazy = true,
+    cmd = { "GitDevOpen", "GitDevToggleUI", "GitDevRecents", "GitDevCleanAll" },
+    opts = {},
+  },
+  {
     'lewis6991/gitsigns.nvim',
     lazy = false,
     init = function()
