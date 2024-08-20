@@ -1,5 +1,18 @@
 return {
   {
+    'akinsho/git-conflict.nvim',
+    opts = {},
+    keys = {
+      { 'gco', ':GitConflictChooseOurs<cr>',   desc = 'Choose ours' },
+      { 'gct', ':GitConflictChooseTheirs<cr>', desc = 'Choose theis' },
+      { 'gcb', ':GitConflictChooseBoth<cr>',   desc = 'Choose both' },
+      { 'gcn', ':GitConflictChooseNone<cr>',   desc = 'Choose none' },
+      { 'gcq', ':GitConflictListQf<cr>',       desc = 'Quickfix conflicts' },
+      { ']x',  ':GitConflictPrevConflict<cr>', desc = 'Prev conflict' },
+      { '[x',  ':GitConflictNextConflict<cr>', desc = 'Next conflict' },
+    },
+  },
+  {
     'moyiz/git-dev.nvim',
     lazy = true,
     cmd = { "GitDevOpen", "GitDevToggleUI", "GitDevRecents", "GitDevCleanAll" },
@@ -58,7 +71,7 @@ return {
     keys = function()
       return {
         { '<Space>hs', ':Gitsigns stage_hunk<CR>', noremap = true },
-        { '<Space>nh', ':Gitsigns next_hunk<CR>', noremap = true },
+        { '<Space>nh', ':Gitsigns next_hunk<CR>',  noremap = true },
         { '<Space>hr', ':Gitsigns reset_hunk<CR>', noremap = true },
       }
     end,
