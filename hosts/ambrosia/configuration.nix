@@ -4,7 +4,7 @@
     ./hardware-configuration.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480s
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    # "${inputs.self}/modules/github.nix"
+    "${inputs.self}/modules/github.nix"
     "${inputs.self}/modules/xmonad.nix"
     "${inputs.self}/modules/upower.nix"
     "${inputs.self}/modules/tailscale-client.nix"
