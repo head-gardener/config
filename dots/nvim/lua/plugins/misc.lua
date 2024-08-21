@@ -6,19 +6,19 @@ return {
     opts = {
       highlight_url = {
         all_urls = {
-          enabled = true,
+          enabled = false,
           fg = "text",
           bg = nil,
           underline = true,
         },
         cursor_move = {
-          enabled = true,
+          enabled = false,
           fg = "#598e9a",
           bg = nil,
           underline = true,
         },
       },
-      deep_pattern = false,
+      deep_pattern = true,
       extra_patterns = {
         -- github:NixOS/nixpkgs -> https://github.com/NixOS/nixpkgs
         {
@@ -27,10 +27,6 @@ return {
           suffix = "",
           file_patterns = { ".*.nix" },
           excluded_file_patterns = nil,
-          extra_condition = function(pat)
-            print(vim.inspect(pat))
-            return true
-          end,
         },
       },
     },
