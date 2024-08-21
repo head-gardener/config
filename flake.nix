@@ -24,6 +24,7 @@
     musnix.url = "github:musnix/musnix";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     nixd.url = "github:nix-community/nixd";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     stylix.url = "github:danth/stylix/release-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -44,6 +45,7 @@
       nixosConfigurations = {
         distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [ ];
         shears = self.lib.mkDesktop "x86_64-linux" "shears" [ ];
+        ambrosia = self.lib.mkDesktop "x86_64-linux" "ambrosia" [ ];
         apple = self.lib.mkHost "x86_64-linux" "apple" [ ];
         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [ ];
         cherry = self.lib.mkHost "x86_64-linux" "cherry" [ ];
