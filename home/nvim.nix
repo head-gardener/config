@@ -1,11 +1,13 @@
-{ pkgs, ... }:
-{
+{ inputs, pkgs, ... }:
+let
+  unstable = inputs.unstable.legacyPackages.${pkgs.system};
+in {
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
-    extraPackages = with pkgs; [
+    extraPackages = with unstable; [
       commitlint
       deadnix
       editorconfig-checker
@@ -20,8 +22,9 @@
       proselint
       statix
     ];
-    plugins = with pkgs.vimPlugins; [
+    plugins = with unstable.vimPlugins; [
       lazy-nvim
+      sniprun
     ];
   };
 }

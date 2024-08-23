@@ -55,6 +55,12 @@ local on_attach = function(_, bufnr)
   end)
 end
 
+require('sniprun').setup({
+  repl_enable = {'Julia_original'},
+})
+vim.cmd [[highlight SniprunVirtualTextErr guibg=#aa5c5c]]
+vim.cmd [[highlight SniprunVirtualTextOk guibg=#3a877e]]
+
 return {
   {
     'neovim/nvim-lspconfig',
