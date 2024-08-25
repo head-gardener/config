@@ -16,7 +16,16 @@ return {
     'moyiz/git-dev.nvim',
     lazy = true,
     cmd = { "GitDevOpen", "GitDevToggleUI", "GitDevRecents", "GitDevCleanAll" },
-    opts = {},
+    opts = {
+      git = {
+        base_uri_format = "https://github.com/%s.git",
+        clone_args = "--jobs=2 --single-branch --recurse-submodules "
+            .. "--shallow-submodules --progress --depth 1",
+        fetch_args = "--jobs=2 --no-all --update-shallow -f --prune --no-tags"
+            .. "--depth 1",
+        checkout_args = "-f --recurse-submodules",
+      },
+    },
   },
   {
     'lewis6991/gitsigns.nvim',
