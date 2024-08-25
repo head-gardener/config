@@ -2,7 +2,7 @@ return {
   {
     'head-gardener/url-open',
     -- dir = "/home/hunter/Code/url-open",
-    dev = true,
+    dev = false,
     opts = {
       highlight_url = {
         all_urls = {
