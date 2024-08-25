@@ -1,5 +1,39 @@
 return {
   {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+    keys = function()
+      local harpoon = require('harpoon')
+
+      local conf = require("telescope.config").values
+      local function toggle_telescope(harpoon_files)
+        local file_paths = {}
+        for _, item in ipairs(harpoon_files.items) do
+          table.insert(file_paths, item.value)
+        end
+
+        require("telescope.pickers").new({}, {
+          prompt_title = "Harpoon",
+          finder = require("telescope.finders").new_table({
+            results = file_paths,
+          }),
+          previewer = conf.file_previewer({}),
+          sorter = conf.generic_sorter({}),
+        }):find()
+      end
+
+      return {
+        { "<space>ha", function() harpoon:list():add() end,             desc = "Harpoon add" },
+        { "<space>hh", function() harpoon:list():select(1) end,         desc = "Harpoon select first" },
+        { "<space>hj", function() harpoon:list():select(2) end,         desc = "Harpoon select second" },
+        { "<space>hk", function() harpoon:list():select(3) end,         desc = "Harpoon select third" },
+        { "<space>hl", function() harpoon:list():select(4) end,         desc = "Harpoon select fourth" },
+        { "<leader>fa", function() toggle_telescope(harpoon:list()) end, desc = "Telescope harpoon" },
+      }
+    end
+  },
+  {
     'xiyaowong/transparent.nvim',
     lazy = false,
   },
