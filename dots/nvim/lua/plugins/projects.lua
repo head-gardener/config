@@ -4,7 +4,7 @@ return {
     opts = {},
     keys = {
       { 'gco', ':GitConflictChooseOurs<cr>',   desc = 'Choose ours' },
-      { 'gct', ':GitConflictChooseTheirs<cr>', desc = 'Choose theis' },
+      { 'gct', ':GitConflictChooseTheirs<cr>', desc = 'Choose theirs' },
       { 'gcb', ':GitConflictChooseBoth<cr>',   desc = 'Choose both' },
       { 'gcn', ':GitConflictChooseNone<cr>',   desc = 'Choose none' },
       { 'gcq', ':GitConflictListQf<cr>',       desc = 'Quickfix conflicts' },
