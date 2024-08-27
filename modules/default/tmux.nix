@@ -26,14 +26,12 @@
       set -g status-style bg=default
       set -g status-keys emacs
       set -g mouse on
-      set -g @jump-key 'C-j'
       set -g status-right "=>> #H %H:%M"
       set -g allow-passthrough on
     '';
     plugins = with pkgs.tmuxPlugins; [
       extrakto
       fuzzback
-      jump
       resurrect
       sensible
       urlview
