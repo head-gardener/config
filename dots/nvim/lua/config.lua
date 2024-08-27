@@ -25,7 +25,7 @@ vim.api.nvim_create_autocmd("FileType", {
   command = [[setlocal foldlevelstart=2]]
 })
 
-vim.cmd [[highlight Folded guifg=#828282 guibg=#233232]]
+vim.cmd [[highlight Folded guifg=#828282 guibg=#202020]]
 
 local function spacesl(s)
   return string.gsub(s, "^(%s*).-$", "%1")
