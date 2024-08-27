@@ -7,11 +7,6 @@
     (inputs.self.lib.mkKeys inputs.self "hunter")
     "${inputs.self}/modules/backup-s3.nix"
     "${inputs.self}/modules/backup-local.nix"
-    "${inputs.self}/modules/grafana.nix"
-    "${inputs.self}/modules/nginx.nix"
-    "${inputs.self}/modules/hydra.nix"
-    "${inputs.self}/modules/refresher-staging.nix"
-    "${inputs.self}/modules/refresher-config.nix"
     "${inputs.self}/modules/prometheus.nix"
     "${inputs.self}/modules/prometheus-node.nix"
     "${inputs.self}/modules/loki.nix"

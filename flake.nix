@@ -1,6 +1,7 @@
 {
   inputs = {
     agenix.inputs.nixpkgs.follows = "nixpkgs";
+    alloy.inputs.nixpkgs.follows = "nixpkgs";
     blog.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hydra.inputs.nixpkgs.follows = "nixpkgs";
@@ -13,6 +14,7 @@
     notes.flake = false;
 
     agenix.url = "github:ryantm/agenix";
+    alloy.url = "github:head-gardener/alloy";
     auspex.url = "github:head-gardener/auspex";
     blog.url = "github:head-gardener/blog";
     # blog.url = "/home/hunter/Blog/";
@@ -33,6 +35,10 @@
   };
 
   outputs = inputs: with inputs; flake-parts.lib.mkFlake { inherit inputs; } {
+    imports = [
+      alloy.flakeModule
+    ];
+
     flake = {
       lib = import ./lib.nix inputs nixpkgs.lib;
 
@@ -42,7 +48,8 @@
 
       nixosModules = self.lib.genAttrsFromDir ./modules/share lib.id;
 
-      nixosConfigurations = {
+      alloy.config = ./alloy_config.nix;
+      alloy.nixosConfigurations = {
         distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [ ];
         shears = self.lib.mkDesktop "x86_64-linux" "shears" [ ];
         ambrosia = self.lib.mkDesktop "x86_64-linux" "ambrosia" [ ];

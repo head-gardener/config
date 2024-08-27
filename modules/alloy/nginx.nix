@@ -1,21 +1,14 @@
-{ config, inputs, ... }: {
+{ alloy, config, inputs, ... }:
+let
+  serviceToHost = svc: "http://${alloy.${svc}.host}:${toString alloy.${svc}.config.services.${svc}.port}";
+in
+{
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   security = {
     acme = {
       acceptTerms = true;
       defaults.email = "trashbin2019np@gmail.com";
-    };
-  };
-
-  age.secrets.cache = {
-    file = "${inputs.self}/secrets/cache.age";
-  };
-
-  services = {
-    nix-serve = {
-      enable = true;
-      secretKeyFile = config.age.secrets.cache.path;
     };
   };
 
@@ -62,13 +55,18 @@
     '';
 
     commonHttpConfig = "limit_req_zone $binary_remote_addr zone=common:10m rate=10r/s;";
+
     virtualHosts = rec {
-      "grafana.backyard-hg.xyz" = {
+      "grafana.${alloy.grafana.config.services.grafana.settings.server.domain}" = {
         enableACME = true;
         forceSSL = true;
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = "http://127.0.0.1:2342";
+          proxyPass =
+            (if alloy.nginx.host != alloy.hydra.host
+            then "http://${alloy.grafana.host}"
+            else "http://${alloy.grafana.config.services.grafana.settings.server.http_addr}")
+            + ":${toString alloy.grafana.config.services.grafana.settings.server.http_port}";
         };
       };
 
@@ -94,7 +92,16 @@
         '';
       };
 
-      "cache.backyard-hg.xyz" = blueberry // {
+      ${alloy.hydra.config.services.hydra.endpoint} = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          recommendedProxySettings = true;
+          proxyPass = serviceToHost "hydra";
+        };
+      };
+
+      ${alloy.nix-serve.config.services.nix-serve.endpoint} = blueberry // {
         enableACME = true;
         forceSSL = true;
       };
@@ -103,8 +110,7 @@
       blueberry = {
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass =
-            "http://${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
+          proxyPass = serviceToHost "nix-serve";
         };
       };
     };

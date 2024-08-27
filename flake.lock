@@ -23,6 +23,26 @@
         "type": "github"
       }
     },
+    "alloy": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1724755739,
+        "narHash": "sha256-8sezclVztjiBfddKCbFjBYvX7dzMOpKpj7tDDRVf+lU=",
+        "owner": "head-gardener",
+        "repo": "alloy",
+        "rev": "1f742a8192a916beab8a38e804cabb16bd85173c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "head-gardener",
+        "repo": "alloy",
+        "type": "github"
+      }
+    },
     "auspex": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -1102,6 +1122,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "alloy": "alloy",
         "auspex": "auspex",
         "blog": "blog",
         "dmenu-conf": "dmenu-conf",
