@@ -11,9 +11,4 @@
       inputs.agenix.nixosModules.default
       inputs.stylix.nixosModules.stylix
     ];
-
-  # NOTE: needed for nixd. the issue: https://github.com/nix-community/nixd/issues/357
-  nixpkgs.config.permittedInsecurePackages = [
-    "nix-2.16.2"
-  ];
 }
