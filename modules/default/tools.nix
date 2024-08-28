@@ -1,33 +1,23 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    ani-cli
     atop
-    awscli
     bat
     below
-    cloc
-    entr
     fd
     git
     grc
-    haskellPackages.base91
-    inputs.agenix.packages.${system}.default
     jc
     jq
     less
-    minio-client
     neovim
-    nix-output-monitor
     nix-tree
     nushell
-    nvd
     ripgrep
     rsync
     s3fs
     sd
     tcpdump
-    tldr
     tree
     unzip
     wget
