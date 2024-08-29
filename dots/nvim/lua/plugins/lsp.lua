@@ -23,6 +23,13 @@ capabilities.textDocument.codeAction = {
   },
 }
 
+local lsp_signature_cfg = {
+  handler_opts = {
+    border = "rounded",
+  },
+  hint_prefix = ' |- ',
+}
+
 local _bmap = function(bufnr)
   return function(mode, lhs, rhs, options)
     options = options or { noremap = true, silent = true, buffer = bufnr }
@@ -34,6 +41,8 @@ local on_attach = function(_, bufnr)
   local lsp_selection_range = require('lsp-selection-range')
   local bmap = _bmap(bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  require "lsp_signature".on_attach(lsp_signature_cfg, bufnr)
 
   bmap('n', 'vv', lsp_selection_range.trigger)
   bmap('v', 'vv', lsp_selection_range.expand)
@@ -190,6 +199,11 @@ return {
         }
       }
     end,
+  },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
+    opts = {},
   },
   'ckolkey/ts-node-action',
   'camilledejoye/nvim-lsp-selection-range',
