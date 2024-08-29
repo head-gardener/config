@@ -25,10 +25,13 @@ vim.api.nvim_create_autocmd("FileType", {
   command = [[setlocal foldlevelstart=2]]
 })
 
--- highlights
+-- Highlights
 vim.cmd [[highlight Folded guifg=#828282 guibg=#202020]]
 vim.cmd [[highlight FloatBorder guibg='none']]
 vim.cmd [[highlight NormalFloat guibg='none']]
+vim.cmd [[highlight Pmenu guibg='none']]
+vim.cmd [[highlight link LspSignatureActiveParameter CmpItemKind]]
+vim.cmd [[highlight CurSearch guibg='#ccad8e']]
 
 local function spacesl(s)
   return string.gsub(s, "^(%s*).-$", "%1")
