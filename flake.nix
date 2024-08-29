@@ -48,6 +48,11 @@
 
       nixosModules = self.lib.genAttrsFromDir ./modules/share lib.id;
 
+      images = {
+        installer = self.nixosConfigurations.installer.config.system.build.isoImage;
+        devilfruit = self.nixosConfigurations.devilfruit.config.system.build.sdImage;
+      };
+
       alloy.config = ./alloy_config.nix;
       alloy.nixosConfigurations = {
         distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [ ];
@@ -56,6 +61,7 @@
         apple = self.lib.mkHost "x86_64-linux" "apple" [ ];
         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [ ];
         cherry = self.lib.mkHost "x86_64-linux" "cherry" [ ];
+
         installer = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
@@ -73,12 +79,28 @@
           ];
         };
 
+        rpi = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          system = "armv6l-linux";
+          modules = [
+            "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-raspberrypi.nix"
+            {
+              system.stateVersion = "24.05";
+            }
+            (self.lib.mkKeys self "hunter")
+            ./modules/default/tmux.nix
+            ./modules/default/users.nix
+            ./modules/default/tools.nix
+          ];
+        };
+
         test = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             ./modules/vm/qemu.nix
           ];
         };
+
       };
     };
 
