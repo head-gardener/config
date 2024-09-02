@@ -125,15 +125,17 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    opts = {
-      ensure_installed = {},
-      sync_install = false,
-      ignore_install = {},
-      highlight = {
-        enable = true,
-        disable = {},
-      },
-    },
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        ensure_installed = {},
+        sync_install = false,
+        ignore_install = {},
+        highlight = {
+          enable = true,
+          disable = {},
+        },
+      }
+    end,
   },
   {
     'E-ricus/lsp_codelens_extensions.nvim',
