@@ -51,6 +51,7 @@
       images = {
         installer = self.nixosConfigurations.installer.config.system.build.isoImage;
         devilfruit = self.nixosConfigurations.devilfruit.config.system.build.sdImage;
+        digitalocean = self.nixosConfigurations.digitalocean.config.system.build.digitalOceanImage;
       };
 
       alloy.config = ./alloy_config.nix;
@@ -58,9 +59,21 @@
         distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [ ];
         shears = self.lib.mkDesktop "x86_64-linux" "shears" [ ];
         ambrosia = self.lib.mkDesktop "x86_64-linux" "ambrosia" [ ];
+
         apple = self.lib.mkHost "x86_64-linux" "apple" [ ];
         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [ ];
         cherry = self.lib.mkHost "x86_64-linux" "cherry" [ ];
+        elderberry = self.lib.mkHost "x86_64-linux" "elderberry" [
+          "${nixpkgs}/nixos/modules/virtualisation/digital-ocean-image.nix"
+        ];
+
+        digitalocean = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            "${nixpkgs}/nixos/modules/virtualisation/digital-ocean-image.nix"
+          ];
+        };
 
         installer = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
