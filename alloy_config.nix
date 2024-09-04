@@ -3,17 +3,19 @@
   settings = {
     resolve = alloy-utils.fromTable {
       blueberry = "192.168.1.102";
+      cherry = "192.168.1.195";
     };
   };
 
   modules = {
     cache = ./modules/alloy/cache.nix;
-    refresher-staging = ./modules/refresher-staging.nix;
-    refresher-config = ./modules/refresher-config.nix;
+    grafana = ./modules/alloy/grafana.nix;
+    hydra = ./modules/alloy/hydra.nix;
+    minio = ./modules/alloy/minio.nix;
     nginx = ./modules/alloy/nginx.nix;
     nix-serve = ./modules/alloy/nix-serve.nix;
-    hydra = ./modules/alloy/hydra.nix;
-    grafana = ./modules/alloy/grafana.nix;
+    refresher-config = ./modules/refresher-config.nix;
+    refresher-staging = ./modules/refresher-staging.nix;
   };
 
   hosts = mods: with mods; {
@@ -29,6 +31,9 @@
       refresher-config
       refresher-staging
     ];
-    cherry = [ cache ];
+    cherry = [
+      cache
+      minio
+    ];
   };
 }

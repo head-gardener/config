@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    "${inputs.self}/modules/minio.nix"
     "${inputs.self}/modules/backup-local.nix"
     "${inputs.self}/modules/backup-s3.nix"
     "${inputs.self}/modules/prometheus-node.nix"

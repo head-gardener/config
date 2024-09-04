@@ -1,4 +1,4 @@
-{ inputs, config, ... }: {
+{ alloy, lib, inputs, config, ... }: {
   age.secrets.minio-creds = {
     file = "${inputs.self}/secrets/minio-creds.age";
     owner = "minio";
@@ -10,5 +10,8 @@
     rootCredentialsFile = config.age.secrets.minio-creds.path;
   };
 
-  networking.firewall.allowedTCPPorts = [ 9000 9001 ];
+  networking.firewall.allowedTCPPorts = lib.mkMerge [
+    (lib.mkIf (alloy.minio.host != alloy.nginx.host) [ 9000 ])
+    [ 9001 ]
+  ];
 }

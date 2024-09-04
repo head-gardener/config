@@ -84,7 +84,7 @@ in
         forceSSL = true;
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = "http://cherry:9000";
+          proxyPass = "http://${alloy.minio.host}:9000";
         };
         extraConfig = ''
           # s3fs can exceed the limit sometimes
