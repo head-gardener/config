@@ -24,16 +24,16 @@
     ambrosia = [ cache ];
     apple = [ cache ];
     blueberry = [
-      nginx
-      hydra
       grafana
+      hydra
+      minio
+      nginx
       nix-serve
       refresher-config
       refresher-staging
     ];
     cherry = [
       cache
-      minio
     ];
   };
 }
