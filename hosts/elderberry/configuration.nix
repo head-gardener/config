@@ -16,16 +16,6 @@
   networking.firewall.allowedUDPPorts = [ ];
   networking.firewall.allowPing = false;
 
-  system = {
-    autoUpgrade = {
-      enable = true;
-      allowReboot = true;
-      dates = "hourly";
-      flake = "github:head-gardener/config";
-      flags = [ ];
-    };
-  };
-
   programs = {
     atop = {
       enable = true;
