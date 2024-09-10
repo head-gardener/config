@@ -7,6 +7,7 @@
     vimAlias = true;
     extraPackages = with pkgs; [
       commitlint
+      nodejs_latest
       deadnix
       editorconfig-checker
       glow

@@ -152,7 +152,10 @@ return {
       'nvim-lua/plenary.nvim', 'mfussenegger/nvim-dap',
     }
   },
-  'williamboman/mason.nvim',
+  {
+    'williamboman/mason.nvim',
+    config = true,
+  },
   {
     'williamboman/mason-lspconfig.nvim',
     init = function()
