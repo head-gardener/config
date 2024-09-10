@@ -1,4 +1,11 @@
 { alloy-utils, ... }:
+let
+  mainUser = "hunter";
+
+  allowFor = user: {
+    users.users.${mainUser}.openssh.authorizedKeys.keyFiles = [ ./ssh/${mainUser}/${user} ];
+  };
+in
 {
   settings = {
     resolve = alloy-utils.fromTable {
@@ -23,7 +30,10 @@
   };
 
   hosts = mods: with mods; {
-    distortion = [ cache ];
+    distortion = [
+      cache
+      (allowFor "tackle")
+    ];
     shears = [ cache ];
     ambrosia = [ cache xray-in-private ];
     apple = [ cache ];
