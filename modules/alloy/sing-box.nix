@@ -1,4 +1,4 @@
-{ lib, inputs, pkgs, ... }:
+{ alloy, lib, inputs, pkgs, ... }:
 {
   # disable autostart
   systemd.services.sing-box.wantedBy = lib.mkForce [];
@@ -19,15 +19,16 @@
         { tag = "direct"; type = "direct"; }
         { tag = "block"; type = "block"; }
         {
-          tag = "socks-out";
-          type = "socks";
-          server = "192.168.1.102";
-          server_port = 1080;
-          version = "5";
+          tag = "vmess-out";
+          type = "vmess";
+          server = alloy.xray-out.host;
+          server_port = 19555;
+          alter_id = 0;
+          uuid = "b74f08d3-f406-4d79-afa1-0917d19c2b92";
         }
       ];
       route = {
-        final = "socks-out";
+        final = "vmess-out";
         auto_detect_interface = true;
         rules = [
           {

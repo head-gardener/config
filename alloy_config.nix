@@ -28,8 +28,6 @@ in
     refresher-config = ./modules/refresher-config.nix;
     refresher-staging = ./modules/refresher-staging.nix;
     sing-box = ./modules/alloy/sing-box.nix;
-    xray-in-private = import ./modules/xray-in.nix { public = false; };
-    xray-in-public = import ./modules/xray-in.nix { public = true; };
     xray-out = ./modules/xray-out.nix;
   };
 
@@ -40,7 +38,10 @@ in
       (allowFor "tackle")
     ];
     shears = [ cache ];
-    ambrosia = [ cache xray-in-private ];
+    ambrosia = [
+      cache
+      sing-box
+    ];
     apple = [ cache ];
     blueberry = [
       cache
@@ -51,7 +52,6 @@ in
       nix-serve
       refresher-config
       refresher-staging
-      xray-in-public
     ];
     cherry = [
       cache
