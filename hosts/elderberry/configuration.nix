@@ -3,7 +3,13 @@
 {
   imports = [
     (inputs.self.lib.mkKeys inputs.self "hunter")
+    "${inputs.self}/modules/zram.nix"
   ];
+
+  swapDevices = [{
+    device = "/swapfile";
+    size = 5120;
+  }];
 
   networking.networkmanager.enable = false;
 
