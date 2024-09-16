@@ -1,4 +1,3 @@
-{ inputs }:
 { alloy-utils, ... }:
 let
   mainUser = "hunter";
@@ -9,8 +8,6 @@ let
 in
 {
   settings = {
-    extraSpecialArgs = { inherit inputs; };
-
     resolve = alloy-utils.fromTable {
       blueberry = "192.168.1.102";
       cherry = "192.168.1.195";
