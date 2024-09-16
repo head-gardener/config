@@ -1,5 +1,4 @@
-{ inputs, ... }:
-{
+{ inputs, ... }: {
   system = {
     stateVersion = "24.05";
     copySystemConfiguration = false;
@@ -27,7 +26,12 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" "repl-flake" ];
       trusted-users = [ "root" "hunter" ];
-      allowed-uris = [ "https://github.com/NixOS/nixpkgs/archive/" ];
+
+      # needed for hydra. TODO investigate
+      allowed-uris = [
+        "https://"
+        "github:"
+      ];
     };
 
     gc = {
@@ -36,8 +40,6 @@
       options = "--delete-older-than 14d";
     };
 
-    optimise = {
-      automatic = true;
-    };
+    optimise = { automatic = true; };
   };
 }
