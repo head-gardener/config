@@ -38,6 +38,7 @@ in
     ambrosia = [ cache xray-in-private ];
     apple = [ cache ];
     blueberry = [
+      cache
       grafana
       hydra
       minio

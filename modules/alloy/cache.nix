@@ -1,6 +1,6 @@
-{ alloy, ... }:
+{ config, lib, alloy, ... }:
 {
-  nix = {
+  nix = lib.mkIf (!config.services.nix-serve.enable) {
     settings = {
       substituters = [
         "https://${alloy.nix-serve.config.services.nix-serve.endpoint}/"
