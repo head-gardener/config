@@ -54,7 +54,7 @@
         digitalocean = self.nixosConfigurations.digitalocean.config.system.build.digitalOceanImage;
       };
 
-      alloy.config = ./alloy_config.nix;
+      alloy.config = import ./alloy_config.nix { inherit inputs; };
       alloy.nixosConfigurations = {
         distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [ ];
         shears = self.lib.mkDesktop "x86_64-linux" "shears" [ ];

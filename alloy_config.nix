@@ -1,3 +1,4 @@
+{ inputs }:
 { alloy-utils, ... }:
 let
   mainUser = "hunter";
@@ -8,6 +9,8 @@ let
 in
 {
   settings = {
+    extraSpecialArgs = { inherit inputs; };
+
     resolve = alloy-utils.fromTable {
       blueberry = "192.168.1.102";
       cherry = "192.168.1.195";
@@ -24,14 +27,16 @@ in
     nix-serve = ./modules/alloy/nix-serve.nix;
     refresher-config = ./modules/refresher-config.nix;
     refresher-staging = ./modules/refresher-staging.nix;
-    xray-in-public = import ./modules/xray-in.nix { public = true; };
+    sing-box = ./modules/alloy/sing-box.nix;
     xray-in-private = import ./modules/xray-in.nix { public = false; };
+    xray-in-public = import ./modules/xray-in.nix { public = true; };
     xray-out = ./modules/xray-out.nix;
   };
 
   hosts = mods: with mods; {
     distortion = [
       cache
+      sing-box
       (allowFor "tackle")
     ];
     shears = [ cache ];
