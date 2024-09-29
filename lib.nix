@@ -52,6 +52,21 @@ rec {
   mkDesktop = system: hostname: extraMods:
     mkHost system hostname ((mkDesktopModules hostname) ++ extraMods);
 
+  # forcibly override option type.
+  # sig: [ String ] -> Type -> Module
+  # Example:
+  # {
+  #   imports = [ (mkTypeOverride [ "system" "autoUpgrade" "enable" ] lib.types.int) ];
+  #   config.system.autoUpgrade.enable = 5;
+  # }
+  mkTypeOverride = opt: type: {
+    options = lib.setAttrByPath opt (lib.mkOption {
+      type = type // {
+        typeMerge = lib.const type;
+      };
+    });
+  };
+
   addPkgs = f: { pkgs, ... }: { environment.systemPackages = f pkgs; };
 
   importAll = path: genAttrsFromDir path import;
