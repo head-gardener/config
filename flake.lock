@@ -1270,11 +1270,11 @@
         "pw-volume": "pw-volume"
       },
       "locked": {
-        "lastModified": 1723253652,
-        "narHash": "sha256-o00cHST7cWFkj1Mvd8on0L31s8ssLBX1XqUQr5Iq+3c=",
+        "lastModified": 1729088264,
+        "narHash": "sha256-Cybz07JC8m957CAWioApuS9vyPHJ4m8Gs3c/T7satTk=",
         "owner": "head-gardener",
         "repo": "xmonad",
-        "rev": "a205ca3d30af15420f89e7dfa827589e583ffbfd",
+        "rev": "8dd24ce4b51d019a91c41e39a4a586e7c07e396c",
         "type": "github"
       },
       "original": {
