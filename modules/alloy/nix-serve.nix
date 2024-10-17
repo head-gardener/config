@@ -15,7 +15,7 @@
       pubkey = "blueberry:yZO3C9X6Beti/TAEXxoJaMHeIP3jXYVWscrYyqthly8=";
 
       enable = true;
-      openFirewall = alloy.nix-serve.host != alloy.nginx.host;
+      openFirewall = alloy.nix-serve.address != alloy.nginx.address;
       secretKeyFile = config.age.secrets.cache.path;
     };
   };

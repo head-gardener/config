@@ -22,6 +22,8 @@ in
     minio = ./modules/alloy/minio.nix;
     nginx = ./modules/alloy/nginx.nix;
     nix-serve = ./modules/alloy/nix-serve.nix;
+    prometheus = ./modules/alloy/prometheus.nix;
+    prometheus-node = ./modules/alloy/prometheus-node.nix;
     refresher-config = ./modules/refresher-config.nix;
     refresher-staging = ./modules/refresher-staging.nix;
     sing-box = ./modules/alloy/sing-box.nix;
@@ -47,11 +49,14 @@ in
       minio
       nginx
       nix-serve
+      prometheus
+      prometheus-node
       refresher-config
       refresher-staging
     ];
     cherry = [
       cache
+      prometheus-node
     ];
     elderberry = [
       cache

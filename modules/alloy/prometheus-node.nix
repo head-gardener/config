@@ -1,4 +1,8 @@
 {
+  imports = [
+    ../loki.nix
+  ];
+
   networking.firewall.allowedTCPPorts = [ 4000 4001 ];
 
   services.prometheus = {

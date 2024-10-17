@@ -1,6 +1,6 @@
 { alloy, config, inputs, ... }:
 let
-  serviceToHost = svc: "http://${alloy.${svc}.host}:${toString alloy.${svc}.config.services.${svc}.port}";
+  serviceToAddress = svc: "http://${alloy.${svc}.address}:${toString alloy.${svc}.config.services.${svc}.port}";
 in
 {
   networking.firewall.allowedTCPPorts = [ 80 443 ];
@@ -63,8 +63,8 @@ in
         locations."/" = {
           recommendedProxySettings = true;
           proxyPass =
-            (if alloy.nginx.host != alloy.hydra.host
-            then "http://${alloy.grafana.host}"
+            (if alloy.nginx.address != alloy.hydra.address
+            then "http://${alloy.grafana.address}"
             else "http://${alloy.grafana.config.services.grafana.settings.server.http_addr}")
             + ":${toString alloy.grafana.config.services.grafana.settings.server.http_port}";
         };
@@ -84,7 +84,7 @@ in
         forceSSL = true;
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = "http://${alloy.minio.host}:9000";
+          proxyPass = "http://${alloy.minio.address}:9000";
         };
         extraConfig = ''
           # s3fs can exceed the limit sometimes
@@ -97,7 +97,7 @@ in
         forceSSL = true;
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = serviceToHost "hydra";
+          proxyPass = serviceToAddress "hydra";
         };
       };
 
@@ -110,7 +110,7 @@ in
       blueberry = {
         locations."/" = {
           recommendedProxySettings = true;
-          proxyPass = serviceToHost "nix-serve";
+          proxyPass = serviceToAddress "nix-serve";
         };
       };
     };

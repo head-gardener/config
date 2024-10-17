@@ -1,7 +1,7 @@
 { alloy, lib, ... }:
 {
   networking.firewall.allowedTCPPorts =
-    lib.mkIf (alloy.nginx.host != alloy.grafana.host) [ 2342 ];
+    lib.mkIf (alloy.nginx.address != alloy.grafana.address) [ 2342 ];
 
   services.grafana = {
     enable = true;
@@ -10,7 +10,7 @@
       http_port = 2342;
       http_addr =
         if
-          (alloy.nginx.host != alloy.grafana.host)
+          (alloy.nginx.address != alloy.grafana.address)
         then alloy.grafana.host
         else "127.0.0.1";
     };

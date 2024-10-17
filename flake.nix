@@ -15,6 +15,7 @@
 
     agenix.url = "github:ryantm/agenix";
     alloy.url = "github:head-gardener/alloy";
+    # alloy.url = "git+file:/home/hunter/Code/alloy";
     auspex.url = "github:head-gardener/auspex";
     blog.url = "github:head-gardener/blog";
     # blog.url = "/home/hunter/Blog/";

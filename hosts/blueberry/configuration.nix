@@ -7,9 +7,6 @@
     (inputs.self.lib.mkKeys inputs.self "hunter")
     "${inputs.self}/modules/backup-s3.nix"
     "${inputs.self}/modules/backup-local.nix"
-    "${inputs.self}/modules/prometheus.nix"
-    "${inputs.self}/modules/prometheus-node.nix"
-    "${inputs.self}/modules/loki.nix"
     "${inputs.self}/modules/zram.nix"
     # "${inputs.self}/modules/k3s-singleton.nix"
     # "${inputs.self}/modules/docker.nix"
