@@ -1,37 +1,48 @@
-{ python3Packages, stdenv, fetchFromGitHub, python3, features ? [ ], ttfautohint }:
+{ python3Packages, stdenv, fetchFromGitHub, python3, lib, writeText
+, features ? [ ], ttfautohint }:
 
-stdenv.mkDerivation rec {
+let
+  version = "2.600";
+
+  src = fetchFromGitHub {
+    owner = "mishamyrt";
+    repo = "Lilex";
+    rev = version;
+    hash = "sha256-JDJputJAraRVeloiuiMYdMOD48jIJ0NAqTMUeSCoU2s=";
+  };
+
+  conf = writeText "lilex_config.yaml" (lib.generators.toYAML { } {
+    source = "./sources";
+    output = "./build";
+    family = {
+      "Lilex.glyphs" = { };
+      "Lilex-Italic.glyphs" = { };
+    };
+  });
+in stdenv.mkDerivation {
   pname = "lilex";
-  version = "2.510";
+  inherit version src;
 
-  srcs = [
-    (fetchFromGitHub {
-      owner = "mishamyrt";
-      repo = "Lilex";
-      rev = version;
-      hash = "sha256-lzoSzBtWIaxza7N06BXrl2h8F6tly8VaoDJ4xywTVa8=";
-    })
-  ];
-
-  outputHash = "sha256-mnaifg6UvPnOXtaP4xZyrqfq3hSv6X4+5mTXXotKxlw=";
+  outputHash = "sha256-Hnqzfw55v7xWQnh1wCSt4RSYgjxF91Eqm6DctDR66a4=";
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
 
-  configurePhase = ''
+  buildPhase = ''
     python -m venv venv
     . venv/bin/activate
+    sed -i '/pylint/d;/ruff/d;/glyphsLib/d' requirements.txt
     pip install --no-cache-dir -r requirements.txt
-  '';
-
-  buildPhase = ''
-    python ./scripts/lilex.py --features '${
-      builtins.concatStringsSep "," features
-    }' build
+    python ./scripts/font.py --config ${conf} build
   '';
 
   installPhase = ''
     install -m 444 -Dt $out/share/fonts/truetype/Lilex build/ttf/*.ttf
   '';
 
-  buildInputs = with python3Packages; [ python3 fontmake ttfautohint cu2qu ];
+  buildInputs = with python3Packages; [
+    python3
+    ttfautohint
+    glyphslib
+    fontmake
+  ];
 }

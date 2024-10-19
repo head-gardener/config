@@ -16,8 +16,7 @@ stdenv.mkDerivation {
 
     for f in $(find .. -type f -name "*.ttf"); do
       echo patching $f ...
-      ${nerd-font-patcher}/bin/nerd-font-patcher\
-        -c --careful --has-no-italic "$f"
+      ${nerd-font-patcher}/bin/nerd-font-patcher -c --careful "$f"
     done
   '';
 
