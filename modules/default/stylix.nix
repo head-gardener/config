@@ -19,10 +19,6 @@
         name = "Lilex Nerd Font";
         package = pkgs.lilex;
       };
-      sansSerif = {
-        name = "SourceCodePro";
-        package = (pkgs.nerdfonts.override { fonts = [ "SourceCodePro" ]; });
-      };
       sizes = {
         terminal = 10;
       };
