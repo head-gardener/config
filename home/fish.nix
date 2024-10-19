@@ -33,6 +33,7 @@ in
         set sponge_delay 8
 
         abbr unfree --set-cursor=! "NIXPKGS_ALLOW_UNFREE=1 nix ! --impure"
+        abbr nom-rebuild --set-cursor=! "nixos-rebuild ! --log-format internal-json -v 2>| nom --json"
       '';
     plugins = map nixplug (with pkgs.fishPlugins; [
       abbreviation-tips
