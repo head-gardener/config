@@ -27,6 +27,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Highlights
 vim.cmd [[highlight Folded guifg=#828282 guibg=#202020]]
+vim.cmd [[highlight Comment cterm=italic gui=italic]]
 vim.cmd [[highlight FloatBorder guibg='none']]
 vim.cmd [[highlight NormalFloat guibg='none']]
 vim.cmd [[highlight Pmenu guibg='none']]
