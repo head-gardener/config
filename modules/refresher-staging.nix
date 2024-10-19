@@ -5,7 +5,7 @@
 
   services.refresher.staging = {
     staging = true;
-    onCalendar = "weekly";
+    onCalendar = "Sat";
     repo = "git@github.com:head-gardener/config";
     identity = config.age.secrets.id_conf-staging.path;
   };
