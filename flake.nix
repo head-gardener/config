@@ -13,12 +13,15 @@
     notes.url = "github:head-gardener/notes";
     notes.flake = false;
 
-    agenix.url = "github:ryantm/agenix";
     alloy.url = "github:head-gardener/alloy";
     # alloy.url = "git+file:/home/hunter/Code/alloy";
-    auspex.url = "github:head-gardener/auspex";
     blog.url = "github:head-gardener/blog";
-    # blog.url = "/home/hunter/Blog/";
+    # blog.url = "git+file:/home/hunter/Blog/";
+    xmonad.url = "github:head-gardener/xmonad";
+    # xmonad.url = "git+file:/home/hunter/xmonad/";
+
+    agenix.url = "github:ryantm/agenix";
+    auspex.url = "github:head-gardener/auspex";
     dmenu-conf.url = "github:head-gardener/nixpkgs/master";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
@@ -31,8 +34,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     stylix.url = "github:danth/stylix/release-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    xmonad.url = "github:head-gardener/xmonad";
-    # xmonad.url = "/home/hunter/xmonad/";
   };
 
   outputs = inputs: with inputs; flake-parts.lib.mkFlake { inherit inputs; } {

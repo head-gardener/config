@@ -1,22 +1,12 @@
 { pkgs, inputs, lib, ... }:
-let
-  myxmonad = inputs.xmonad.packages.${pkgs.system}.default;
-in
 {
+  imports = [
+    inputs.xmonad.nixosModules.myxmonad
+  ];
+
   environment.systemPackages = with pkgs; [
-    cpanel
-    dmenu
-    dunst
-    feh
     i3lock-color
     i3status
-    kitty
-    main-menu
-    myxmonad
-    picom
-    scrot
-    xcolor
-    xorg.xmessage
   ];
 
   services.xmobar = {
@@ -24,16 +14,5 @@ in
     config = builtins.readFile "${inputs.self}/dots/xmobar/xmobarrc";
   };
 
-  services.xserver = {
-    displayManager = {
-      session = [{
-        manage = "window";
-        name = "xmonad";
-        start = ''
-          systemd-cat -t xmonad -- ${lib.getExe myxmonad} &
-          waitPID=$!
-        '';
-      }];
-    };
-  };
+  services.xserver.windowManager.myxmonad = { };
 }
