@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+file="lilex.nix"
+package="lilex"
+
+old="$(sed -nr "s/\s+version = \"(.*)\";/\1/p" "$file" | head -1)"
+owner="$(sed -nr "s/\s+owner = \"(.*)\";/\1/p" "$file" | head -1)"
+repo="$(sed -nr "s/\s+repo = \"(.*)\";/\1/p" "$file" | head -1)"
+new=$(curl -s "https://api.github.com/repos/$owner/$repo/tags" | jq -r '.[0].name')
+if [ $old ==  $new ]; then
+  echo "Already up-to-date!"
+  exit 0
+fi
+echo "Updating $package $old -> $new"
+
+hash="$(nix-prefetch-github $owner $repo --rev $new --json | jq '.hash')"
+sed -i -r "s/(\s+hash = )\".*\";/\1$hash;/" "$file"
+sed -i -r "s/(\s+version = )\".*\";/\1\"$new\";/" "$file"
+sed -i -r "s/(\s+outputHash = )\".*\";/\1\"\";/" "$file"
+
+output="$(mktemp)"
+TERM=dumb nix build .#$package 2>$output;
+fodhash="$(sed -nr "s/\s+got:\s+(sha256-.*)/\1/p" $output)"
+if [ -z $fodhash ]; then
+  echo "Couldn't detemine FOD hash! Nix output:"
+  cat $output
+  rm $output
+  exit 1
+fi
+rm $output
+sed -i -r "s/(\s+outputHash = )\".*\";/\1\"$fodhash\";/" "$file"
+nix build .#$package
