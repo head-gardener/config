@@ -92,61 +92,6 @@ return {
   },
   { 'sindrets/diffview.nvim', lazy = false },
   {
-    'hkupty/iron.nvim',
-    config = function()
-      require('iron.core').setup {
-        config = {
-          scratch_repl = true,
-          repl_definition = {
-            sh = {
-              command = { 'fish' }
-            },
-            rust = {
-              command = { 'fish' }
-            },
-            haskell = {
-              command = { 'cabal', 'repl' }
-            },
-            nix = {
-              command = { 'nix', 'repl' }
-            }
-          },
-          repl_open_cmd = require('iron.view').split.vertical.topleft(50),
-        },
-        -- Iron doesn't set keymaps by default anymore.
-        -- You can set them here or manually add keymaps to the functions in iron.core
-        keymaps = {
-          send_motion = '<space>sc',
-          visual_send = '<space>sc',
-          send_file = '<space>sf',
-          send_line = '<space>sl',
-          send_mark = '<space>sm',
-          mark_motion = '<space>mc',
-          mark_visual = '<space>mv',
-          remove_mark = '<space>md',
-          cr = '<space>s<cr>',
-          interrupt = '<space>s<space>',
-          exit = '<space>sq',
-          clear = '<space>cr',
-        },
-        -- If the highlight is on, you can change how it looks
-        -- For the available options, check nvim_set_hl
-        highlight = {
-          italic = true
-        },
-        ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
-      }
-    end,
-    keys = function()
-      return {
-        { '<space>rs', '<cmd>IronRepl<cr>' },
-        { '<space>rr', '<cmd>IronRestart<cr>' },
-        { '<space>rf', '<cmd>IronFocus<cr>' },
-        { '<space>rh', '<cmd>IronHide<cr>' },
-      }
-    end,
-  },
-  {
     'folke/zen-mode.nvim',
     opts = {
       window = {
