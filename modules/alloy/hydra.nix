@@ -25,7 +25,7 @@
       notificationSender = "hydra@localhost";
       useSubstitutes = true;
       extraConfig = ''
-        queue_runner_metrics_address = [::]:${metricsPort}"
+        queue_runner_metrics_address = [::]:${toString metricsPort}"
       '';
     };
 

@@ -65,7 +65,7 @@ in
           proxyPass =
             (if alloy.nginx.address != alloy.hydra.address
             then "http://${alloy.grafana.address}"
-            else "http://${alloy.grafana.config.services.grafana.settings.server.http_addr}")
+            else "http://${toString alloy.grafana.config.services.grafana.settings.server.http_addr}")
             + ":${toString alloy.grafana.config.services.grafana.settings.server.http_port}";
         };
       };
