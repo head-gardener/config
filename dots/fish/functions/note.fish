@@ -8,8 +8,12 @@ function note -d "Opens an unmanaged note with the given topic" -a topic
       test -n "$topic" || return 1
   end
 
+  pushd "$HOME/notes/unmanaged"
+
   set path "$HOME/notes/unmanaged/$topic.norg"
   set capitalized (echo "$topic" | sed -e 's/\b\(.\)/\u\1/g')
   set args (test -e "$path" || echo "+\"normal i* $capitalized\"")
   sh -c "nvim $path $args"
+
+  popd
 end
