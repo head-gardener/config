@@ -10,9 +10,6 @@
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     xmonad.inputs.nixpkgs.follows = "nixpkgs";
 
-    notes.url = "github:head-gardener/notes";
-    notes.flake = false;
-
     alloy.url = "github:head-gardener/alloy";
     # alloy.url = "git+file:/home/hunter/Code/alloy";
     blog.url = "github:head-gardener/blog";

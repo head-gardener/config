@@ -1051,22 +1051,6 @@
         "type": "github"
       }
     },
-    "notes": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1723039741,
-        "narHash": "sha256-mF23PeYcYW3oVHN0cZgN2pqZ4sNPJE4LLmvxVF3GNU4=",
-        "owner": "head-gardener",
-        "repo": "notes",
-        "rev": "718f70d735b56de3e1c6f311d5b679e233f27b6b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "head-gardener",
-        "repo": "notes",
-        "type": "github"
-      }
-    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": [
@@ -1135,7 +1119,6 @@
         "nixd": "nixd",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
-        "notes": "notes",
         "stylix": "stylix",
         "unstable": "unstable",
         "xmonad": "xmonad"

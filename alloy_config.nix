@@ -51,7 +51,6 @@ in
       nix-serve
       prometheus
       prometheus-node
-      refresher-config
       refresher-staging
     ];
     cherry = [
