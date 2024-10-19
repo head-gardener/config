@@ -1,7 +1,9 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.g.mapleader = "\\"
+vim.g.mapleader = ";"
+vim.g.maplocalleader = " "
+vim.keymap.set({ 'n', 'v' }, ';;', ';', { noremap = true })
 
 -- require('lazy-bootstrap')
 require('lazy').setup('plugins', {
