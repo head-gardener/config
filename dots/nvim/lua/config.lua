@@ -90,6 +90,7 @@ vim.o.scrolloff = 5
 vim.cmd('set termguicolors')
 
 -- Misc
+vim.o.linebreak = true;
 vim.o.exrc = true
 vim.opt.undofile = true
 vim.o.autoread = true                          -- listen for file updates
