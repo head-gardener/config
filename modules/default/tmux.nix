@@ -18,7 +18,7 @@
     newSession = true;
     shortcut = "a";
     # this should be a punishable offence
-    terminal = ''screen-256color"
+    terminal = ''tmux-256color"
       set -g default-shell "${pkgs.fish}/bin/fish'';
     extraConfigBeforePlugins = ''
     '';
