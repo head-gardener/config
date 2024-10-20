@@ -13,6 +13,11 @@
 
   system.stateVersion = "24.05";
 
+  swapDevices = [{
+    device = "/swapfile";
+    size = 5120;
+  }];
+
   boot = {
     tmp.useTmpfs = true;
 
