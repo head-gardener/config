@@ -69,6 +69,10 @@ end
 
 return {
   {
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    config = {},
+  },
+  {
     'neovim/nvim-lspconfig',
     config = function()
       local lspconfig = require('lspconfig')
