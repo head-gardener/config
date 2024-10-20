@@ -27,9 +27,6 @@ in
     interactiveShellInit =
       (builtins.readFile "${inputs.self}/dots/config.fish") + ''
         setenv LS_COLORS "${builtins.readFile pkgs.ls_colors}"
-        function fish_right_prompt_loading_indicator
-          echo (set_color '#aaa')' … '(set_color normal)
-        end
         set sponge_delay 8
 
         abbr unfree --set-cursor=! "NIXPKGS_ALLOW_UNFREE=1 nix ! --impure"
