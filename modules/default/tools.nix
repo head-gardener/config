@@ -10,6 +10,7 @@
     grc
     jc
     jq
+    just
     less
     neovim
     nix-tree
