@@ -7,7 +7,6 @@
     "${inputs.self}/modules/github.nix"
     "${inputs.self}/modules/xmonad.nix"
     "${inputs.self}/modules/upower.nix"
-    "${inputs.self}/modules/tailscale-client.nix"
     "${inputs.self}/modules/steam.nix"
   ];
 

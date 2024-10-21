@@ -28,20 +28,28 @@ in
     refresher-staging = ./modules/refresher-staging.nix;
     sing-box = ./modules/alloy/sing-box.nix;
     sing-box-out = ./modules/sing-box-out.nix;
+    tailscale = ./modules/tailscale-client.nix;
   };
 
   hosts = mods: with mods; {
     distortion = [
+      (allowFor "tackle")
       cache
       sing-box
-      (allowFor "tackle")
+      tailscale
     ];
-    shears = [ cache ];
+    shears = [
+      cache
+      tailscale
+    ];
     ambrosia = [
       cache
       sing-box
+      tailscale
     ];
-    apple = [ cache ];
+    apple = [
+      cache
+    ];
     blueberry = [
       cache
       grafana
@@ -52,6 +60,7 @@ in
       prometheus
       prometheus-node
       refresher-staging
+      tailscale
     ];
     cherry = [
       cache
