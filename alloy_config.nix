@@ -27,7 +27,7 @@ in
     refresher-config = ./modules/refresher-config.nix;
     refresher-staging = ./modules/refresher-staging.nix;
     sing-box = ./modules/alloy/sing-box.nix;
-    xray-out = ./modules/xray-out.nix;
+    sing-box-out = ./modules/sing-box-out.nix;
   };
 
   hosts = mods: with mods; {
@@ -59,7 +59,7 @@ in
     ];
     elderberry = [
       cache
-      xray-out
+      sing-box-out
     ];
   };
 }

@@ -1,5 +1,9 @@
-{ alloy, lib, inputs, pkgs, ... }:
+{ alloy, lib, inputs, pkgs, config, ... }:
 {
+  age.secrets.vmess-uuid = {
+    file = "${inputs.self}/secrets/vmess-uuid.age";
+  };
+
   # disable autostart
   systemd.services.sing-box.wantedBy = lib.mkForce [];
 
@@ -21,10 +25,10 @@
         {
           tag = "vmess-out";
           type = "vmess";
-          server = alloy.xray-out.address;
+          server = alloy.sing-box-out.address;
           server_port = 19555;
           alter_id = 0;
-          uuid = "b74f08d3-f406-4d79-afa1-0917d19c2b92";
+          uuid._secret = config.age.secrets.vmess-uuid.path;
         }
       ];
       route = {

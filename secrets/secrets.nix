@@ -7,10 +7,11 @@ let
   distortion = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFeKWUEkTCsPQaXzoUc/5JF0BecasFaiSt/f/HavHJPo";
   blueberry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIELJrb6Drbgtrg3jRcvevq8kG1N03cji3k3FkmwUFxo+";
   cherry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBXFz8HHHKDZDJjy6ZKbL8ByyTKpcggl2QojdQO7jRpU";
+  elderberry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGWCU1iKue45QhrkUE55cHDbvR0iaUWsnU7WVhdTqexh";
   shears = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYam2lNjh5m0eFyhc5Fn90J8/g/MspzIJqha/1YZsmg";
   ambrosia = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBwfFXaWliHP0COdjkeOG8ImQpEPGBF4Blob0uvlL0uN root@ambrosia";
-  systems = [ distortion blueberry cherry shears ambrosia ];
-  deploy = [ blueberry cherry ];
+  systems = [ distortion shears ambrosia ] ++ deploy;
+  deploy = [ blueberry cherry elderberry ];
 in
 {
   "cache.age".publicKeys = [ hunter ] ++ deploy;
@@ -23,4 +24,5 @@ in
   "s3-torrent.age".publicKeys = [ hunter ] ++ deploy;
   "cherry-gpg.age".publicKeys = [ hunter cherry ];
   "blueberry-gpg.age".publicKeys = [ hunter blueberry ];
+  "vmess-uuid.age".publicKeys = users ++ systems;
 }
