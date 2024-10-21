@@ -6,6 +6,7 @@
 
   # disable autostart
   systemd.services.sing-box.wantedBy = lib.mkForce [];
+  systemd.services.sing-box.restartTriggers = [ "${config.age.secrets.vmess-uuid.file}" ];
 
   services.sing-box = {
     enable = true;

@@ -4,6 +4,8 @@
     file = "${inputs.self}/secrets/vmess-uuid.age";
   };
 
+  systemd.services.sing-box.restartTriggers = [ "${config.age.secrets.vmess-uuid.file}" ];
+
   services.sing-box = {
     enable = true;
     package = inputs.unstable.legacyPackages.${pkgs.system}.sing-box;
