@@ -25,4 +25,5 @@ in
   "cherry-gpg.age".publicKeys = [ hunter cherry ];
   "blueberry-gpg.age".publicKeys = [ hunter blueberry ];
   "vmess-uuid.age".publicKeys = users ++ systems;
+  "jenkins-slave-secret.age".publicKeys = users ++ [ blueberry ];
 }

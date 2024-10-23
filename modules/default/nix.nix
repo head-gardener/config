@@ -1,9 +1,4 @@
 { inputs, ... }: {
-  system = {
-    stateVersion = "24.05";
-    copySystemConfiguration = false;
-  };
-
   nix = {
     registry = {
       unstable = {
@@ -24,9 +19,6 @@
     };
 
     settings = {
-      experimental-features = [ "nix-command" "flakes" "repl-flake" ];
-      trusted-users = [ "root" "hunter" ];
-
       # needed for hydra. TODO investigate
       allowed-uris = [
         "https://"
@@ -39,7 +31,5 @@
       dates = "weekly";
       options = "--delete-older-than 14d";
     };
-
-    optimise = { automatic = true; };
   };
 }
