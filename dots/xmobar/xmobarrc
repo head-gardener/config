@@ -8,20 +8,34 @@ Config { overrideRedirect = False
                         [ "--template", "<weather> <tempC>°C"
                         , "-L", "0"
                         , "-H", "25"
-                        , "--low"   , "lightblue"
-                        , "--normal", "#f8f8f2"
-                        , "--high"  , "red"
+                        , "--low"      , "#6e78a1"
+                        , "--normal"   , "#3a877e"
+                        , "--high"     , "#ac5d5d"
                         ] 36000
                     , Run Cpu
-                        [ "-L", "3"
+                        [ "-L", "20"
                         , "-H", "50"
-                        , "--high"  , "red"
-                        , "--normal", "magenta"
+                        , "--low"      , "#3a877e"
+                        , "--normal"   , "#f8f8f2"
+                        , "--high"     , "#ac5d5d"
                         ] 10
                     , Run Memory ["--template", "Mem: <usedratio>%"] 10
                     , Run Swap [] 10
                     , Run Date "%a %Y-%m-%d <fc=#8be9fd>%H:%M</fc>" "date" 10
-                    , Run Battery [] 10
+                    , Run Battery
+                        [ "-t", "Bat: <watts> <left>% - <timeleft>"
+                        , "--Low"      , "20"      -- %
+                        , "--High"     , "80"
+                        , "--low"      , "#ac5d5d"
+                        , "--normal"   , "#f8f8f2"
+                        , "--high"     , "#3a877e"
+                        , "--"
+                        , "-O"         , "AC"
+                        , "-o"         , "Bat"
+                        , "-h"         , "#ac5d5d" -- watts
+                        , "-l"         , "#3a877e"
+                        , "-p"         , "#84abab"
+                        ] 10
                     , Run DiskU [("/", "<free>"), ("/home", "<free>")] [] 20
                     , Run DiskIO [("/", "r<read> w<write>"), ("/home", "r<read> w<write>")] [] 10
                     , Run XMonadLog
