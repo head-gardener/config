@@ -19,7 +19,7 @@ in
     cache = ./modules/alloy/cache.nix;
     grafana = ./modules/alloy/grafana.nix;
     hydra = ./modules/alloy/hydra.nix;
-    jenkins-mono = ./modules/alloy/jenkins-mono.nix;
+    jenkins-mono = ./modules/jenkins/jenkins-mono.nix;
     minio = ./modules/alloy/minio.nix;
     nginx = ./modules/alloy/nginx.nix;
     nix-serve = ./modules/alloy/nix-serve.nix;
