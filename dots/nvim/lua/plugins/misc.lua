@@ -97,6 +97,12 @@ return {
     },
     lazy = false,  -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
     -- version = "*", -- Pin Neorg to the latest stable release
+    keys = {
+      { "<LocalLeader>tf", function ()
+        require('telescope.builtin').live_grep{ }
+        vim.fn.feedkeys('^ *([*]+|[-]+) +[(][^x_][)]')
+      end, desc = "Find all undone todos" },
+    },
     config = {
       load = {
         ["core.defaults"] = {},
