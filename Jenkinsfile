@@ -1,13 +1,12 @@
 pipeline {
-   agent none
+   agent { label 'nix' }
 
     triggers {
-        pollSCM('H/5 * * * *')
+        pollSCM('H/1 * * * *')
     }
 
    stages {
        stage('Check') {
-           agent { label 'nix' }
            steps {
                sh 'nix check --no-build'
            }
