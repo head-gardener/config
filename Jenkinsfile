@@ -8,6 +8,7 @@ pipeline {
    stages {
        stage('Check') {
            steps {
+               echo checking
                sh 'nix check --no-build'
            }
        }
