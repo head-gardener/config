@@ -23,6 +23,7 @@ in
       sus = "systemctl --user";
       sys = "systemctl";
       xi = "xargs -i";
+      limit = "systemd-run --property MemoryMax=(math '1024 * 1024 * 1024 * 2') --property CPUQuota=100% --setenv=PATH=\"$PATH\" --same-dir --wait --pty --user";
     };
     interactiveShellInit =
       (builtins.readFile "${inputs.self}/dots/config.fish") + ''
