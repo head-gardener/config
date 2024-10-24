@@ -8,7 +8,7 @@ pipeline {
    stages {
        stage('Check') {
            steps {
-               sh 'nix check --no-build'
+               sh 'nix flake check --no-build'
            }
        }
    }
