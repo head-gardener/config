@@ -2,17 +2,15 @@ pipeline {
 	agent { label 'nix' }
 
 	triggers {
-		pollSCM('H/1 * * * *')
+		pollSCM('H/5 * * * *')
 	}
 
 	stages {
 		stage('build') {
-			steps {
-				script {
-					def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
-					def flake = readJSON(text: flakeJson)
-					echo "${flake}"
-				}
+			def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
+			def flake = readJSON text: flakeJson
+			flake.packages.x86_64-linux.each { n _ ->
+				echo "building ${n}"
 			}
 		}
 	}
