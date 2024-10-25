@@ -9,7 +9,7 @@ pipeline {
 		stage('build') {
 			def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
 			def flake = readJSON text: flakeJson
-			flake.packages.x86_64-linux.each { n _ ->
+			flake.packages.'x86_64-linux'.each { n _ ->
 				echo "building ${n}"
 			}
 		}
