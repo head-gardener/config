@@ -2,7 +2,7 @@ pipeline {
   agent { label 'nix' }
 
   triggers {
-    pollSCM('H/1 * * * *')
+    pollSCM('H/5 * * * *')
   }
 
   stages {
