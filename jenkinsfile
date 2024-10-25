@@ -7,10 +7,12 @@ pipeline {
 
 	stages {
 		stage('build') {
-			def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
-			def flake = readJSON text: flakeJson
-			flake.packages.each { key, value ->
-				echo "building ${key}"
+			steps {
+				def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
+				def flake = readJSON text: flakeJson
+				flake.packages.each { key, value ->
+					echo "building ${key}"
+				}
 			}
 		}
 	}
