@@ -10,9 +10,10 @@ pipeline {
 			script {
 				def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
 				def flake = readJSON text: flakeJson
-				flake.packages.each { key, value ->
-					echo "building ${key}"
-				}
+				echo "${flake.packages}"
+				// flake.packages.each { key, value ->
+				// 	echo "building ${key}"
+				// }
 			}
 		}
 	}
