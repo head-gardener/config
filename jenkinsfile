@@ -1,22 +1,22 @@
 pipeline {
-	agent { label 'nix' }
+  agent { label 'nix' }
 
-	triggers {
-		pollSCM('H/1 * * * *')
-	}
+  triggers {
+    pollSCM('H/1 * * * *')
+  }
 
-	stages {
-		stage('build') {
-			steps {
-				script {
-					def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
-					def flake = readJSON(text: flakeJson)
-					flake.packages."x86_64-linux".each { name, _ ->
-					  sh "nix build .#${name}"
-					}
-				}
-			}
-		}
-	}
+  stages {
+    stage('build') {
+      steps {
+        script {
+          def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
+            def flake = readJSON(text: flakeJson)
+            flake.packages."x86_64-linux".each { name, _ ->
+              sh "nix build .#${name}"
+            }
+        }
+      }
+    }
+  }
 }
 
