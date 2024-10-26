@@ -9,8 +9,7 @@ Indenation(1)
 vim.o.copyindent = true
 
 -- Folds
-vim.opt.foldmethod = "indent"
-vim.opt.foldlevelstart = 0
+vim.opt.foldlevelstart = 2
 vim.opt.foldminlines = 2
 vim.opt.foldnestmax = 7
 vim.opt.fillchars = {
@@ -19,11 +18,6 @@ vim.opt.fillchars = {
 
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "nix",
-  command = [[setlocal foldlevelstart=2]]
-})
 
 -- Highlights
 vim.cmd [[highlight Folded guifg=#828282 guibg=#202020]]
