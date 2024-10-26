@@ -15,17 +15,17 @@ let
   deploy = [ blueberry cherry elderberry ];
 in
 {
-  "cache.age".publicKeys = [ hunter ] ++ deploy;
+  "cache.age".publicKeys = admins ++ deploy;
   "do_token.age".publicKeys = admins;
-  "id_gh.age".publicKeys = [ hunter ] ++ systems;
-  "id_conf.age".publicKeys = [ hunter ] ++ deploy;
+  "id_gh.age".publicKeys = admins ++ systems;
+  "id_conf.age".publicKeys = admins ++ deploy;
   "minio-creds.age".publicKeys = admins ++ deploy;
   "s3-hunter.age".publicKeys = users ++ systems;
   "s3-ro.age".publicKeys = users ++ systems;
   "s3-backup.age".publicKeys = admins ++ deploy;
-  "s3-torrent.age".publicKeys = [ hunter ] ++ deploy;
-  "cherry-gpg.age".publicKeys = [ hunter cherry ];
-  "blueberry-gpg.age".publicKeys = [ hunter blueberry ];
+  "s3-torrent.age".publicKeys = admins ++ deploy;
+  "cherry-gpg.age".publicKeys = admins ++ [ cherry ];
+  "blueberry-gpg.age".publicKeys = admins ++ [ blueberry ];
   "vmess-uuid.age".publicKeys = users ++ systems;
   "jenkins-slave-secret.age".publicKeys = admins ++ [ blueberry ];
 }
