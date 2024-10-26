@@ -101,7 +101,7 @@
           config.services.jenkinsSlave.javaPackage
           curl
           git
-          nix
+          lix
         ];
 
         script = let address = "${hostAddress}:${toString port}";
