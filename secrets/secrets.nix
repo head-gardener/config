@@ -16,6 +16,7 @@ let
 in
 {
   "cache.age".publicKeys = [ hunter ] ++ deploy;
+  "do_token.age".publicKeys = admins;
   "id_gh.age".publicKeys = [ hunter ] ++ systems;
   "id_conf.age".publicKeys = [ hunter ] ++ deploy;
   "minio-creds.age".publicKeys = admins ++ deploy;
