@@ -1,6 +1,9 @@
-{ pkgs, ... }: {
+{
   services.upower = {
     enable = true;
-    package = pkgs.upower.override { };
+    usePercentageForPolicy = true;
+    percentageLow = 20;
+    percentageCritical = 10;
+    percentageAction = 5;
   };
 }
