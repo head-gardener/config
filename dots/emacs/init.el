@@ -47,8 +47,4 @@
 ;; Load agenda files from Org Mode directory
 (setq org-agenda-files (list org-directory))
 
-(org-babel-do-load-languages
-    'org-babel-load-languages
-    '((mermaid . t)))
-
 (require 'magit)
