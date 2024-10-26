@@ -6,6 +6,20 @@ pipeline {
   }
 
   stages {
+    stage('prepare') {
+      steps {
+        sh "nix --version"
+      }
+    }
+
+    stage('check') {
+      steps {
+        dir("test") {
+          sh "nix flake check ."
+        }
+      }
+    }
+
     stage('build') {
       steps {
         script {
@@ -19,4 +33,3 @@ pipeline {
     }
   }
 }
-
