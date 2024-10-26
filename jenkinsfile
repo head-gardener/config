@@ -15,7 +15,15 @@ pipeline {
     stage('check') {
       steps {
         dir("test") {
-          sh "nix flake check ."
+          // unfeasible at the moment :(
+          // sh "nix flake check . --quiet --no-write-lock-file"
+          script {
+            def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
+            def flake = readJSON(text: flakeJson)
+            flake.checks."x86_64-linux".each { name, _ ->
+              sh "nix build .#checks.\"x86_64-linux\".${name} --quiet --no-write-lock-file"
+            }
+          }
         }
       }
     }
@@ -24,10 +32,10 @@ pipeline {
       steps {
         script {
           def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
-            def flake = readJSON(text: flakeJson)
-            flake.packages."x86_64-linux".each { name, _ ->
-              sh "nix build .#${name}"
-            }
+          def flake = readJSON(text: flakeJson)
+          flake.packages."x86_64-linux".each { name, _ ->
+            sh "nix build .#${name} --quiet --no-write-lock-file"
+          }
         }
       }
     }

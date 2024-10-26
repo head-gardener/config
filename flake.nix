@@ -107,7 +107,7 @@
 
       packages = import ./pkgs pkgs;
 
-      checks = self'.packages // {
+      checks = {
         mkHost = nixpkgs.lib.nixos.runTest {
           name = "mkHost-test";
 
