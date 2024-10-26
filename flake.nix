@@ -49,7 +49,6 @@
 
       images = {
         installer = self.nixosConfigurations.installer.config.system.build.isoImage;
-        devilfruit = self.nixosConfigurations.devilfruit.config.system.build.sdImage;
         digitalocean = self.nixosConfigurations.digitalocean.config.system.build.digitalOceanImage;
       };
 
@@ -87,21 +86,6 @@
             })
             (self.lib.mkKeys' self "nixos" "hunter")
             ./modules/default/tmux.nix
-            ./modules/default/tools.nix
-          ];
-        };
-
-        rpi = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          system = "armv6l-linux";
-          modules = [
-            "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-raspberrypi.nix"
-            {
-              system.stateVersion = "24.05";
-            }
-            (self.lib.mkKeys self "hunter")
-            ./modules/default/tmux.nix
-            ./modules/default/users.nix
             ./modules/default/tools.nix
           ];
         };
