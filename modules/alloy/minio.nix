@@ -9,6 +9,8 @@
       group = "minio";
     };
 
+    systemd.services.minio.restartTriggers = [ "${config.age.secrets.minio-creds.file}" ];
+
     services.minio = {
       enable = true;
       rootCredentialsFile = config.age.secrets.minio-creds.path;
