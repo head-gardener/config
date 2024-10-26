@@ -1,7 +1,7 @@
 resource "minio_iam_user" bucket_owner {
   for_each = toset(local.buckets)
   name = each.value
-  force_destroy = true
+  force_destroy = false
   secret = local.secrets[each.value]
 }
 
@@ -35,7 +35,7 @@ resource "minio_iam_policy" access_policy {
 EOF
 }
 
- resource "minio_iam_user_policy_attachment" access {
+resource "minio_iam_user_policy_attachment" access {
   for_each = toset(local.buckets)
   user_name   = minio_iam_user.bucket_owner[each.value].id
   policy_name = minio_iam_policy.access_policy[each.value].id
