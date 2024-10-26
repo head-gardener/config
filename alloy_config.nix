@@ -59,7 +59,6 @@ in
       backup-s3
       cache
       grafana
-      hydra
       jenkins-mono
       minio
       nginx

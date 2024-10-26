@@ -63,7 +63,7 @@ in
         locations."/" = {
           recommendedProxySettings = true;
           proxyPass =
-            (if alloy.nginx.address != alloy.hydra.address
+            (if alloy.nginx.address != alloy.grafana.address
             then "http://${alloy.grafana.address}"
             else "http://${toString alloy.grafana.config.services.grafana.settings.server.http_addr}")
             + ":${toString alloy.grafana.config.services.grafana.settings.server.http_port}";
@@ -90,15 +90,6 @@ in
           # s3fs can exceed the limit sometimes
           client_max_body_size 20m;
         '';
-      };
-
-      ${alloy.hydra.config.services.hydra.endpoint} = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass = serviceToAddress "hydra";
-        };
       };
 
       ${alloy.nix-serve.config.services.nix-serve.endpoint} = blueberry // {
