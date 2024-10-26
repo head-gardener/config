@@ -45,6 +45,7 @@
       gmic
       graphviz
     ] ++ [
+      chromium
       firefox
       hunspell
       hunspellDicts.ru_RU
