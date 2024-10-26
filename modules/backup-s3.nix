@@ -36,6 +36,8 @@ in
       ${lib.getExe pkgs.gnupg} --import ${config.age.secrets.gpg-backup-key.path}
     '';
 
+    # TODO: create hostName dir in a systemd oneshot or something
+
     # fuck it
     systemd.services.btrbk-s3.serviceConfig.User = lib.mkForce "root";
     systemd.services.btrbk-s3.serviceConfig.Group = lib.mkForce "root";

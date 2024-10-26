@@ -1,4 +1,5 @@
 { alloy-utils, ... }:
+
 let
   mainUser = "hunter";
 
@@ -16,6 +17,8 @@ in
   };
 
   modules = {
+    backup-local = ./modules/backup-local.nix;
+    backup-s3 = ./modules/backup-s3.nix;
     cache = ./modules/alloy/cache.nix;
     grafana = ./modules/alloy/grafana.nix;
     hydra = ./modules/alloy/hydra.nix;
@@ -52,6 +55,8 @@ in
       cache
     ];
     blueberry = [
+      backup-local
+      backup-s3
       cache
       grafana
       hydra
@@ -65,6 +70,8 @@ in
       tailscale
     ];
     cherry = [
+      backup-local
+      backup-s3
       cache
       prometheus-node
     ];

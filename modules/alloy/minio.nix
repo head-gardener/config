@@ -1,17 +1,25 @@
 { alloy, lib, inputs, config, ... }: {
-  age.secrets.minio-creds = {
-    file = "${inputs.self}/secrets/minio-creds.age";
-    owner = "minio";
-    group = "minio";
-  };
+  options.services.minio.port = lib.mkOption { type = lib.types.port; };
+  options.services.minio.consolePort = lib.mkOption { type = lib.types.port; };
 
-  services.minio = {
-    enable = true;
-    rootCredentialsFile = config.age.secrets.minio-creds.path;
-  };
+  config = {
+    age.secrets.minio-creds = {
+      file = "${inputs.self}/secrets/minio-creds.age";
+      owner = "minio";
+      group = "minio";
+    };
 
-  networking.firewall.allowedTCPPorts = lib.mkMerge [
-    (lib.mkIf (alloy.minio.address != alloy.nginx.address) [ 9000 ])
-    [ 9001 ]
-  ];
+    services.minio = {
+      enable = true;
+      rootCredentialsFile = config.age.secrets.minio-creds.path;
+      port = 9000;
+      consolePort = 9001;
+    };
+
+    networking.firewall.allowedTCPPorts = lib.mkMerge [
+      (lib.mkIf (alloy.minio.address != alloy.nginx.address)
+        [ config.services.minio.port ])
+      [ config.services.minio.consolePort ]
+    ];
+  };
 }
