@@ -32,7 +32,6 @@ for arg in "$@"; do
     minio-creds.age)
       echo Updating minio creds for user: admin...
       echo -ne "MINIO_ROOT_USER=admin\nMINIO_ROOT_PASSWORD=$(mkpassword 50)" | writeout $arg
-
       echo "[[ upgrade minio"
       ;;
   esac
