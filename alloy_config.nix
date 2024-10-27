@@ -31,7 +31,6 @@ in {
     refresher-staging = ./modules/refresher-staging.nix;
     sing-box = ./modules/alloy/sing-box.nix;
     sing-box-out = ./modules/sing-box-out.nix;
-    tailscale = ./modules/tailscale-client.nix;
     wireguard-server = {
       imports = [ ./modules/wireguard.nix ];
       services.wg.isClient = false;
@@ -47,16 +46,13 @@ in {
       (allowFor "tackle")
       cache
       sing-box
-      tailscale
     ];
     shears = [
       cache
-      tailscale
     ];
     ambrosia = [
       cache
       sing-box
-      tailscale
       wireguard-client
     ];
     apple = [
@@ -74,7 +70,6 @@ in {
       prometheus
       prometheus-node
       refresher-staging
-      tailscale
       wireguard-server
     ];
     cherry = [
