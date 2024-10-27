@@ -15,15 +15,6 @@
           ];
         }];
       }
-      {
-        job_name = "hydra";
-        static_configs = [{
-          targets = [
-            "${alloy.hydra.address}:3000"
-            "${alloy.hydra.address}:${toString alloy.hydra.config.services.hydra.metricsPort}"
-          ];
-        }];
-      }
     ] ++ (alloy.prometheus-node.forEach (host:
       {
         job_name = host.hostname;
