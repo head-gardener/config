@@ -1,4 +1,4 @@
-{ config, alloy, ... }:
+{ alloy, ... }:
 {
   networking.firewall.allowedTCPPorts = [ 4000 ];
 

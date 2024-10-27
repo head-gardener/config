@@ -6,8 +6,7 @@ let
   allowFor = user: {
     users.users.${mainUser}.openssh.authorizedKeys.keyFiles = [ ./ssh/${mainUser}/${user} ];
   };
-in
-{
+in {
   settings = {
     resolve = alloy-utils.fromTable {
       blueberry = "192.168.1.102";
@@ -33,6 +32,14 @@ in
     sing-box = ./modules/alloy/sing-box.nix;
     sing-box-out = ./modules/sing-box-out.nix;
     tailscale = ./modules/tailscale-client.nix;
+    wireguard-server = {
+      imports = [ ./modules/wireguard.nix ];
+      services.wg.isClient = false;
+    };
+    wireguard-client = {
+      imports = [ ./modules/wireguard.nix ];
+      services.wg.isClient = true;
+    };
   };
 
   hosts = mods: with mods; {
@@ -50,6 +57,7 @@ in
       cache
       sing-box
       tailscale
+      wireguard-client
     ];
     apple = [
       cache
@@ -67,6 +75,7 @@ in
       prometheus-node
       refresher-staging
       tailscale
+      wireguard-server
     ];
     cherry = [
       backup-local

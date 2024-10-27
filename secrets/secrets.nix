@@ -28,4 +28,7 @@ in
   "blueberry-gpg.age".publicKeys = admins ++ [ blueberry ];
   "vmess-uuid.age".publicKeys = users ++ systems;
   "jenkins-slave-secret.age".publicKeys = admins ++ [ blueberry ];
+
+  "wg/ambrosia.age".publicKeys = admins ++ [ ambrosia ];
+  "wg/blueberry.age".publicKeys = admins ++ [ blueberry ];
 }
