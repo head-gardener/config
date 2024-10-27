@@ -1,10 +1,13 @@
 { inputs, config, pkgs, ... }:
 {
+  imports = [
+    (inputs.self.lib.mkSecretTrigger "sing-box"
+      config.age.secrets.vmess-uuid.file)
+  ];
+
   age.secrets.vmess-uuid = {
     file = "${inputs.self}/secrets/vmess-uuid.age";
   };
-
-  systemd.services.sing-box.restartTriggers = [ "${config.age.secrets.vmess-uuid.file}" ];
 
   services.sing-box = {
     enable = true;

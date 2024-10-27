@@ -1,4 +1,9 @@
 { alloy, lib, inputs, config, ... }: {
+  imports = [
+    (inputs.self.lib.mkSecretTrigger "minio"
+      config.age.secrets.minio-creds.file)
+  ];
+
   options.services.minio.port = lib.mkOption { type = lib.types.port; };
   options.services.minio.consolePort = lib.mkOption { type = lib.types.port; };
 
@@ -8,8 +13,6 @@
       owner = "minio";
       group = "minio";
     };
-
-    systemd.services.minio.restartTriggers = [ "${config.age.secrets.minio-creds.file}" ];
 
     services.minio = {
       enable = true;

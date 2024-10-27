@@ -52,6 +52,18 @@ rec {
   mkDesktop = system: hostname: extraMods:
     mkHost system hostname ((mkDesktopModules hostname) ++ extraMods);
 
+  # trigger service restart on file change using sha1
+  # don't use this if you can.
+  # sig: string -> path -> Module
+  # Example:
+  # {
+  #   imports = [ (mkSecretTrigger "sing-box" age.nix) ];
+  # }
+  mkSecretTrigger = svc: path: {
+    systemd.services.${svc}.restartTriggers =
+      [ (builtins.hashFile "sha1" path) ];
+  };
+
   # forcibly override option type.
   # sig: [ String ] -> Type -> Module
   # Example:
