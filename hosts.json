@@ -1,10 +1,14 @@
 {
+  "blueberry": {
+    "ipv4": "10.100.0.1",
+    "publicKey": "0QsaVbyMqOAukZ6xGN2NbpIYqQhC+uO74mN+p6NzHWo="
+  },
   "ambrosia": {
-    "ipv4": "10.100.0.2/32",
+    "ipv4": "10.100.0.2",
     "publicKey": "Ltvy5a6I7WfNde5+PA9A70Rgl3ickbMCz2t93o9BhS8="
   },
-  "blueberry": {
-    "ipv4": "10.100.0.1/32",
-    "publicKey": "0QsaVbyMqOAukZ6xGN2NbpIYqQhC+uO74mN+p6NzHWo="
+  "elderberry": {
+    "ipv4": "10.100.0.3",
+    "publicKey": "fVw1oC8c2URkKmedukIjq81+DWKxdwf3Zasj91N4LgY="
   }
 }

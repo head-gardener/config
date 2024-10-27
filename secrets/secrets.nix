@@ -31,4 +31,5 @@ in
 
   "wg/ambrosia.age".publicKeys = admins ++ [ ambrosia ];
   "wg/blueberry.age".publicKeys = admins ++ [ blueberry ];
+  "wg/elderberry.age".publicKeys = admins ++ [ elderberry ];
 }

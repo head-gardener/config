@@ -86,6 +86,7 @@ in {
     elderberry = [
       cache
       sing-box-out
+      wireguard-client
     ];
   };
 }
