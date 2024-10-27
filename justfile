@@ -3,7 +3,7 @@ default:
 
 # nixos-rebuild switch
 switch:
-   doas nixos-rebuild switch --flake .
+   sudo nixos-rebuild switch --flake .
 
 # send sources to the target, build and activate remotely
 deploy tgt:
