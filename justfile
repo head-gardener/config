@@ -7,7 +7,8 @@ switch:
 
 # send sources to the target, build and activate remotely
 deploy tgt:
-   rsync . {{ tgt }}:/tmp/config -azv
+   rsync --exclude-from=.gitignore --filter=':- .gitignore' \
+     . {{ tgt }}:/tmp/config -azv
    ssh -tt {{ tgt }} sudo nixos-rebuild switch --flake /tmp/config
 
 # build system locally, send it and activate it on the remote
