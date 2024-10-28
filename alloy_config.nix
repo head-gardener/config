@@ -22,11 +22,13 @@ in {
     grafana = ./modules/alloy/grafana.nix;
     hydra = ./modules/alloy/hydra.nix;
     jenkins-mono = ./modules/jenkins/jenkins-mono.nix;
+    loki = ./modules/alloy/loki.nix;
     minio = ./modules/alloy/minio.nix;
     nginx = ./modules/alloy/nginx.nix;
     nix-serve = ./modules/alloy/nix-serve.nix;
     prometheus = ./modules/alloy/prometheus.nix;
     prometheus-node = ./modules/alloy/prometheus-node.nix;
+    promtail = ./modules/alloy/promtail.nix;
     refresher-config = ./modules/refresher-config.nix;
     refresher-staging = ./modules/refresher-staging.nix;
     sing-box = ./modules/alloy/sing-box.nix;
@@ -64,11 +66,13 @@ in {
       cache
       grafana
       jenkins-mono
+      loki
       minio
       nginx
       nix-serve
       prometheus
       prometheus-node
+      promtail
       refresher-staging
       wireguard-server
     ];
@@ -77,6 +81,7 @@ in {
       backup-s3
       cache
       prometheus-node
+      promtail
     ];
     elderberry = [
       cache

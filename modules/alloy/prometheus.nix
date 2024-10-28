@@ -15,12 +15,19 @@
           ];
         }];
       }
+      {
+        job_name = "loki";
+        static_configs = [{
+          targets = [
+            "${alloy.loki.hostname}.wg:${toString alloy.loki.config.services.loki.configuration.server.http_listen_port}"
+          ];
+        }];
+      }
     ] ++ (alloy.prometheus-node.forEach (host:
       {
         job_name = host.hostname;
         static_configs = [{
           targets = [
-            "${host.hostname}.wg:${toString host.config.services.loki.configuration.server.http_listen_port}"
             "${host.hostname}.wg:${toString host.config.services.prometheus.exporters.node.port}"
           ];
         }];
