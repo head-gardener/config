@@ -20,8 +20,8 @@
         job_name = host.hostname;
         static_configs = [{
           targets = [
-            "${host.address}:${toString host.config.services.loki.configuration.server.http_listen_port}"
-            "${host.address}:${toString host.config.services.prometheus.exporters.node.port}"
+            "${host.hostname}.wg:${toString host.config.services.loki.configuration.server.http_listen_port}"
+            "${host.hostname}.wg:${toString host.config.services.prometheus.exporters.node.port}"
           ];
         }];
       }));

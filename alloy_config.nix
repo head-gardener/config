@@ -80,6 +80,7 @@ in {
     ];
     elderberry = [
       cache
+      prometheus-node
       sing-box-out
       wireguard-client
     ];
