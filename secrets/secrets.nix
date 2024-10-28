@@ -24,10 +24,11 @@ in
   "s3-ro.age".publicKeys = users ++ systems;
   "s3-backup.age".publicKeys = admins ++ deploy;
   "s3-torrent.age".publicKeys = admins ++ deploy;
-  "cherry-gpg.age".publicKeys = admins ++ [ cherry ];
-  "blueberry-gpg.age".publicKeys = admins ++ [ blueberry ];
   "vmess-uuid.age".publicKeys = users ++ systems;
   "jenkins-slave-secret.age".publicKeys = admins ++ [ blueberry ];
+
+  "gpg/blueberry.age".publicKeys = admins ++ [ blueberry ];
+  "gpg/cherry.age".publicKeys = admins ++ [ cherry ];
 
   "wg/ambrosia.age".publicKeys = admins ++ [ ambrosia ];
   "wg/blueberry.age".publicKeys = admins ++ [ blueberry ];

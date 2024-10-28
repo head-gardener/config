@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eo pipefail
 
 function mkpassword {
   cat /dev/urandom | head -c "$1" | base91 --encode | sed "s/['\"]//"
@@ -34,6 +35,16 @@ for arg in "$@"; do
       echo "Updating minio admin creds..."
       echo -ne "MINIO_ROOT_USER=admin\nMINIO_ROOT_PASSWORD=$(mkpassword 50)" | writeout $arg
       echo "[[ upgrade minio"
+      ;;
+    gpg/*.age)
+      host=$(echo "$arg" | sed -r 's|gpg/(\w+).age|\1|')
+      echo "Updating gpg keys for $host..."
+      export GNUPGHOME=$(mktemp -d)
+      gpg --quiet --batch --passphrase '' --quick-gen-key elderberry default default
+      gpg --export-secret-keys | writeout $arg
+      find $GNUPGHOME -type f -exec shred -u {} \;
+      rm -rf $GNUPGHOME
+      echo "[[ upgrade $host"
       ;;
     wg/*.age)
       host=$(echo "$arg" | sed -r 's|wg/(\w+).age|\1|')

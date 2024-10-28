@@ -27,7 +27,7 @@ in
     environment.systemPackages = [ pkgs.gzip pkgs.gnupg ];
 
     age.secrets.gpg-backup-key = {
-      file = "${inputs.self}/secrets/${config.networking.hostName}-gpg.age";
+      file = "${inputs.self}/secrets/gpg/${config.networking.hostName}.age";
     };
 
     system.activationScripts.import-gpg.deps = [ "agenix" ];
