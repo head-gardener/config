@@ -42,6 +42,8 @@ in
     systemd.services.btrbk-s3.serviceConfig.User = lib.mkForce "root";
     systemd.services.btrbk-s3.serviceConfig.Group = lib.mkForce "root";
 
+    systemd.timers.btrbk-s3.timerConfig.RandomizedDelaySec = "1h";
+
     services.btrbk.extraPackages = [ pkgs.gnupg pkgs.gzip ];
     services.btrbk.instances.s3 = {
       settings = {

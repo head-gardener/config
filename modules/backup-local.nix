@@ -20,6 +20,8 @@ in
   };
 
   config = {
+    systemd.timers.btrbk-local.timerConfig.RandomizedDelaySec = "1h";
+
     services.btrbk.instances.local = {
       settings = {
         snapshot_create = "ondemand";
