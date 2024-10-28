@@ -9,9 +9,8 @@
       domain = "backyard-hg.xyz";
       http_port = 2342;
       http_addr =
-        if
-          (alloy.nginx.address != alloy.grafana.address)
-        then alloy.grafana.host
+        if (alloy.nginx.address != alloy.grafana.address)
+        then alloy.grafana.address
         else "127.0.0.1";
     };
   };
