@@ -3,13 +3,13 @@ default:
 
 # nixos-rebuild switch
 switch:
-   sudo nixos-rebuild switch --flake .
+  sudo nixos-rebuild switch --flake .
 
 # send sources to the target, build and activate remotely
 deploy tgt:
-   rsync --exclude-from=.gitignore --filter=':- .gitignore' \
-     . {{ tgt }}:/tmp/config -azv
-   ssh -tt {{ tgt }} sudo nixos-rebuild switch --flake /tmp/config
+  rsync --exclude-from=.gitignore --filter=':- .gitignore' \
+    . {{ tgt }}:/tmp/config -azv
+  ssh -tt {{ tgt }} sudo nixos-rebuild switch --flake /tmp/config
 
 # build system locally, send it and activate it on the remote
 build-deploy tgt:
@@ -22,4 +22,8 @@ build-deploy tgt:
 
 # stop autoupgrade timer on the remote
 stop-upgrade tgt:
-   ssh -tt {{ tgt }} sudo systemctl stop nixos-upgrade.timer
+  ssh -tt {{ tgt }} sudo systemctl stop nixos-upgrade.timer
+
+# decrypt, decompress and mount a backup
+receive-backup path:
+  cat {{ path }} | gpg --decrypt | gunzip --stdout | btrfs receive .
