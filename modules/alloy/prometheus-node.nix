@@ -3,7 +3,7 @@
     ../loki.nix
   ];
 
-  networking.firewall.allowedTCPPorts = [ 4000 4001 ];
+  networking.firewall.interfaces.wg0.allowedTCPPorts = [ 4000 ];
 
   services.prometheus = {
     enable = true;
