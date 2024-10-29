@@ -5,7 +5,10 @@
   services.loki = {
     enable = true;
     configuration = {
-      server.http_listen_port = 3030;
+      server = {
+        http_listen_port = 3030;
+        log_level = "warn";
+      };
       auth_enabled = false;
 
       ingester = {

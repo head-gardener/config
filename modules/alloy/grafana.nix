@@ -5,13 +5,17 @@
 
   services.grafana = {
     enable = true;
-    settings.server = {
-      domain = "backyard-hg.xyz";
-      http_port = 2342;
-      http_addr =
-        if (alloy.nginx.address != alloy.grafana.address)
-        then alloy.grafana.address
-        else "127.0.0.1";
+    settings = {
+      log.level = "warn";
+
+      server = {
+        domain = "${alloy.grafana.hostname}.wg";
+        http_port = 2342;
+        http_addr =
+          if (alloy.nginx.address != alloy.grafana.address)
+            then alloy.grafana.address
+          else "127.0.0.1";
+      };
     };
   };
 }

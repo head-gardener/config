@@ -57,19 +57,6 @@ in
     commonHttpConfig = "limit_req_zone $binary_remote_addr zone=common:10m rate=10r/s;";
 
     virtualHosts = rec {
-      "grafana.${alloy.grafana.config.services.grafana.settings.server.domain}" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass =
-            (if alloy.nginx.address != alloy.grafana.address
-            then "http://${alloy.grafana.address}"
-            else "http://${toString alloy.grafana.config.services.grafana.settings.server.http_addr}")
-            + ":${toString alloy.grafana.config.services.grafana.settings.server.http_port}";
-        };
-      };
-
       "auspex.backyard-hg.xyz" = {
         enableACME = true;
         forceSSL = true;
