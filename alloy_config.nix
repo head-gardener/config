@@ -33,6 +33,7 @@ in {
     refresher-staging = ./modules/refresher-staging.nix;
     sing-box = ./modules/alloy/sing-box.nix;
     sing-box-out = ./modules/sing-box-out.nix;
+    tailscale = ./modules/tailscale-client.nix;
     wireguard-server = {
       imports = [ ./modules/wireguard.nix ];
       services.wg.isClient = false;
@@ -56,6 +57,7 @@ in {
       cache
       sing-box
       wireguard-client
+      tailscale
     ];
     apple = [
       cache

@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -11,6 +11,8 @@
   ];
 
   system.stateVersion = "24.05";
+
+  systemd.services.tailscaled.wantedBy = lib.mkForce [];
 
   swapDevices = [{
     device = "/swapfile";
