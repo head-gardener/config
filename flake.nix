@@ -18,7 +18,6 @@
     # xmonad.url = "git+file:/home/hunter/xmonad/";
 
     agenix.url = "github:ryantm/agenix";
-    auspex.url = "github:head-gardener/auspex";
     dmenu-conf.url = "github:head-gardener/nixpkgs/master";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.url = "github:nix-community/home-manager/release-24.05";

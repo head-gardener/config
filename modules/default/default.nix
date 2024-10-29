@@ -6,7 +6,6 @@
     ++ (inputs.self.lib.ls "${inputs.self}/modules/share")
     ++ [
       { nixpkgs.overlays = inputs.nixpkgs.lib.attrValues inputs.self.overlays; }
-      inputs.auspex.nixosModules.default
       inputs.impermanence.nixosModules.impermanence
       inputs.agenix.nixosModules.default
       inputs.stylix.nixosModules.stylix
