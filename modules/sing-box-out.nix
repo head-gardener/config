@@ -13,6 +13,7 @@
     enable = true;
     package = inputs.unstable.legacyPackages.${pkgs.system}.sing-box;
     settings = {
+      log.level = "warn";
       inbounds = [
         {
           listen = "::";
