@@ -24,6 +24,10 @@ build-deploy tgt:
 stop-upgrade tgt:
   ssh -tt {{ tgt }} sudo systemctl stop nixos-upgrade.timer
 
+# eval and pretty print an option in a config
+eval-opt host opt:
+  nix eval .#nixosConfigurations.{{ host }}.config.{{ opt }} --json --show-trace | jq .
+
 # decrypt, decompress and mount a backup
 receive-backup path:
   cat {{ path }} | gpg --decrypt | gunzip --stdout | btrfs receive .
