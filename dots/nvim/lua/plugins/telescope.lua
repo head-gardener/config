@@ -29,6 +29,7 @@ return {
         { '<Leader>fc', ":Telescope builtin<CR>",      noremap = true, desc = 'Telescope commands' },
         { '<Leader>ff', tbuiltin.find_files,           noremap = true, desc = "Telescope find file" },
         { '<Leader>fr', tbuiltin.buffers,              noremap = true, desc = "Telescope buffers" },
+        { '<Leader>fs', tbuiltin.git_status,           noremap = true, desc = "Telescope git status" },
         { '<Leader>fg', tbuiltin.live_grep,            noremap = true, desc = "Telescope live grep" },
         { '<Leader>fd', ":Telescope diagnostics<CR>",  noremap = true, desc = "Telescope diagnostics" },
         { '<Leader>fb', ":Telescope file_browser<CR>", noremap = true, desc = "Telescope file browser" },
