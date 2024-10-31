@@ -1,4 +1,4 @@
-{ alloy, lib, pkgs, config, inputs, ... }: {
+{ alloy, net, lib, pkgs, config, inputs, ... }: {
   options = {
     services.wg = {
       port = lib.mkOption {
@@ -15,11 +15,10 @@
 
   config = let
     cfg = config.services.wg;
-    hosts = builtins.fromJSON (builtins.readFile "${inputs.self}/hosts.json");
-    server = hosts."${alloy.wireguard-server.hostname}";
+    server = net.hosts."${alloy.wireguard-server.hostname}";
     hosts-file = pkgs.writeText "dnsmasq-wg-hosts"
       (builtins.concatStringsSep "\n"
-        (map (h: "${h.value.ipv4} ${h.name}.wg") (lib.attrsToList hosts)));
+        (map (h: "${h.value.ipv4} ${h.name}.wg") (lib.attrsToList net.hosts)));
 
   in {
     age.secrets.wg = {
@@ -47,7 +46,7 @@
     };
 
     networking.wg-quick.interfaces.${cfg.interface} = {
-      address = [ "${hosts."${config.networking.hostName}".ipv4}/24" ];
+      address = [ "${net.self.ipv4}/24" ];
       listenPort = cfg.port;
       privateKeyFile = config.age.secrets.wg.path;
 
@@ -79,8 +78,8 @@
           allowedIPs = [ "${server.ipv4}/24" ];
         }])
         (lib.mkIf (!cfg.isClient) (alloy.wireguard-client.forEach (host: {
-          publicKey = hosts."${host.hostname}".publicKey;
-          allowedIPs = [ "${hosts."${host.hostname}".ipv4}/32" ];
+          publicKey = net.hosts."${host.hostname}".publicKey;
+          allowedIPs = [ "${net.hosts."${host.hostname}".ipv4}/32" ];
         })))
       ];
     };

@@ -1,7 +1,7 @@
-{ alloy, lib, ... }:
+{ net, config, ... }:
 {
-  networking.firewall.allowedTCPPorts =
-    lib.mkIf (alloy.nginx.address != alloy.grafana.address) [ 2342 ];
+  networking.firewall.interfaces.wg0.allowedTCPPorts =
+    [ config.services.grafana.settings.server.http_port ];
 
   services.grafana = {
     enable = true;
@@ -9,12 +9,9 @@
       log.level = "warn";
 
       server = {
-        domain = "${alloy.grafana.hostname}.wg";
+        domain = "${config.networking.hostName}.wg";
         http_port = 2342;
-        http_addr =
-          if (alloy.nginx.address != alloy.grafana.address)
-            then alloy.grafana.address
-          else "127.0.0.1";
+        http_addr = net.self.ipv4;
       };
     };
   };

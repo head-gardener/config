@@ -29,6 +29,14 @@ rec {
   mkHostModules = hostname: [
     ./hosts/${hostname}/configuration.nix
     { networking.hostName = hostname; }
+    {
+      _module.args.net = let
+        hosts = (builtins.fromJSON (builtins.readFile "${inputs.self}/hosts.json"));
+      in {
+        inherit hosts;
+        self = hosts.${hostname};
+      };
+    }
     ./modules/default
   ];
 
