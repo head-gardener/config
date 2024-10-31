@@ -11,7 +11,10 @@ require('lazy').setup('plugins', {
     path = "~/Code",
     patterns = {},
     fallback = true,
-  }
+  },
+  change_detection = {
+    enabled = false,
+  },
 })
 require('functions')
 require('config')
