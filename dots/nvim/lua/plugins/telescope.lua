@@ -9,7 +9,13 @@ return {
     end,
     config = function()
       require('telescope').setup {
-        defaults = require('telescope.themes').get_ivy {},
+        defaults = require('telescope.themes').get_ivy {
+          mappings = {
+            i = {
+              ["<c-j>"] = require("telescope.actions").select_default,
+            },
+          },
+        },
         extensions = {
           hoogle = {
             render = 'default',
