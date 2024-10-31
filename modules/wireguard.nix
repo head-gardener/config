@@ -28,7 +28,6 @@
 
     environment.systemPackages = [ pkgs.wireguard-tools ];
 
-    networking.wireguard.enable = true;
     networking.firewall.allowedUDPPorts = [ cfg.port ];
     networking.firewall.trustedInterfaces = [ "wg0" ];
 
