@@ -36,12 +36,7 @@
       route = {
         final = "direct";
         auto_detect_interface = true;
-        rules = [
-          {
-            geoip = [ "private" ];
-            outbound = "direct";
-          }
-        ];
+        rules = [ ];
       };
     };
   };
