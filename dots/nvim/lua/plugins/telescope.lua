@@ -19,9 +19,6 @@ return {
               }
             }
           },
-          file_browser = {
-            hijack_netrw = true,
-          },
         },
       }
     end,
@@ -64,12 +61,5 @@ return {
       })
       require('lspconfig').yamlls.setup(cfg)
     end,
-  },
-  {
-    "nvim-telescope/telescope-file-browser.nvim",
-    init = function()
-      require('telescope').load_extension('file_browser')
-    end,
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
   },
 }

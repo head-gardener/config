@@ -4,6 +4,192 @@ return {
     lazy = false,
   },
   {
+    'stevearc/oil.nvim',
+    config = function()
+      local is_detailed = false
+      local short_columns = { "icon", }
+      local long_columns = { "icon", "permissions", "size", "mtime", }
+
+      local function parse_output(proc)
+        local result = proc:wait()
+        local ret = {}
+        if result.code == 0 then
+          for line in vim.gsplit(result.stdout, "\n", { plain = true, trimempty = true }) do
+            line = line:gsub("/$", "")
+            ret[line] = true
+          end
+        end
+        return ret
+      end
+
+      local function new_git_status()
+        return setmetatable({}, {
+          __index = function(self, key)
+            local ignore_proc = vim.system(
+            { "git", "ls-files", "--ignored", "--exclude-standard", "--others", "--directory" },
+            {
+              cwd = key,
+              text = true,
+            }
+            )
+            local tracked_proc = vim.system({ "git", "ls-tree", "HEAD", "--name-only" }, {
+              cwd = key,
+              text = true,
+            })
+            local ret = {
+              ignored = parse_output(ignore_proc),
+              tracked = parse_output(tracked_proc),
+            }
+
+            rawset(self, key, ret)
+            return ret
+          end,
+        })
+      end
+      local git_status = new_git_status()
+
+      local refresh = require("oil.actions").refresh
+      local orig_refresh = refresh.callback
+      refresh.callback = function(...)
+        git_status = new_git_status()
+        orig_refresh(...)
+      end
+
+      require("oil").setup {
+        default_file_explorer = true,
+        columns = short_columns,
+        buf_options = {
+          buflisted = false,
+          bufhidden = "hide",
+        },
+        win_options = {
+          wrap = false,
+          signcolumn = "no",
+          cursorcolumn = false,
+          foldcolumn = "0",
+          spell = false,
+          list = false,
+          conceallevel = 3,
+          concealcursor = "nvic",
+        },
+        delete_to_trash = false,
+        skip_confirm_for_simple_edits = false,
+        prompt_save_on_select_new_entry = true,
+        cleanup_delay_ms = 2000,
+        lsp_file_methods = {
+          enabled = true,
+          timeout_ms = 1000,
+          autosave_changes = false,
+        },
+        constrain_cursor = "editable",
+        watch_for_changes = true,
+        keymaps = {
+          ["g?"] = "actions.show_help",
+          ["<CR>"] = "actions.select",
+          ["<C-j>"] = "actions.select",
+          ["<C-s>"] = { "actions.select", opts = { vertical = true }, desc = "Open the entry in a vertical split" },
+          ["<C-h>"] = { "actions.select", opts = { horizontal = true }, desc = "Open the entry in a horizontal split" },
+          ["<C-t>"] = { "actions.select", opts = { tab = true }, desc = "Open the entry in new tab" },
+          ["<C-e>"] = "actions.preview",
+          ["<C-c>"] = "actions.close",
+          ["<C-l>"] = "actions.refresh",
+          ["<C-i>"] = {
+            callback = function()
+              if is_detailed then
+                require('oil').set_columns(short_columns)
+              else
+                require('oil').set_columns(long_columns)
+              end
+              is_detailed = not is_detailed
+            end,
+            desc = "Toggle column number"
+          },
+          ["-"] = "actions.parent",
+          ["_"] = "actions.open_cwd",
+          ["`"] = "actions.cd",
+          ["~"] = { "actions.cd", opts = { scope = "tab" }, desc = ":tcd to the current oil directory", mode = "n" },
+          ["gs"] = "actions.change_sort",
+          ["gx"] = "actions.open_external",
+          ["g."] = "actions.toggle_hidden",
+          ["g\\"] = "actions.toggle_trash",
+        },
+        use_default_keymaps = true,
+        view_options = {
+          show_hidden = false,
+          is_hidden_file = function(name, bufnr)
+            local dir = require("oil").get_current_dir(bufnr)
+            local is_dotfile = vim.startswith(name, ".") and name ~= ".."
+            if not dir then
+              return is_dotfile
+            end
+            if is_dotfile then
+              return not git_status[dir].tracked[name]
+            else
+              return git_status[dir].ignored[name]
+            end
+          end,
+          is_always_hidden = function(_, _)
+            return false
+          end,
+          natural_order = true,
+          case_insensitive = true,
+        },
+        float = {
+          -- Padding around the floating window
+          padding = 2,
+          max_width = 0,
+          max_height = 0,
+          border = "rounded",
+          win_options = {
+            winblend = 0,
+          },
+          get_win_title = function() return " oil up " end,
+          preview_split = "auto",
+          override = function(conf)
+            return conf
+          end,
+        },
+        preview = {
+          max_width = 0.9,
+          min_width = { 40, 0.4 },
+          width = nil,
+          max_height = 0.9,
+          min_height = { 5, 0.1 },
+          height = nil,
+          border = "rounded",
+          win_options = {
+            winblend = 0,
+          },
+          update_on_cursor_moved = true,
+        },
+        progress = {
+          max_width = 0.9,
+          min_width = { 40, 0.4 },
+          width = nil,
+          max_height = { 10, 0.9 },
+          min_height = { 5, 0.1 },
+          height = nil,
+          border = "rounded",
+          minimized_border = "none",
+          win_options = {
+            winblend = 0,
+          },
+        },
+        ssh = {
+          border = "rounded",
+        },
+        keymaps_help = {
+          border = "rounded",
+        },
+      }
+    end,
+    keys = {
+      { "<Leader>fm", ":Oil --float<CR>", desc = "Open file manager" },
+    },
+    lazy = false,
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+  },
+  {
     "folke/noice.nvim",
     event = "VeryLazy",
     enabled = false,
