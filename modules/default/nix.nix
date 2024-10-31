@@ -19,6 +19,8 @@
     };
 
     settings = {
+      flake-registry = null;
+
       # needed for hydra. TODO investigate
       allowed-uris = [
         "https://"
