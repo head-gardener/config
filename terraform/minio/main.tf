@@ -11,7 +11,7 @@ variable "minio_secret" {}
 variable "backup_secret" {}
 
 provider "minio" {
-  minio_server = "blueberry:9000"
+  minio_server = "blueberry.wg:9000"
   minio_user = "admin"
   minio_password = var.minio_secret
 }

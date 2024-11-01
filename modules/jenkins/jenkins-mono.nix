@@ -112,7 +112,9 @@
         '';
       };
 
-      networking.useHostResolvConf = true;
+      networking.useHostResolvConf = false;
+      networking.useDHCP = false;
+      networking.nameservers = [ hostAddress ];
 
       boot.isContainer = true;
     });

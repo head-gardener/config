@@ -27,19 +27,19 @@
 
     environment.systemPackages = [ pkgs.wireguard-tools ];
 
+    # TODO: no
+    networking.firewall.trustedInterfaces = [ cfg.interface ];
     networking.firewall.allowedUDPPorts = [ cfg.port ];
-    networking.firewall.trustedInterfaces = [ "wg0" ];
 
     networking.nat = lib.mkIf (!cfg.isClient) {
       enable = true;
-      internalInterfaces = [ "wg0" ];
+      internalInterfaces = [ cfg.interface ];
     };
 
     # TODO: restart trigger
     services.dnsmasq = lib.mkIf (!cfg.isClient) {
       enable = true;
       settings = {
-        interface = "wg0";
         no-hosts = true;
         addn-hosts = "${hosts-file}";
       };
