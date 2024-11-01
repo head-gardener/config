@@ -2,16 +2,16 @@
   description =
     "A flake containing everything that needs to be checked with nix flake check";
 
-  inputs.parent.url = "..";
+  inputs.parent.url = "git+file:..";
 
   outputs = inputs:
     with inputs;
     parent.inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       flake = {
-        nixosConfigurations = {
-          inherit (parent.nixosConfigurations)
-            ambrosia distortion blueberry elderberry;
-        };
+        # nixosConfigurations = {
+        #   inherit (parent.nixosConfigurations)
+        #     ambrosia distortion blueberry elderberry;
+        # };
 
         overlays = parent.overlays;
 
@@ -21,7 +21,7 @@
       systems = [ "x86_64-linux" ];
 
       perSystem = { inputs', ... }: {
-        packages = inputs'.parent.packages // parent.images;
+        packages = parent.images;
 
         checks = inputs'.parent.checks;
       };

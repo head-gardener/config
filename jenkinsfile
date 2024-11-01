@@ -13,15 +13,15 @@ pipeline {
     }
 
     // unfeasible at the moment :(
-    // sh "nix flake check . --quiet"
+    // sh "nix flake check ."
 
     stage('build') {
       steps {
         script {
-          def flakeJson = sh(returnStdout: true, script: 'nix flake show --json --quiet')
+          def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
           def flake = readJSON(text: flakeJson)
           flake.packages."x86_64-linux".each { name, _ ->
-            sh "nix build .#${name} --quiet"
+            sh "nix build .#${name}"
           }
         }
       }
@@ -31,11 +31,7 @@ pipeline {
       steps {
         dir("test") {
           script {
-            def flakeJson = sh(returnStdout: true, script: 'nix flake show --quiet --json')
-            def flake = readJSON(text: flakeJson)
-            flake.checks."x86_64-linux".each { name, _ ->
-              sh "nix build .#checks.\"x86_64-linux\".${name}"
-            }
+            sh "nix flake check"
           }
         }
       }
