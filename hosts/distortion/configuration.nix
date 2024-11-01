@@ -4,13 +4,13 @@
   imports = [
     ./hardware-configuration.nix
     inputs.musnix.nixosModules.musnix
-    "${inputs.self}/modules/android-debug.nix"
-    "${inputs.self}/modules/nvidia.nix"
-    "${inputs.self}/modules/xmonad.nix"
-    "${inputs.self}/modules/github.nix"
-    "${inputs.self}/modules/hp-lj-1018.nix"
-    "${inputs.self}/modules/docker.nix"
-    "${inputs.self}/modules/steam.nix"
+    inputs.self.nixosModules.android-debug
+    inputs.self.nixosModules.nvidia
+    inputs.self.nixosModules.xmonad
+    inputs.self.nixosModules.github
+    inputs.self.nixosModules.hp-lj-1018
+    inputs.self.nixosModules.docker
+    inputs.self.nixosModules.steam
   ];
 
   environment.binsh = "${pkgs.dash}/bin/dash";

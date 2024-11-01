@@ -4,10 +4,10 @@
   imports = [
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    "${inputs.self}/modules/github.nix"
-    "${inputs.self}/modules/xmonad.nix"
-    "${inputs.self}/modules/upower.nix"
-    "${inputs.self}/modules/steam.nix"
+    inputs.self.nixosModules.github
+    inputs.self.nixosModules.xmonad
+    inputs.self.nixosModules.upower
+    inputs.self.nixosModules.steam
   ];
 
   services.easyeffects.enable = true;

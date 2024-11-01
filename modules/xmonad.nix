@@ -1,9 +1,5 @@
 { pkgs, inputs, lib, ... }:
 {
-  imports = [
-    inputs.xmonad.nixosModules.myxmonad
-  ];
-
   environment.systemPackages = with pkgs; [
     i3lock-color
     i3status

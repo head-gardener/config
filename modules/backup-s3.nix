@@ -20,7 +20,7 @@ in
   };
 
   imports = [
-    "${inputs.self}/modules/backup-s3-mount.nix"
+    inputs.self.nixosModules.backup-s3-mount
   ];
 
   config = {

@@ -4,10 +4,10 @@
   imports = [
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    "${inputs.self}/modules/backup-local.nix"
-    "${inputs.self}/modules/backup-s3.nix"
-    "${inputs.self}/modules/zram.nix"
-    "${inputs.self}/modules/transmission-to-s3.nix"
+    inputs.self.nixosModules.backup-local
+    inputs.self.nixosModules.backup-s3
+    inputs.self.nixosModules.zram
+    inputs.self.nixosModules.transmission-to-s3
   ];
 
   services.backup-local.subvols = [ "var" ];

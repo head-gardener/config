@@ -37,12 +37,12 @@ rec {
         self = hosts.${hostname};
       };
     }
-    ./modules/default
+    inputs.self.nixosModules.defaultImports
   ];
 
   mkDesktopModules = _: [
-    ./modules/desktop
-    ./modules/home.nix
+    inputs.self.nixosModules.desktop
+    inputs.self.nixosModules.home
   ];
 
   # generate configuration by setting net hostname,

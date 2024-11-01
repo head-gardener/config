@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
     inputs.blog.nixosModules.blog
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    "${inputs.self}/modules/zram.nix"
+    inputs.self.nixosModules.zram
   ];
 
   services.backup-local.subvols = [ "root" "var" ];

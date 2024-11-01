@@ -3,7 +3,7 @@
 {
   imports = [
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    "${inputs.self}/modules/zram.nix"
+    inputs.self.nixosModules.zram
   ];
 
   swapDevices = [{

@@ -35,7 +35,14 @@
   outputs = inputs: with inputs; flake-parts.lib.mkFlake { inherit inputs; } {
     imports = [
       alloy.flakeModule
+      ./flake/modules.nix
     ];
+
+    modules = {
+      nixosRoot = ./modules;
+      homeRoot = ./home;
+      withPrefix = [ "vm" ];
+    };
 
     flake = {
       lib = import ./lib.nix inputs nixpkgs.lib;
@@ -44,11 +51,23 @@
         packages = final: _: import ./pkgs final;
       };
 
-      nixosModules = self.lib.genAttrsFromDir ./modules/share lib.id;
-
       images = {
         installer = self.nixosConfigurations.installer.config.system.build.isoImage;
         digitalocean = self.nixosConfigurations.digitalocean.config.system.build.digitalOceanImage;
+      };
+
+      nixosModules = {
+        defaultImports = {
+          imports = [
+            self.nixosModules.default
+            self.nixosModules.share
+            { nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays; }
+            inputs.agenix.nixosModules.default
+            inputs.impermanence.nixosModules.impermanence
+            inputs.stylix.nixosModules.stylix
+            inputs.xmonad.nixosModules.myxmonad
+          ];
+        };
       };
 
       alloy.config = ./alloy_config.nix;
@@ -84,18 +103,10 @@
               boot.supportedFilesystems = lib.mkForce [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
             })
             (self.lib.mkKeys' self "nixos" "hunter")
-            ./modules/default/tmux.nix
-            ./modules/default/tools.nix
+            self.nixosModules.tmux
+            self.nixosModules.tools
           ];
         };
-
-        test = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./modules/vm/qemu.nix
-          ];
-        };
-
       };
     };
 
