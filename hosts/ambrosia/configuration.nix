@@ -8,6 +8,7 @@
     "${inputs.self}/modules/xmonad.nix"
     "${inputs.self}/modules/upower.nix"
     "${inputs.self}/modules/steam.nix"
+    "${inputs.self}/modules/terraform.nix"
   ];
 
   system.stateVersion = "24.05";
