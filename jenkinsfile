@@ -12,9 +12,6 @@ pipeline {
       }
     }
 
-    // unfeasible at the moment :(
-    // sh "nix flake check ."
-
     stage('build') {
       steps {
         script {
@@ -30,9 +27,9 @@ pipeline {
     stage('test') {
       steps {
         dir("test") {
-          script {
-            sh "nix flake check"
-          }
+          // prevents `fetching git input 'git+file://file:..'` from happening
+          sh "rm flake.lock"
+          sh "nix flake check"
         }
       }
     }
