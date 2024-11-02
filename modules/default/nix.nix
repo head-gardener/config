@@ -1,5 +1,7 @@
-{ inputs, ... }: {
+{ inputs, pkgs, ... }: {
   nix = {
+    package = pkgs.lix;
+
     registry = {
       unstable = {
         from = {
