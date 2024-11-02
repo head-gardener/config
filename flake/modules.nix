@@ -36,7 +36,7 @@ in {
         default = null;
       };
       withPrefix = mkOption {
-        type = types.listOf types.string;
+        type = types.listOf types.str;
         default = [ ];
       };
       homeRoot = mkOption {

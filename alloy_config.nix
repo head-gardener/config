@@ -34,6 +34,7 @@ in {
     sing-box = ./modules/alloy/sing-box.nix;
     sing-box-out = ./modules/sing-box-out.nix;
     tailscale = ./modules/tailscale-client.nix;
+    wg-tracer = ./modules/wg-tracer.nix;
     wireguard-server = {
       imports = [ ./modules/wireguard.nix ];
       services.wg.isClient = false;
@@ -76,6 +77,7 @@ in {
       prometheus-node
       promtail
       refresher-staging
+      wg-tracer
       wireguard-server
     ];
     cherry = [

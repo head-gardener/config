@@ -1,4 +1,4 @@
-{ alloy, config, ... }: {
+{ alloy, lib, config, ... }: {
   services.promtail = {
     enable = true;
     configuration = {

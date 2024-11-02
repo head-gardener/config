@@ -5,7 +5,7 @@
         type = lib.types.port;
         default = 43721;
       };
-      isClient = lib.mkOption { type = lib.types.bool; };
+      isClient = lib.mkOption { type = lib.types.bool; default = false; };
       interface = lib.mkOption {
         type = lib.types.str;
         default = "wg0";
