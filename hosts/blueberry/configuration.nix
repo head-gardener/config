@@ -78,7 +78,7 @@
 
   system = {
     autoUpgrade = {
-      enable = true;
+      enable = false;
       allowReboot = true;
       dates = "hourly";
       flake = "github:head-gardener/config";
