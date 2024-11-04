@@ -40,7 +40,7 @@ for arg in "$@"; do
       host=$(echo "$arg" | sed -r 's|gpg/(\w+).age|\1|')
       echo "Updating gpg keys for $host..."
       export GNUPGHOME=$(mktemp -d)
-      gpg --quiet --batch --passphrase '' --quick-gen-key elderberry default default
+      gpg --quiet --batch --passphrase '' --quick-gen-key "$host" default default
       gpg --export-secret-keys | writeout $arg
       find $GNUPGHOME -type f -exec shred -u {} \;
       rm -rf $GNUPGHOME
