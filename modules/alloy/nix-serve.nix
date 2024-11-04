@@ -10,6 +10,8 @@
       file = "${inputs.self}/secrets/cache.age";
     };
 
+    personal.gc.maxAge = 40;
+
     services.nix-serve = {
       endpoint = "cache.backyard-hg.xyz";
       pubkey = "blueberry:yZO3C9X6Beti/TAEXxoJaMHeIP3jXYVWscrYyqthly8=";

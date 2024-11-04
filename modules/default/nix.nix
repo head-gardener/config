@@ -1,39 +1,45 @@
-{ inputs, pkgs, ... }: {
-  nix = {
-    package = pkgs.lix;
+{ inputs, pkgs, config, lib, ... }: {
+  options = {
+    personal.gc.maxAge = lib.mkOption { type = lib.types.int; default = 14; };
+  };
 
-    registry = {
-      unstable = {
-        from = {
-          id = "unstable";
-          type = "indirect";
+  config = {
+    nix = {
+      package = pkgs.lix;
+
+      registry = {
+        unstable = {
+          from = {
+            id = "unstable";
+            type = "indirect";
+          };
+          to = {
+            owner = "NixOS";
+            repo = "nixpkgs";
+            ref = "nixos-unstable";
+            type = "github";
+          };
         };
-        to = {
-          owner = "NixOS";
-          repo = "nixpkgs";
-          ref = "nixos-unstable";
-          type = "github";
-        };
+        nixpkgs.flake = inputs.nixpkgs;
+        agenix.flake = inputs.agenix;
+        s.flake = inputs.self;
       };
-      nixpkgs.flake = inputs.nixpkgs;
-      agenix.flake = inputs.agenix;
-      s.flake = inputs.self;
-    };
 
-    settings = {
-      flake-registry = null;
+      settings = {
+        flake-registry = null;
 
-      # needed for hydra. TODO investigate
-      allowed-uris = [
-        "https://"
-        "github:"
-      ];
-    };
+        # needed for hydra. TODO investigate
+        allowed-uris = [
+          "https://"
+            "github:"
+        ];
+      };
 
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than \"${toString config.personal.gc.maxAge}d\"";
+      };
     };
   };
 }
