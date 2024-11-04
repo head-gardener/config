@@ -5,6 +5,10 @@ default:
 switch:
   sudo nixos-rebuild switch --flake .
 
+# pwd-agnostic agenix -d
+get-secret secret:
+  cd ./secrets && agenix -d {{ secret }}
+
 # send sources to the target, build and activate remotely
 deploy tgt:
   rsync --exclude-from=.gitignore --filter=':- .gitignore' \
