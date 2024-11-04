@@ -1,6 +1,6 @@
 { alloy, net, lib, pkgs, config, inputs, ... }: {
   options = {
-    services.wg = {
+    personal.wg = {
       port = lib.mkOption {
         type = lib.types.port;
         default = 43721;
@@ -10,11 +10,16 @@
         type = lib.types.str;
         default = "wg0";
       };
+      service = lib.mkOption {
+        readOnly = true;
+        type = lib.types.str;
+        default = "wg-quick-${config.personal.wg.interface}.service";
+      };
     };
   };
 
   config = let
-    cfg = config.services.wg;
+    cfg = config.personal.wg;
     server = net.hosts."${alloy.wireguard-server.hostname}";
     hosts-file = pkgs.writeText "dnsmasq-wg-hosts"
       (builtins.concatStringsSep "\n"

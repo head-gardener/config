@@ -18,11 +18,11 @@ in {
   modules = self.nixosModules // {
     wireguard-server = {
       imports = [ ./modules/wireguard.nix ];
-      services.wg.isClient = false;
+      personal.wg.isClient = false;
     };
     wireguard-client = {
       imports = [ ./modules/wireguard.nix ];
-      services.wg.isClient = true;
+      personal.wg.isClient = true;
     };
   };
 
