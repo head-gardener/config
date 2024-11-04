@@ -71,6 +71,7 @@
       };
 
       alloy.config = ./alloy_config.nix;
+      alloy.extraSpecialArgs = { inherit self; };
       alloy.nixosConfigurations = {
         distortion = self.lib.mkDesktop "x86_64-linux" "distortion" [ ];
         shears = self.lib.mkDesktop "x86_64-linux" "shears" [ ];

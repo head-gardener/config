@@ -1,4 +1,4 @@
-{ alloy-utils, ... }:
+{ alloy-utils, self, ... }:
 
 let
   mainUser = "hunter";
@@ -15,26 +15,7 @@ in {
     };
   };
 
-  modules = {
-    backup-local = ./modules/backup-local.nix;
-    backup-s3 = ./modules/backup-s3.nix;
-    cache = ./modules/alloy/cache.nix;
-    grafana = ./modules/alloy/grafana.nix;
-    hydra = ./modules/alloy/hydra.nix;
-    jenkins-mono = ./modules/jenkins/jenkins-mono.nix;
-    loki = ./modules/alloy/loki.nix;
-    minio = ./modules/alloy/minio.nix;
-    nginx = ./modules/alloy/nginx.nix;
-    nix-serve = ./modules/alloy/nix-serve.nix;
-    prometheus = ./modules/alloy/prometheus.nix;
-    prometheus-node = ./modules/alloy/prometheus-node.nix;
-    promtail = ./modules/alloy/promtail.nix;
-    refresher-config = ./modules/refresher-config.nix;
-    refresher-staging = ./modules/refresher-staging.nix;
-    sing-box = ./modules/alloy/sing-box.nix;
-    sing-box-out = ./modules/sing-box-out.nix;
-    tailscale = ./modules/tailscale-client.nix;
-    wg-tracer = ./modules/wg-tracer.nix;
+  modules = self.nixosModules // {
     wireguard-server = {
       imports = [ ./modules/wireguard.nix ];
       services.wg.isClient = false;
@@ -58,7 +39,7 @@ in {
       cache
       sing-box
       wireguard-client
-      tailscale
+      tailscale-client
     ];
     apple = [
       cache
