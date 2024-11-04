@@ -1,3 +1,4 @@
+# might be causing a kernel panic... DO NOT USE!
 { config, pkgs, lib, ... }:
 let opts = config.services.wg-tracer;
 in {

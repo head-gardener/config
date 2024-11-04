@@ -58,7 +58,6 @@ in {
       prometheus-node
       promtail
       refresher-staging
-      wg-tracer
       wireguard-server
     ];
     cherry = [
