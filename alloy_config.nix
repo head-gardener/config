@@ -52,6 +52,7 @@ in {
       jenkins-mono
       loki
       minio
+      nats
       nginx
       nix-serve
       prometheus

@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ alloy, inputs, lib, config, net, pkgs, ... }: {
   imports = [ ../container-host.nix ];
 
   age.secrets.jenkins-slave-secret = {
@@ -15,7 +15,7 @@
         nodes = [{
           permanent = {
             name = "container";
-            labelString = "linux nix";
+            labelString = "linux nix nats";
             remoteFS = "/var/lib/jenkins";
             retentionStrategy = "always";
             numExecutors = 2;
@@ -86,6 +86,10 @@
         wantedBy = [ "multi-user.target" ];
         wants = [ "network-online.target" ];
 
+        environment = {
+          NATS_SERVER = net.hosts.${alloy.nats.hostname}.ipv4;
+        };
+
         serviceConfig = {
           User = "jenkins";
           Group = "jenkins";
@@ -102,6 +106,7 @@
           curl
           git
           lix
+          natscli
         ];
 
         script = let address = "${hostAddress}:${toString port}";
