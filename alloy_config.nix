@@ -38,8 +38,9 @@ in {
     ambrosia = [
       cache
       sing-box
-      wireguard-client
       tailscale-client
+      vault-agent
+      wireguard-client
     ];
     apple = [
       cache
@@ -61,6 +62,7 @@ in {
       refresher-staging
       tuner
       vault
+      vault-agent
       wireguard-server
     ];
     cherry = [
@@ -76,6 +78,7 @@ in {
       promtail
       sing-box-out
       tuner
+      vault-agent
       wireguard-client
     ];
   };
