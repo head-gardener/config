@@ -60,6 +60,7 @@ in {
       promtail
       refresher-staging
       tuner
+      vault
       wireguard-server
     ];
     cherry = [

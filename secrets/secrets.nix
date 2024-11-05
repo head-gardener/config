@@ -27,10 +27,13 @@ in
   "vmess-uuid.age".publicKeys = users ++ systems;
   "jenkins-slave-secret.age".publicKeys = admins ++ [ blueberry ];
 
+  "gpg/ambrosia.age".publicKeys = admins ++ [ ambrosia ];
   "gpg/blueberry.age".publicKeys = admins ++ [ blueberry ];
   "gpg/cherry.age".publicKeys = admins ++ [ cherry ];
 
   "wg/ambrosia.age".publicKeys = admins ++ [ ambrosia ];
   "wg/blueberry.age".publicKeys = admins ++ [ blueberry ];
   "wg/elderberry.age".publicKeys = admins ++ [ elderberry ];
+
+  "vault/terraform.age".publicKeys = admins;
 }
