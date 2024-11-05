@@ -118,58 +118,7 @@
 
       packages = import ./pkgs pkgs;
 
-      checks = {
-        mkHost = nixpkgs.lib.nixos.runTest {
-          name = "mkHost-test";
-
-          node.specialArgs = {
-            inherit inputs;
-          };
-
-          nodes.machine = {
-            imports = self.lib.mkHostModules "test";
-          };
-
-          hostPkgs = pkgs;
-
-          testScript = ''
-            start_all()
-            machine.wait_for_unit("multi-user.target")
-            machine.succeed("tmux -V")
-            machine.succeed("nix doctor")
-            machine.succeed("ss -lt | grep ssh")
-            machine.succeed("su hunter -c 'whoami'")
-          '';
-        };
-
-        mkDesktop = nixpkgs.lib.nixos.runTest {
-          name = "mkDesktop-test";
-
-          node.specialArgs = {
-            inherit inputs;
-          };
-
-          nodes.machine = {
-            imports = [ ] ++
-              self.lib.mkHostModules "test" ++
-              self.lib.mkDesktopModules "test";
-            home-manager.users.hunter.manual.manpages.enable = false;
-          };
-
-          hostPkgs = pkgs;
-
-          testScript = ''
-            start_all()
-            machine.wait_for_unit("multi-user.target")
-            machine.succeed("tmux -V")
-            machine.succeed("nix doctor")
-            machine.succeed("ss -lt | grep ssh")
-            machine.succeed("su hunter -c 'whoami'")
-            machine.wait_for_unit("display-manager.service")
-          '';
-        };
-      };
-
+      checks.desktop = self.lib.mkDesktop "x86_64-linux" "test" [ ];
       legacyPackages = pkgs;
     };
   };
