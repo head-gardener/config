@@ -59,6 +59,7 @@ in {
       prometheus-node
       promtail
       refresher-staging
+      tuner
       wireguard-server
     ];
     cherry = [
@@ -73,6 +74,7 @@ in {
       prometheus-node
       promtail
       sing-box-out
+      tuner
       wireguard-client
     ];
   };

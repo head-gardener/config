@@ -9,6 +9,7 @@ pipeline {
     stage('prepare') {
       steps {
         sh "nix --version"
+        echo "branch: ${env.GIT_BRANCH}"
       }
     }
 
@@ -30,6 +31,18 @@ pipeline {
           // prevents `fetching git input 'git+file://file:..'` from happening
           sh "rm flake.lock"
           sh "nix flake check"
+        }
+      }
+    }
+
+    stage('deploy') {
+      steps {
+        script {
+          if (env.GIT_BRANCH == 'origin/master') {
+            sh "nats pub --server \"${NATS_SERVER}\" nixos.autoupgrade \"REF=$GIT_COMMIT\""
+          } else {
+            echo "Not deploying branch ${env.GIT_BRANCH}"
+          }
         }
       }
     }
