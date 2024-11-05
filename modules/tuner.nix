@@ -66,9 +66,6 @@
       serviceConfig = {
         Type = "simple";
         Restart = "always";
-
-        RuntimeDirectory = "tuner";
-        WorkingDirectory = "/run/tuner";
         User = "tuner";
         Group = "tuner";
       };
