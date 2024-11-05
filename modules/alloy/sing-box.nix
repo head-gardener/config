@@ -1,10 +1,8 @@
 { alloy, lib, inputs, pkgs, config, ... }: {
-  imports = [
-    (inputs.self.lib.mkSecretTrigger "sing-box"
-      config.age.secrets.vmess-uuid.file)
-  ];
-
-  age.secrets.vmess-uuid = { file = "${inputs.self}/secrets/vmess-uuid.age"; };
+  personal.va.templates.vmess-uuid = {
+    contents = ''
+    {{ with secret "services/sing-box/vmess-uuid" }}{{ .Data.data.uuid }}{{ end }}'';
+  };
 
   systemd.services.sing-box.wantedBy = lib.mkForce [ ];
 
@@ -32,7 +30,7 @@
             server = alloy.sing-box-out.address;
             server_port = 19555;
             alter_id = 0;
-            uuid._secret = config.age.secrets.vmess-uuid.path;
+            uuid._secret = config.personal.va.templates.vmess-uuid.destination;
           }
         ]
         (lib.mkIf (config.networking.wg-quick.interfaces != [ ]) [{

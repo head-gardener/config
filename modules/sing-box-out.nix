@@ -1,12 +1,8 @@
 { inputs, config, pkgs, ... }:
 {
-  imports = [
-    (inputs.self.lib.mkSecretTrigger "sing-box"
-      config.age.secrets.vmess-uuid.file)
-  ];
-
-  age.secrets.vmess-uuid = {
-    file = "${inputs.self}/secrets/vmess-uuid.age";
+  personal.va.templates.vmess-uuid = {
+    contents = ''
+    {{ with secret "services/sing-box/vmess-uuid" }}{{ .Data.data.uuid }}{{ end }}'';
   };
 
   services.sing-box = {
@@ -22,7 +18,7 @@
           tag = "vmess-in";
           users = [{
             name = "default";
-            uuid._secret = config.age.secrets.vmess-uuid.path;
+            uuid._secret = config.personal.va.templates.vmess-uuid.destination;
             alterID = 0;
           }];
           tls = {
