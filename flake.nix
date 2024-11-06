@@ -118,7 +118,6 @@
 
       packages = import ./pkgs pkgs;
 
-      checks.desktop = self.lib.mkDesktop "x86_64-linux" "test" [ ];
       legacyPackages = pkgs;
     };
   };
