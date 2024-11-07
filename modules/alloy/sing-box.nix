@@ -1,7 +1,8 @@
 { alloy, lib, inputs, pkgs, config, ... }: {
   personal.va.templates.vmess-uuid = {
-    contents = ''
-    {{ with secret "services/sing-box/vmess-uuid" }}{{ .Data.data.uuid }}{{ end }}'';
+    path = "services/sing-box/vmess-uuid";
+    field = "uuid";
+    for = "sing-box.service";
   };
 
   systemd.services.sing-box.wantedBy = lib.mkForce [ ];

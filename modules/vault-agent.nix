@@ -1,20 +1,46 @@
-{ alloy, lib, config, ... }:
+{ alloy, lib, pkgs, config, ... }:
 let
   cfg = config.personal.va;
-  mkTemplate = n: t:
+
+  applyTemplate = n:
+    t@{ owner ? "root", group ? "root", ... }:
+    {
+      inherit owner group;
+      destination = "${cfg.secretsMountPoint}/${n}";
+    } // t;
+
+  mkTemplate = n:
+    t@{ perms ? "0400", destination, ... }:
     {
       create_dest_dirs = false;
-      perms = "0400";
-    } // t // {
-      destination = "${cfg.secretsMountPoint}/${n}";
-    };
+      error_on_missing_key = true;
+      inherit perms destination;
+      contents = if t ? "contents" then
+        t.contents
+      else
+        ''{{ with secret "${t.path}" }}{{ .Data.data.${t.field} }}{{ end }}'';
+    } // (if t ? "for" then {
+      exec = [{
+        command = pkgs.writeShellScript "${n}-on-update" ''
+          ${config.systemd.package}/bin/systemctl is-active '${t.for}' && \
+            ${config.systemd.package}/bin/systemctl restart '${t.for}'
+        '';
+      }];
+    } else
+      { });
+
+  # vault agent preserves owner of template destinations
+  initTemplate = n: t: ''
+    touch "${cfg.secretsMountPoint}/${n}"
+    chown "${t.owner}:${t.group}" "${cfg.secretsMountPoint}/${n}"
+  '';
 in {
   options = {
     personal.va = {
       templates = lib.mkOption {
         default = { };
         type = with lib.types; lazyAttrsOf (lazyAttrsOf raw);
-        apply = lib.mapAttrs mkTemplate;
+        apply = lib.mapAttrs applyTemplate;
       };
       secretsMountPoint = lib.mkOption {
         default = "/run/vault";
@@ -34,7 +60,8 @@ in {
         chmod 0751 "${cfg.secretsMountPoint}"
         grep -q "${cfg.secretsMountPoint} ramfs" /proc/mounts ||
           mount -t ramfs none "${cfg.secretsMountPoint}" -o nodev,nosuid,mode=0751
-      '';
+      '' + (builtins.concatStringsSep "\n"
+        (lib.mapAttrsToList initTemplate cfg.templates));
     };
 
     services.vault-agent.instances.machine = {
@@ -51,7 +78,7 @@ in {
             type = "approle";
           }];
         }];
-        template = lib.attrValues cfg.templates;
+        template = lib.attrValues (lib.mapAttrs mkTemplate cfg.templates);
         template_config = [{
           exit_on_retry_failure = true;
           max_connections_per_host = 10;
