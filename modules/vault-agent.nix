@@ -77,6 +77,17 @@ in {
             }];
             type = "approle";
           }];
+          sinks = [{
+            sink = [{
+              type = "file";
+              config = [{
+                path = "${cfg.secretsMountPoint}/token";
+                owner = config.ids.uids.root;
+                group = config.ids.gids.root;
+                mode = 400;
+              }];
+            }];
+          }];
         }];
         template = lib.attrValues (lib.mapAttrs mkTemplate cfg.templates);
         template_config = [{
