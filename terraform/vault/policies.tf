@@ -1,15 +1,15 @@
-locals {
-  services = [ "sing-box" ]
-}
-
-resource "vault_policy" "kv_admin" {
-  name = "kv_admin"
+resource "vault_policy" "terraform" {
+  name = "terraform"
 
   policy = <<EOT
-path "services/*" {
-  capabilities = ["create", "read", "update", "delete", "list", "patch"]
+path "*" {
+  capabilities = ["create", "read", "update", "delete", "list", "patch", "sudo"]
 }
   EOT
+}
+
+locals {
+  services = [ "sing-box" ]
 }
 
 resource "vault_policy" "service_user" {
