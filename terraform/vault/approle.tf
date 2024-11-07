@@ -5,7 +5,10 @@ resource "vault_auth_backend" "approle" {
 locals {
   machines = {
     elderberry = [ vault_policy.service_user["sing-box"].name ]
-    ambrosia = [ vault_policy.service_user["sing-box"].name ]
+    ambrosia = [
+      vault_policy.service_user["sing-box"].name,
+      vault_policy.externals_user["github"].name
+    ]
   }
 
   service = {
