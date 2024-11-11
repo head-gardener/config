@@ -37,6 +37,7 @@ in {
     ];
     ambrosia = [
       cache
+      docker
       sing-box
       tailscale-client
       vault-agent
