@@ -32,6 +32,7 @@ in
   "gpg/cherry.age".publicKeys = admins ++ [ cherry ];
 
   "wg/ambrosia.age".publicKeys = admins ++ [ ambrosia ];
+  "wg/distortion.age".publicKeys = admins ++ [ distortion ];
   "wg/blueberry.age".publicKeys = admins ++ [ blueberry ];
   "wg/elderberry.age".publicKeys = admins ++ [ elderberry ];
 

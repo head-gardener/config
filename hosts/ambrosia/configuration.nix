@@ -8,7 +8,6 @@
     inputs.self.nixosModules.xmonad
     inputs.self.nixosModules.upower
     inputs.self.nixosModules.steam
-    inputs.self.nixosModules.terraform
   ];
 
   system.stateVersion = "24.05";

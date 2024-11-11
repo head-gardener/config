@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    inputs.self.nixosModules.github
     inputs.self.nixosModules.xmonad
     inputs.self.nixosModules.upower
     inputs.self.nixosModules.steam

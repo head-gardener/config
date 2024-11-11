@@ -28,6 +28,7 @@ in {
 
   hosts = mods: with mods; let
     server = [
+      ansible-node
       prometheus-node
       promtail
       tuner
@@ -37,6 +38,9 @@ in {
       (allowFor "tackle")
       cache
       sing-box
+      terraform
+      vault-agent
+      wireguard-client
     ];
     shears = [
       cache
@@ -46,6 +50,7 @@ in {
       docker
       sing-box
       tailscale-client
+      terraform
       vault-agent
       wireguard-client
     ];
@@ -72,7 +77,7 @@ in {
       backup-local
       backup-s3
       cache
-    ] ++ server;
+    ];
     elderberry = [
       cache
       sing-box-out
