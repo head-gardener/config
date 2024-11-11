@@ -1,5 +1,8 @@
 { alloy, inputs, lib, config, net, pkgs, ... }: {
-  imports = [ ../container-host.nix ];
+  imports = [
+    inputs.self.nixosModules.container-host
+    inputs.self.nixosModules.docker
+  ];
 
   age.secrets.jenkins-slave-secret = {
     file = "${inputs.self}/secrets/jenkins-slave-secret.age";
@@ -15,7 +18,7 @@
         nodes = [{
           permanent = {
             name = "container";
-            labelString = "linux nix nats";
+            labelString = "linux nix nats docker";
             remoteFS = "/var/lib/jenkins";
             retentionStrategy = "always";
             numExecutors = 2;
@@ -70,15 +73,25 @@
       "/run/secrets/jenkins-slave-secret" = {
         hostPath = config.age.secrets.jenkins-slave-secret.path;
       };
+      "/var/run/docker.sock" = {
+        hostPath = "/var/run/docker.sock";
+      };
     };
 
     config = let
       inherit (config.services.jenkins) port;
       inherit (config.containers.jenkins-slave) hostAddress;
+      dockerGID = config.ids.gids.docker;
     in ({ config, ... }: {
-      imports = [ ../default/nix-minimal.nix ];
+      imports = [
+        inputs.self.nixosModules.nix-minimal
+      ];
 
       services.jenkinsSlave.enable = true;
+
+      users.users.jenkins.extraGroups = [ "docker" ];
+
+      users.groups.docker.gid = dockerGID;
 
       systemd.services.jenkins-slave = {
         enable = true;
@@ -104,6 +117,7 @@
           bash
           config.services.jenkinsSlave.javaPackage
           curl
+          docker
           git
           lix
           natscli
