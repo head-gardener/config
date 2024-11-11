@@ -13,6 +13,12 @@ pipeline {
       }
     }
 
+    stage('check') {
+      steps {
+        sh "nix flake check . --verbose --show-trace"
+      }
+    }
+
     stage('build') {
       steps {
         script {
@@ -21,16 +27,6 @@ pipeline {
           flake.packages."x86_64-linux".each { name, _ ->
             sh "nix build .#${name}"
           }
-        }
-      }
-    }
-
-    stage('test') {
-      steps {
-        dir("test") {
-          // prevents `fetching git input 'git+file://file:..'` from happening
-          sh "rm flake.lock"
-          sh "nix flake check"
         }
       }
     }
