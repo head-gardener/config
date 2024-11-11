@@ -125,6 +125,12 @@ return {
         capabilities = capabilities,
         on_attach = on_attach,
       }
+
+      lspconfig.gopls.setup {
+        settings = {},
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
     end,
   },
   {
