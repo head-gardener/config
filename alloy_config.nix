@@ -26,7 +26,13 @@ in {
     };
   };
 
-  hosts = mods: with mods; {
+  hosts = mods: with mods; let
+    server = [
+      prometheus-node
+      promtail
+      tuner
+    ];
+  in {
     distortion = [
       (allowFor "tackle")
       cache
@@ -58,29 +64,20 @@ in {
       nginx
       nix-serve
       prometheus
-      prometheus-node
-      promtail
       refresher-staging
-      tuner
       vault
-      vault-agent
       wireguard-server
-    ];
+    ] ++ server;
     cherry = [
       backup-local
       backup-s3
       cache
-      prometheus-node
-      promtail
-    ];
+    ] ++ server;
     elderberry = [
       cache
-      prometheus-node
-      promtail
       sing-box-out
-      tuner
       vault-agent
       wireguard-client
-    ];
+    ] ++ server;
   };
 }
