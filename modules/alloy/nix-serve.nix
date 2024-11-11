@@ -10,7 +10,8 @@
       file = "${inputs.self}/secrets/cache.age";
     };
 
-    personal.gc.maxAge = 40;
+    zramSwap.memoryPercent = lib.mkForce 200;
+    personal.gc.maxAge = 90;
 
     services.nix-serve = {
       endpoint = "cache.backyard-hg.xyz";
