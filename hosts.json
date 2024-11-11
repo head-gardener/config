@@ -1,18 +1,22 @@
 {
   "blueberry": {
     "ipv4": "10.100.0.1",
+    "blessed": true,
     "publicKey": "+D2ysOUDhEX9za8whkGz+uh553J3h8CVbMytQWMtyxc="
   },
   "ambrosia": {
     "ipv4": "10.100.0.2",
+    "blessed": true,
     "publicKey": "lg64n3BEWt1cw5PpJjYhcFNe5bcU7VipWmGZFONUiyU="
   },
   "elderberry": {
     "ipv4": "10.100.0.3",
+    "blessed": true,
     "publicKey": "uVvuhXkKtSuVG0sCRGt9Yq1F6J20I1z3X7viBdeKpEE="
   },
   "distortion": {
     "ipv4": "10.100.0.4",
+    "blessed": false,
     "publicKey": "4W39mo8QozQvolpi7w6v6G6LLgJS2sj4fvvRQZM6GVU="
   }
 }
