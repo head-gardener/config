@@ -1,3 +1,6 @@
+def BUILD_FLAGS = "--verbose --show-trace --no-link"
+def CHECK_FLAGS = "--verbose --show-trace"
+
 pipeline {
   agent { label 'nix' }
 
@@ -15,7 +18,7 @@ pipeline {
 
     stage('check') {
       steps {
-        sh "nix flake check . --verbose --show-trace"
+        sh "nix flake check . ${CHECK_FLAGS}"
       }
     }
 
@@ -25,7 +28,20 @@ pipeline {
           def flakeJson = sh(returnStdout: true, script: 'nix flake show --json')
           def flake = readJSON(text: flakeJson)
           flake.packages."x86_64-linux".each { name, _ ->
-            sh "nix build .#${name}"
+            sh "nix build .#${name} ${BUILD_FLAGS}"
+          }
+        }
+      }
+    }
+
+    stage('blessed') {
+      steps {
+        script {
+          def hosts = readJSON(file: "./hosts.json")
+          hosts.each { name, val ->
+            if (val.blessed) {
+              sh "nix build .#nixosConfigurations.${name}.config.system.build.toplevel ${BUILD_FLAGS}"
+            }
           }
         }
       }
