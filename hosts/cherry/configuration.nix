@@ -7,7 +7,6 @@
     inputs.self.nixosModules.backup-local
     inputs.self.nixosModules.backup-s3
     inputs.self.nixosModules.zram
-    inputs.self.nixosModules.transmission-to-s3
   ];
 
   services.backup-local.subvols = [ "var" ];

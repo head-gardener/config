@@ -1,5 +1,4 @@
 { inputs, pkgs, config, ... }:
-
 {
   age.secrets.s3-torrent = {
     file = "${inputs.self}/secrets/s3-torrent.age";
@@ -25,7 +24,11 @@
   services.transmission = {
     enable = true;
     openFirewall = true;
+
     settings = {
+      rpc-port = 9091;
+      rpc-bind-address = "127.0.0.1";
+
       download-dir = "/mnt/s3_torrent/";
     };
   };

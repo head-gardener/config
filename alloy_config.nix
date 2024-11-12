@@ -70,6 +70,7 @@ in {
       nix-serve
       prometheus
       refresher-staging
+      transmission-to-s3
       vault
       wireguard-server
     ] ++ server;

@@ -9,6 +9,7 @@ terraform {
 
 variable "minio_secret" {}
 variable "backup_secret" {}
+variable "torrent_secret" {}
 
 provider "minio" {
   minio_server = "blueberry.wg:9000"
@@ -17,8 +18,9 @@ provider "minio" {
 }
 
 locals {
-  buckets = [ "backup" ]
+  buckets = [ "backup", "torrent" ]
   secrets = {
     backup = var.backup_secret
+    torrent = var.torrent_secret
   }
 }
