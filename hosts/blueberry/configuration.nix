@@ -11,6 +11,12 @@
   services.backup-local.subvols = [ "root" "var" ];
   services.backup-s3.subvols = [ "root" ];
 
+  services.prometheus.exporters.smartctl = {
+    devices = [ "/dev/sda" "/dev/sdb" "/dev/sdc" ];
+    enable = true;
+    port = 4002;
+  };
+
   boot.loader.grub = {
     enable = true;
     efiSupport = true;

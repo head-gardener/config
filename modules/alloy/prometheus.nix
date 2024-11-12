@@ -1,4 +1,4 @@
-{ alloy, ... }:
+{ alloy, lib, ... }:
 {
   networking.firewall.allowedTCPPorts = [ 4000 ];
 
@@ -26,9 +26,11 @@
     ] ++ (alloy.prometheus-node.forEach (host:
       {
         job_name = host.hostname;
-        static_configs = [{
-          targets = [
-            "${host.hostname}.wg:${toString host.config.services.prometheus.exporters.node.port}"
+        static_configs = with host.config.services.prometheus; [{
+          targets = lib.mkMerge [
+            [ "${host.hostname}.wg:${toString exporters.node.port}" ]
+            (lib.mkIf (exporters.smartctl.enable)
+              [ "${host.hostname}.wg:${toString exporters.smartctl.port}" ])
           ];
         }];
       }));
