@@ -40,10 +40,13 @@ local _bmap = function(bufnr)
   end
 end
 
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   local lsp_selection_range = require('lsp-selection-range')
   local bmap = _bmap(bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+  end
 
   require "lsp_signature".on_attach(lsp_signature_cfg, bufnr)
 
@@ -125,12 +128,6 @@ return {
         capabilities = capabilities,
         on_attach = on_attach,
       }
-
-      lspconfig.gopls.setup {
-        settings = {},
-        capabilities = capabilities,
-        on_attach = on_attach,
-      }
     end,
   },
   {
@@ -146,6 +143,22 @@ return {
         },
       }
     end,
+  },
+  {
+    "ray-x/go.nvim",
+    dependencies = {
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {
+      lsp_cfg = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
+    },
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
   },
   {
     'E-ricus/lsp_codelens_extensions.nvim',
