@@ -1,0 +1,5 @@
+# login using terraform approle. pipe into `| source`
+login:
+  sudo true
+  echo 'export TF_VAR_vault_token="$(curl -s -d "{ \"role_id\": \"$(sudo cat /etc/vault/terraform/role_id)\", \"secret_id\": \"$(sudo cat /etc/vault/terraform/secret_id)\"}" $VAULT_ADDR/v1/auth/approle/login | jq -r .auth.client_token)"'
+  echo 'export VAULT_TOKEN="$TF_VAR_vault_token"'
