@@ -5,15 +5,21 @@ resource "vault_auth_backend" "approle" {
 locals {
   machine = {
     blueberry = [
+      vault_policy.bucket_user["admin"].name,
+      vault_policy.bucket_user["backup"].name,
       vault_policy.bucket_user["torrent"].name,
-      vault_policy.bucket_user["backup"].name
+      vault_policy.gpg_key_user["blueberry"].name,
+      vault_policy.repo_user["config"].name,
+      vault_policy.service_user["jenkins"].name,
+      vault_policy.service_user["nix-serve"].name,
     ]
     elderberry = [
-      vault_policy.service_user["sing-box"].name
+      vault_policy.service_user["sing-box"].name,
     ]
     ambrosia = [
+      vault_policy.externals_user["github"].name,
+      vault_policy.gpg_key_user["blueberry"].name,
       vault_policy.service_user["sing-box"].name,
-      vault_policy.externals_user["github"].name
     ]
   }
 

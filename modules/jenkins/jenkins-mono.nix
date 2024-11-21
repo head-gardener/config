@@ -4,10 +4,12 @@
     inputs.self.nixosModules.docker
   ];
 
-  age.secrets.jenkins-slave-secret = {
-    file = "${inputs.self}/secrets/jenkins-slave-secret.age";
+  personal.va.templates.jenkins-slave = {
+    path = "services/jenkins/slave";
+    field = "secret";
     owner = "jenkins";
     group = "jenkins";
+    for = "container@jenkins-slave.service";
   };
 
   networking.firewall.allowedTCPPorts = [ config.services.jenkins.port ];
@@ -71,7 +73,7 @@
     bindMounts = {
       # This only works because nspawn gives container's users same uids or something
       "/run/secrets/jenkins-slave-secret" = {
-        hostPath = config.age.secrets.jenkins-slave-secret.path;
+        hostPath = config.personal.va.templates.jenkins-slave.destination;
       };
       "/var/run/docker.sock" = {
         hostPath = "/var/run/docker.sock";

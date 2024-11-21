@@ -93,7 +93,7 @@ in {
         template_config = [{
           exit_on_retry_failure = true;
           max_connections_per_host = 10;
-          static_secret_render_interval = "5m";
+          static_secret_render_interval = "1m";
         }];
         vault = [{
           address = "http://${alloy.vault.config.services.vault.address}";

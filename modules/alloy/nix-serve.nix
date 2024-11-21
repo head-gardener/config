@@ -1,4 +1,4 @@
-{ alloy, lib, inputs, config, ... }:
+{ alloy, lib, config, ... }:
 {
   options = {
     services.nix-serve.endpoint = lib.mkOption { type = lib.types.str; };
@@ -6,8 +6,9 @@
   };
 
   config = {
-    age.secrets.cache = {
-      file = "${inputs.self}/secrets/cache.age";
+    personal.va.templates.nix-serve = {
+      path = "services/nix-serve/key";
+      field = "key";
     };
 
     zramSwap.memoryPercent = lib.mkForce 200;
@@ -19,7 +20,7 @@
 
       enable = true;
       openFirewall = alloy.nix-serve.address != alloy.nginx.address;
-      secretKeyFile = config.age.secrets.cache.path;
+      secretKeyFile = config.personal.va.templates.nix-serve.destination;
     };
   };
 }

@@ -39,21 +39,21 @@ in
 
     environment.systemPackages = [ pkgs.gzip pkgs.gnupg ];
 
-    age.secrets.gpg-backup-key = {
-      file = "${inputs.self}/secrets/gpg/${config.networking.hostName}.age";
+    personal.va.templates.gpg-backup-key = {
+      path = "services/gpg/${config.networking.hostName}";
+      field = "key";
     };
-
-    system.activationScripts.import-gpg.deps = [ "agenix" ];
-    system.activationScripts.import-gpg.text = ''
-      echo importing backup encryption keys...
-      ${lib.getExe pkgs.gnupg} --import ${config.age.secrets.gpg-backup-key.path}
-    '';
 
     # TODO: create hostName dir in a systemd oneshot or something
 
     # fuck it
     systemd.services.btrbk-s3.serviceConfig.User = lib.mkForce "root";
     systemd.services.btrbk-s3.serviceConfig.Group = lib.mkForce "root";
+
+    systemd.services.btrbk-s3.preStart = ''
+      echo importing backup encryption keys...
+      ${lib.getExe pkgs.gnupg} --import ${config.personal.va.templates.gpg-backup-key.destination}
+    '';
 
     systemd.timers.btrbk-s3.timerConfig.RandomizedDelaySec = "1h";
 
@@ -63,7 +63,7 @@ in
         raw_target_compress = "gzip";
         raw_target_encrypt = "gpg";
 
-        gpg_keyring = config.age.secrets.gpg-backup-key.path;
+        gpg_keyring = config.personal.va.templates.gpg-backup-key.destination;
         gpg_recipient = config.networking.hostName;
 
         snapshot_create = "ondemand";

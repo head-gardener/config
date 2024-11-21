@@ -9,11 +9,24 @@ function writeout {
   vault kv put -mount=services "$@"
 }
 
+function check {
+  vault kv metadata get -mount=services "$@" > /dev/null || {
+    echo "Path doesn't exist! Create new?"
+    read -p "(y/n): " ok
+    [ "$ok" == "y" ] || [ "$ok" == "Y" ]
+  }
+}
+
+dry=""
+
 if [[ "$1" == "-d" ]] || [[ "$1" == "--dry-run" ]]; then
   dry="1"
   function writeout {
     shift
     echo "$@"
+  }
+  function check {
+    true
   }
 fi
 
@@ -26,10 +39,21 @@ for arg in "$@"; do
       writeout "$arg" "uuid=$(cat /proc/sys/kernel/random/uuid)"
       ;;
     minio/*)
+      check "$arg"
       user=$(echo "$arg" | sed -r 's|minio/(\w+)|\1|')
       echo "Updating minio creds for $user..."
       writeout "$arg" "user=$user" "pass=$(mkpassword 50 | tr ':' '-')"
-      minio_changed=1
+      [ "$user" != "admin" ] && [ -z "$dry" ] && minio_changed=1
+      ;;
+    gpg/*)
+      check "$arg"
+      host=$(echo "$arg" | sed -r 's|gpg/(\w+)|\1|')
+      echo "Updating gpg keys for $host..."
+      export GNUPGHOME=$(mktemp -d)
+      gpg --quiet --batch --passphrase '' --quick-gen-key "$host" default default
+      writeout "$arg" "key=$(gpg --export-secret-keys | base64)"
+      find $GNUPGHOME -type f -exec shred -u {} \;
+      rm -rf $GNUPGHOME
       ;;
   esac
 done

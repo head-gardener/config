@@ -1,22 +1,23 @@
-{ alloy, lib, inputs, config, ... }: {
-  imports = [
-    (inputs.self.lib.mkSecretTrigger "minio"
-      config.age.secrets.minio-creds.file)
-  ];
-
+{ alloy, lib, config, ... }: {
   options.services.minio.port = lib.mkOption { type = lib.types.port; };
   options.services.minio.consolePort = lib.mkOption { type = lib.types.port; };
 
   config = {
-    age.secrets.minio-creds = {
-      file = "${inputs.self}/secrets/minio-creds.age";
+    personal.va.templates.minio-admin = {
+      contents = ''
+        {{ with secret "services/minio/admin" }}
+        MINIO_ROOT_USER={{ .Data.data.user }}
+        MINIO_ROOT_PASSWORD={{ .Data.data.pass }}
+        {{ end }}
+      '';
       owner = "minio";
       group = "minio";
+      for = "minio.service";
     };
 
     services.minio = {
       enable = true;
-      rootCredentialsFile = config.age.secrets.minio-creds.path;
+      rootCredentialsFile = config.personal.va.templates.minio-admin.destination;
       port = 9000;
       consolePort = 9001;
     };

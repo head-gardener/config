@@ -1,12 +1,16 @@
-{ inputs, config, ... }: {
-  age.secrets.id_conf-staging = {
-    file = "${inputs.self}/secrets/id_conf.age";
+{ config, ... }: {
+  personal.va.templates.id_conf = {
+    contents = ''
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      {{ with secret "externals/github/repo/config" }}{{ .Data.data.key }}{{ end }}
+      -----END OPENSSH PRIVATE KEY-----
+    '';
   };
 
   services.refresher.staging = {
     staging = true;
     onCalendar = "Sat";
     repo = "git@github.com:head-gardener/config";
-    identity = config.age.secrets.id_conf-staging.path;
+    identity = config.personal.va.templates.id_conf.destination;
   };
 }
