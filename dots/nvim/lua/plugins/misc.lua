@@ -60,9 +60,24 @@ return {
     lazy = false,
     keys = function()
       return {
-        { ';;', '<Plug>Sneak_;'},
+        { ';;', '<Plug>Sneak_;' },
       }
     end,
+  },
+  {
+    'Wansmer/treesj',
+    keys = { '<space>m', '<space>j', '<space>s' },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('treesj').setup({ --[[ your config ]] })
+    end,
+  },
+  {
+    'Wansmer/symbol-usage.nvim',
+    event = 'LspAttach',
+    config = function()
+      require('symbol-usage').setup()
+    end
   },
   {
     'Wansmer/sibling-swap.nvim',
@@ -104,13 +119,17 @@ return {
       'pysan3/pathlib.nvim',
       'nvim-neotest/nvim-nio',
     },
-    lazy = false,  -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
     -- version = "*", -- Pin Neorg to the latest stable release
     keys = {
-      { "<LocalLeader>tf", function ()
-        require('telescope.builtin').live_grep{ }
-        vim.fn.feedkeys('^ *([*]+|[-]+) +[(][^x_][)]')
-      end, desc = "Find all undone todos" },
+      {
+        "<LocalLeader>tf",
+        function()
+          require('telescope.builtin').live_grep {}
+          vim.fn.feedkeys('^ *([*]+|[-]+) +[(][^x_][)]')
+        end,
+        desc = "Find all undone todos"
+      },
     },
     config = {
       load = {
