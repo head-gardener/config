@@ -5,6 +5,10 @@ let
   cfg = config.services.backup-s3;
 in
 {
+  imports = [
+    inputs.self.nixosModules.s3-mounts
+  ];
+
   options.services.backup-s3 = {
     subvols = mkOption {
       type = types.listOf types.str;
@@ -19,11 +23,14 @@ in
     };
   };
 
-  imports = [
-    inputs.self.nixosModules.backup-s3-mount
-  ];
-
   config = {
+    age.secrets.s3-backup = { file = "${inputs.self}/secrets/s3-backup.age"; };
+
+    personal.s3-mounts.backup = {
+      mountPoint = "/mnt/s3_backup";
+      passwdFile = config.age.secrets.s3-backup.path;
+    };
+
     environment.systemPackages = [ pkgs.gzip pkgs.gnupg ];
 
     age.secrets.gpg-backup-key = {
@@ -60,7 +67,7 @@ in
         incremental = "no";
 
         target =
-          "raw ${config.fileSystems.backups-bucket.mountPoint}/${config.networking.hostName}";
+          "raw ${config.personal.s3-mounts.backup.mountPoint}/${config.networking.hostName}";
         target_preserve = "14d";
         target_preserve_min = "2d";
 
