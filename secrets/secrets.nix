@@ -35,6 +35,4 @@ in
   "wg/distortion.age".publicKeys = admins ++ [ distortion ];
   "wg/blueberry.age".publicKeys = admins ++ [ blueberry ];
   "wg/elderberry.age".publicKeys = admins ++ [ elderberry ];
-
-  "vault/terraform.age".publicKeys = admins;
 }
