@@ -28,6 +28,8 @@ vim.cmd [[highlight NormalFloat guibg='none']]
 vim.cmd [[highlight Pmenu guibg='none']]
 vim.cmd [[highlight link LspSignatureActiveParameter CmpItemKind]]
 vim.cmd [[highlight CurSearch guibg='#ccad8e']]
+vim.cmd [[highlight link Sneak Error]]
+vim.cmd [[highlight link SneakLabel Error]]
 
 local function spacesl(s)
   return string.gsub(s, "^(%s*).-$", "%1")

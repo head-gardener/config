@@ -56,6 +56,15 @@ return {
     end,
   },
   {
+    'justinmk/vim-sneak',
+    lazy = false,
+    keys = function()
+      return {
+        { ';;', '<Plug>Sneak_;'},
+      }
+    end,
+  },
+  {
     'Wansmer/sibling-swap.nvim',
     requires = { 'nvim-treesitter' },
     lazy = false,
@@ -110,7 +119,6 @@ return {
       }
     },
   },
-  'chrisbra/improvedft',
   'ja-ford/delaytrain.nvim',
   'arthurxavierx/vim-unicoder',
   {
