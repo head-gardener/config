@@ -3,3 +3,22 @@ login:
   sudo true
   echo 'export TF_VAR_vault_token="$(curl -s -d "{ \"role_id\": \"$(sudo cat /etc/vault/terraform/role_id)\", \"secret_id\": \"$(sudo cat /etc/vault/terraform/secret_id)\"}" $VAULT_ADDR/v1/auth/approle/login | jq -r .auth.client_token)"'
   echo 'export VAULT_TOKEN="$TF_VAR_vault_token"'
+
+update-role tgt role path=".":
+  #! /usr/bin/env bash
+  echo rotating secret-id...
+  vault list -format=json auth/approle/role/{{ role }}/secret-id \
+    | jq -r .[] \
+    | xargs -i vault write auth/approle/role/{{ role }}/secret-id-accessor/destroy "secret_id_accessor={}"
+  role_id="$(vault read -format=json auth/approle/role/{{ role }}/role-id | jq -r '.data.role_id')"
+  secret_id="$(vault write -f -format=json auth/approle/role/{{ role }}/secret-id | jq -r .data.secret_id)"
+  ssh -tt {{ tgt }} " \
+  set -e; \
+  umask 077; \
+  sudo mkdir -p /etc/vault/{{ path }}/; \
+  sudo chown root:root /etc/vault --recursive; \
+  sudo touch /etc/vault/{{ path }}/role_id; \
+  sudo touch /etc/vault/{{ path }}/secret_id; \
+  echo -n \"$role_id\" | sudo tee /etc/vault/{{ path }}/role_id > /dev/null; \
+  echo -n \"$secret_id\" | sudo tee /etc/vault/{{ path }}/secret_id > /dev/null; \
+  "
