@@ -4,13 +4,8 @@
   imports = [
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    inputs.self.nixosModules.backup-local
-    inputs.self.nixosModules.backup-s3
     inputs.self.nixosModules.zram
   ];
-
-  services.backup-local.subvols = [ "var" ];
-  services.backup-s3.subvols = [ "root" ];
 
   boot.loader.grub = {
     enable = true;

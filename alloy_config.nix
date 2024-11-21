@@ -76,8 +76,6 @@ in {
       wireguard-server
     ] ++ server;
     cherry = [
-      backup-local
-      backup-s3
       cache
     ];
     elderberry = [
