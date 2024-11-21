@@ -13,7 +13,11 @@ get-secret secret:
 deploy tgt:
   rsync --exclude-from=.gitignore --filter=':- .gitignore' \
     . {{ tgt }}:/tmp/config -azv
-  ssh -tt {{ tgt }} sudo nixos-rebuild switch --flake /tmp/config
+  ssh -tt {{ tgt }} ' \
+  sys="$(nix build \
+    /tmp/config#nixosConfigurations.{{ tgt }}.config.system.build.toplevel \
+    --no-link --print-out-paths)"; \
+  sudo "$sys/bin/switch-to-configuration" switch;'
 
 # build system locally, send it and activate it on the remote
 build-deploy tgt:
