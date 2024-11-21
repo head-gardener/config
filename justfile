@@ -19,6 +19,14 @@ deploy tgt:
     --no-link --print-out-paths)"; \
   sudo "$sys/bin/switch-to-configuration" switch;'
 
+change-nixos-release from to:
+  rg --files-with-matches {{ from }} | rg -v '^flake.lock$' | \
+    xargs -I _ sh -c "echo --- _; sed -n 's/{{ from }}/{{ to }}/p' _"
+  read -p "Ok? (y/n) " ok && [ "$ok" == "y" ] || exit 1
+  rg --files-with-matches {{ from }} | rg -v '^flake.lock$' | \
+    xargs -I _ sh -c "echo --- _; sed -i 's/{{ from }}/{{ to }}/' _"
+  nix flake lock
+
 # build system locally, send it and activate it on the remote
 build-deploy tgt:
   #! /usr/bin/env bash
