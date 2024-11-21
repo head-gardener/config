@@ -14,6 +14,7 @@ deploy tgt:
   rsync --exclude-from=.gitignore --filter=':- .gitignore' \
     . {{ tgt }}:/tmp/config -azv
   ssh -tt {{ tgt }} ' \
+  set -ex; \
   sys="$(nix build \
     /tmp/config#nixosConfigurations.{{ tgt }}.config.system.build.toplevel \
     --no-link --print-out-paths)"; \

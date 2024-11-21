@@ -1,11 +1,18 @@
-# login using terraform approle. pipe into `| source`
+# login using terraform approle. pipe into `source`
 login:
   sudo true
   echo 'export TF_VAR_vault_token="$(curl -s -d "{ \"role_id\": \"$(sudo cat /etc/vault/terraform/role_id)\", \"secret_id\": \"$(sudo cat /etc/vault/terraform/secret_id)\"}" $VAULT_ADDR/v1/auth/approle/login | jq -r .auth.client_token)"'
   echo 'export VAULT_TOKEN="$TF_VAR_vault_token"'
 
+# populate env with vault's secrets needed for terraform. pipe into `source`
+populate-env:
+  echo 'export TF_VAR_backup_secret="$(vault kv get -format=json -mount=services minio/backup | jq -r '.data.data.pass')"'
+  echo 'export TF_VAR_torrent_secret="$(vault kv get -format=json -mount=services minio/torrent | jq -r '.data.data.pass')"'
+
+# rotate role's secret_id, push it to remote
 update-role tgt role path=".":
   #! /usr/bin/env bash
+  set -e
   echo rotating secret-id...
   vault list -format=json auth/approle/role/{{ role }}/secret-id \
     | jq -r .[] \

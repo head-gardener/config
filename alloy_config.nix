@@ -32,6 +32,7 @@ in {
       prometheus-node
       promtail
       tuner
+      vault-agent
     ];
   in {
     distortion = [
@@ -82,7 +83,6 @@ in {
     elderberry = [
       cache
       sing-box-out
-      vault-agent
       wireguard-client
     ] ++ server;
   };

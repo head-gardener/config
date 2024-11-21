@@ -20,11 +20,6 @@ in
   "id_gh.age".publicKeys = admins ++ systems;
   "id_conf.age".publicKeys = admins ++ deploy;
   "minio-creds.age".publicKeys = admins ++ deploy;
-  "s3-hunter.age".publicKeys = users ++ systems;
-  "s3-ro.age".publicKeys = users ++ systems;
-  "s3-backup.age".publicKeys = admins ++ deploy;
-  "s3-torrent.age".publicKeys = admins ++ deploy;
-  "vmess-uuid.age".publicKeys = users ++ systems;
   "jenkins-slave-secret.age".publicKeys = admins ++ [ blueberry ];
 
   "gpg/ambrosia.age".publicKeys = admins ++ [ ambrosia ];

@@ -4,13 +4,16 @@
     inputs.self.nixosModules.s3-mounts
   ];
 
-  age.secrets.s3-torrent = {
-    file = "${inputs.self}/secrets/s3-torrent.age";
+  personal.va.templates.s3-torrent = {
+    contents = ''
+      {{ with secret "services/minio/torrent" }}{{ .Data.data.user }}:{{ .Data.data.pass }}{{ end }}
+    '';
+    for = "mnt-s3_torrent.mount";
   };
 
   personal.s3-mounts.torrent = {
     mountPoint = "/mnt/s3_torrent";
-    passwdFile = config.age.secrets.s3-torrent.path;
+    passwdFile = config.personal.va.templates.s3-torrent.destination;
   };
 
   services.transmission = {

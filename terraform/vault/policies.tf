@@ -11,6 +11,7 @@ path "*" {
 locals {
   services = [ "sing-box" ]
   externals = [ "github" ]
+  buckets = [ "backup", "torrent" ]
 }
 
 resource "vault_policy" "service_user" {
@@ -19,6 +20,17 @@ resource "vault_policy" "service_user" {
 
   policy = <<EOT
 path "services/data/${each.value}/*" {
+  capabilities = ["read"]
+}
+  EOT
+}
+
+resource "vault_policy" "bucket_user" {
+  for_each = toset(local.buckets)
+  name = each.value
+
+  policy = <<EOT
+path "services/data/minio/${each.value}" {
   capabilities = ["read"]
 }
   EOT

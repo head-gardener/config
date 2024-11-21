@@ -4,8 +4,13 @@ resource "vault_auth_backend" "approle" {
 
 locals {
   machine = {
-    blueberry = [ ]
-    elderberry = [ vault_policy.service_user["sing-box"].name ]
+    blueberry = [
+      vault_policy.bucket_user["torrent"].name,
+      vault_policy.bucket_user["backup"].name
+    ]
+    elderberry = [
+      vault_policy.service_user["sing-box"].name
+    ]
     ambrosia = [
       vault_policy.service_user["sing-box"].name,
       vault_policy.externals_user["github"].name

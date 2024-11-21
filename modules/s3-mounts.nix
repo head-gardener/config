@@ -12,7 +12,7 @@ let
         "use_path_request_style"
         "url=${cfg.url}"
         "passwd_file=${cfg.passwdFile}"
-        "umask=000"
+        "umask=${cfg.umask}"
       ];
     };
   };
@@ -28,7 +28,10 @@ in {
           };
           passwdFile = lib.mkOption {
             type = lib.types.str;
-            default = "https://s3.backyard-hg.xyz";
+          };
+          umask = lib.mkOption {
+            type = lib.types.str;
+            default = "000";
           };
         };
       });

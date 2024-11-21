@@ -24,11 +24,17 @@ in
   };
 
   config = {
-    age.secrets.s3-backup = { file = "${inputs.self}/secrets/s3-backup.age"; };
+    personal.va.templates.s3-backup = {
+      contents = ''
+        {{ with secret "services/minio/backup" }}{{ .Data.data.user }}:{{ .Data.data.pass }}{{ end }}
+      '';
+      for = "mnt-s3_backup.mount";
+    };
 
     personal.s3-mounts.backup = {
       mountPoint = "/mnt/s3_backup";
-      passwdFile = config.age.secrets.s3-backup.path;
+      passwdFile = config.personal.va.templates.s3-backup.destination;
+      umask = "077";
     };
 
     environment.systemPackages = [ pkgs.gzip pkgs.gnupg ];
