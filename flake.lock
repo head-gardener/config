@@ -1028,11 +1028,11 @@
         "pw-volume": "pw-volume"
       },
       "locked": {
-        "lastModified": 1729947782,
-        "narHash": "sha256-V/Z0wwdforLq8nJ7ixBqpGfT8so5UeYz/hBSRcGnrzo=",
+        "lastModified": 1732125519,
+        "narHash": "sha256-WWFJLCpF28vuoSZcxl0f0kUGFAMpcsZgrQEfXY/OvBw=",
         "owner": "head-gardener",
         "repo": "xmonad",
-        "rev": "f1b73aa2014f5e633bedc7ff907fc73e64bbc00a",
+        "rev": "ace25748850b6c62e2d18df307a23f0f7c2bc051",
         "type": "github"
       },
       "original": {
