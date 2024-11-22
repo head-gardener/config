@@ -53,6 +53,8 @@ in {
     nixpkgs.allowUnfreeByName = [ "vault" ];
     systemd.services.vault.after = [ config.personal.wg.service ];
 
+    environment.systemPackages = [ pkgs.vault ];
+
     system.activationScripts.vault-agent-mount = {
       deps = [ "specialfs" ];
       text = ''
