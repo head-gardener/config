@@ -17,8 +17,9 @@ locals {
       vault_policy.service_user["sing-box"].name,
     ]
     ambrosia = [
+      vault_policy.bucket_user["admin"].name,
       vault_policy.externals_user["github"].name,
-      vault_policy.gpg_key_user["blueberry"].name,
+      vault_policy.gpg_key_user["ambrosia"].name,
       vault_policy.service_user["sing-box"].name,
     ]
   }
