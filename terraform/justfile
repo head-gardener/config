@@ -6,10 +6,10 @@ login:
 
 # populate env with vault's secrets needed for terraform. pipe into `source`
 populate-env:
-  echo 'export TF_VAR_backup_secret="$(vault kv get -format=json -mount=services minio/backup | jq -r '.data.data.pass')"'
-  echo 'export TF_VAR_torrent_secret="$(vault kv get -format=json -mount=services minio/torrent | jq -r '.data.data.pass')"'
-  echo 'export TF_VAR_do_token="$(vault kv get -format=json -mount=externals digitalocean/main | jq -r '.data.data.token')"'
-  echo 'export TF_VAR_minio_secret="$(vault kv get -format=json -mount=services minio/admin | jq -r '.data.data.pass')"'
+  echo 'export TF_VAR_minio_secret="$(vault kv get -field=pass -mount=services minio/admin)"'
+  echo 'export TF_VAR_backup_secret="$(vault kv get -field=pass -mount=services minio/backup)"'
+  echo 'export TF_VAR_torrent_secret="$(vault kv get -field=pass -mount=services minio/torrent)"'
+  echo 'export TF_VAR_do_token="$(vault kv get -field=token -mount=externals digitalocean/main)"'
 
 # rotate role's secret_id, push it to remote
 update-role tgt role path=".":
