@@ -14,7 +14,7 @@ in
   options.services.conky = {
     enable = mkEnableOption "conky";
 
-    package = mkPackageOptionMD pkgs "conky" { };
+    package = mkPackageOption pkgs "conky" { };
 
     config = mkOption {
       type = types.lines;
