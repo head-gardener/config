@@ -11,7 +11,6 @@ in {
     resolve = alloy-utils.fromTable {
       blueberry = "192.168.1.102";
       cherry = "192.168.1.195";
-      elderberry = "157.230.20.233";
     };
   };
 

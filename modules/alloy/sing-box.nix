@@ -1,7 +1,13 @@
-{ alloy, lib, inputs, pkgs, config, ... }: {
+{ lib, inputs, pkgs, config, ... }: {
   personal.va.templates.vmess-uuid = {
     path = "services/sing-box/vmess-uuid";
     field = "uuid";
+    for = "sing-box.service";
+  };
+
+  personal.va.templates.proxy-server = {
+    path = "services/hosts/elderberry";
+    field = "address";
     for = "sing-box.service";
   };
 
@@ -28,7 +34,7 @@
           {
             tag = "vmess-out";
             type = "vmess";
-            server = alloy.sing-box-out.address;
+            server._secret = config.personal.va.templates.proxy-server.destination;
             server_port = 19555;
             alter_id = 0;
             uuid._secret = config.personal.va.templates.vmess-uuid.destination;

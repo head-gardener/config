@@ -10,6 +10,7 @@ path "*" {
 
 locals {
   services = [
+    "hosts",
     "jenkins",
     "nix-serve",
     "sing-box",
