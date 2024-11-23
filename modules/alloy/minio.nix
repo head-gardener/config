@@ -17,6 +17,7 @@
 
     services.minio = {
       enable = true;
+      dataDir = [ "/mnt/minio" ];
       rootCredentialsFile = config.personal.va.templates.minio-admin.destination;
       port = 9000;
       consolePort = 9001;

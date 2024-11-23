@@ -71,7 +71,7 @@ in {
       prometheus
       refresher-staging
       rotate-all
-      transmission-to-s3
+      rtorrent-to-s3
       vault
       wireguard-server
     ] ++ server;

@@ -54,6 +54,12 @@
     hideMounts = true;
     directories = [
       "/etc/ssh"
+      {
+        directory = "/etc/vault";
+        user = "root";
+        group = "root";
+        mode = "u=rwx,g=,o=";
+      }
     ];
     users.hunter = {
       directories = [
@@ -81,6 +87,15 @@
   networking.firewall.allowedTCPPorts = [ 3000 ];
   networking.firewall.allowedUDPPorts = [ ];
   networking.firewall.allowPing = true;
+
+  fileSystems."/mnt/minio" = {
+    device = "/dev/disk/by-uuid/795ba0eb-b8a5-4253-a8a4-bb703053ccb8";
+    fsType = "btrfs";
+    options = [
+      "subvol=minio"
+      "compress=zstd"
+    ];
+  };
 
   system = {
     autoUpgrade = {

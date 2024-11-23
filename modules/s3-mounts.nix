@@ -6,6 +6,7 @@ let
       mountPoint = cfg.mountPoint;
       fsType = "fuse./run/current-system/sw/bin/s3fs";
       noCheck = true;
+      neededForBoot = false;
       options = [
         "_netdev"
         "allow_other"
@@ -28,6 +29,10 @@ in {
           };
           passwdFile = lib.mkOption {
             type = lib.types.str;
+          };
+          after = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ "networking.target" ];
           };
           umask = lib.mkOption {
             type = lib.types.str;

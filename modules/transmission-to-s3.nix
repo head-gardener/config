@@ -12,6 +12,7 @@
   };
 
   personal.s3-mounts.torrent = {
+    after = [ "vault-agent-machine.service" ];
     mountPoint = "/mnt/s3_torrent";
     passwdFile = config.personal.va.templates.s3-torrent.destination;
   };

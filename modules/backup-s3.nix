@@ -32,6 +32,7 @@ in
     };
 
     personal.s3-mounts.backup = {
+      after = [ "vault-agent-machine.service" ];
       mountPoint = "/mnt/s3_backup";
       passwdFile = config.personal.va.templates.s3-backup.destination;
       umask = "077";
@@ -49,6 +50,8 @@ in
     # fuck it
     systemd.services.btrbk-s3.serviceConfig.User = lib.mkForce "root";
     systemd.services.btrbk-s3.serviceConfig.Group = lib.mkForce "root";
+
+    systemd.services.btrbk-s3.after = [ "mnt_s3-backup.mount" ];
 
     systemd.services.btrbk-s3.preStart = ''
       echo importing backup encryption keys...
