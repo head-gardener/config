@@ -12,7 +12,7 @@ in
   options.services.easyeffects = {
     enable = mkEnableOption "easyeffects";
 
-    package = mkPackageOptionMD pkgs "easyeffects" { };
+    package = mkPackageOption pkgs "easyeffects" { };
 
     args = mkOption {
       type = types.listOf types.str;

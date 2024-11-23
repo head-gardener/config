@@ -14,7 +14,7 @@ in
   options.services.xmobar = {
     enable = mkEnableOption "xmobar";
 
-    package = mkPackageOptionMD pkgs.haskellPackages "xmobar" { };
+    package = mkPackageOption pkgs.haskellPackages "xmobar" { };
 
     config = mkOption {
       type = types.lines;
