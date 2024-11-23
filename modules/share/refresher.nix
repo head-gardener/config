@@ -75,7 +75,7 @@ let
         timerConfig = {
           OnCalendar = cfg.onCalendar;
           Persistent = true;
-          Unit = name;
+          Unit = "${name}.service";
         };
       };
     };

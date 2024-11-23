@@ -43,6 +43,17 @@ path "services/data/gpg/${each.value}" {
   EOT
 }
 
+resource "vault_policy" "service_rotate" {
+  for_each = toset(local.services)
+  name = "rotate-${each.value}"
+
+  policy = <<EOT
+path "services/data/${each.value}/*" {
+  capabilities = ["update"]
+}
+  EOT
+}
+
 resource "vault_policy" "service_user" {
   for_each = toset(local.services)
   name = "service-${each.value}"

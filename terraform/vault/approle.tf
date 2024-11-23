@@ -25,7 +25,12 @@ locals {
   }
 
   service = {
-    terraform = [ vault_policy.terraform.name ]
+    terraform = [
+      vault_policy.terraform.name,
+    ]
+    rotate = [
+      vault_policy.service_rotate["sing-box"].name,
+    ]
   }
 }
 

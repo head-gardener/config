@@ -71,6 +71,7 @@ in {
       nix-serve
       prometheus
       refresher-staging
+      rotate-all
       transmission-to-s3
       vault
       wireguard-server
