@@ -49,10 +49,14 @@ end
 
 function MyFoldText()
   local line = vim.fn.getline(vim.v.foldstart)
-  local line_count = vim.v.foldend - vim.v.foldstart + 1
-  -- return spacesl(line) .. '=<< ' .. 'x' .. line_count
-  --     .. ': ' .. limit(trim(line), 30)
-  return line .. " =>"
+  local line_count = vim.v.foldend - vim.v.foldstart
+  local count
+  if line_count > 25 then
+    count = string.rep("*", math.min(10, math.floor(line_count / 10)))
+  else
+    count = string.rep(".", line_count)
+  end
+  return line .. " => " .. count
 end
 
 vim.opt.foldtext = 'v:lua.MyFoldText()'
