@@ -135,8 +135,14 @@ return {
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = {},
+        auto_install = false,
+        modules = {},
         sync_install = false,
         ignore_install = {},
+        folding = {
+          enable = true,
+          persistent = true,
+        },
         highlight = {
           enable = true,
           disable = {},
