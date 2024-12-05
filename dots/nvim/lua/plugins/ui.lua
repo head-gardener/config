@@ -353,14 +353,6 @@ return {
     end,
   },
   {
-    'enddeadroyal/symbols-outline.nvim',
-    keys = function()
-      return {
-        { '<Leader>sd', ':SymbolsOutline<CR>', noremap = true },
-      }
-    end,
-  },
-  {
     'folke/todo-comments.nvim',
     opts = {
       signs = true,      -- show icons in the signs column

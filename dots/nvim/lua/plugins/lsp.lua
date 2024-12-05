@@ -27,6 +27,7 @@ local lsp_signature_cfg = {
   handler_opts = {
     border = "rounded",
   },
+  floating_window = false,
   doc_lines = 0,
   floating_window_off_x = 1,
   floating_window_off_y = -2,

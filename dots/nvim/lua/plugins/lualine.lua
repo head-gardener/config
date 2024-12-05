@@ -14,6 +14,16 @@ local clock = function()
   return os.date('%H:%M:%S')
 end
 
+local current_signature = function(width)
+  if not pcall(require, 'lsp_signature') then return end
+  local sig = require("lsp_signature").status_line(width)
+  return sig.label
+end
+
+local cur_sig_wrapped = function()
+  return current_signature(math.floor(vim.fn.winwidth(0) / 2))
+end
+
 return {
   {
     'nvim-lualine/lualine.nvim',
@@ -69,7 +79,7 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'diagnostics' },
+        lualine_b = { cur_sig_wrapped, 'diagnostics' },
         lualine_c = { 'filename' },
         lualine_x = { 'filetype' },
         lualine_y = { 'location' },
