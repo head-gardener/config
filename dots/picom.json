@@ -3,7 +3,8 @@
   "blur-background-exclude":
   [
     "window_type = 'dock'",
-    "window_type = 'desktop'"
+    "window_type = 'desktop'",
+    "class_g = 'activate-linux'"
   ],
   "blur-kern": "3x3box",
   "blur-method": "dual_kawase",
@@ -31,7 +32,8 @@
   "shadow-exclude":
   [
     "name = 'Notification'",
-    "class_g = 'Conky'"
+    "class_g = 'Conky'",
+    "class_g = 'activate-linux'"
   ],
   "shadow-offset-x": -7,
   "shadow-offset-y": -7,
