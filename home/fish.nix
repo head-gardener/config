@@ -15,6 +15,12 @@ in
       mux = "tmuxinator";
       tp = "pushd $(mktemp -d)";
       mux-tp = "tmux new-session -d -c $(mktemp -d) -s tmp";
+
+      d = "docker";
+      e = "$EDITOR";
+      c = "docker compose";
+
+      "компот" = "docker compose";
     };
     shellAbbrs = {
       loc = "XDG_CONFIG_HOME=~/config/dots";
