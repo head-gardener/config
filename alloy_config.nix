@@ -71,6 +71,7 @@ in {
       nginx
       nix-serve
       prometheus
+      refresher-config
       refresher-staging
       rotate-all
       rtorrent-to-s3
