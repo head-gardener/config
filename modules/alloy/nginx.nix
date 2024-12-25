@@ -12,16 +12,6 @@ in
     };
   };
 
-  services.blog = {
-    enable = true;
-    host = "backyard-hg.xyz";
-    vhostConfig = {
-      enableACME = true;
-      forceSSL = true;
-      # extraConfig = "limit_req zone=common;";
-    };
-  };
-
   services.prometheus = {
     enable = true;
     port = 4000;

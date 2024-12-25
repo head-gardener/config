@@ -61,6 +61,7 @@ in {
     blueberry = [
       backup-local
       backup-s3
+      blog
       cache
       grafana
       jenkins-mono

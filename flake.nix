@@ -2,18 +2,18 @@
   inputs = {
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     alloy.inputs.nixpkgs.follows = "nixpkgs";
-    blog.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hydra.inputs.nixpkgs.follows = "nixpkgs";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixd.inputs.nixpkgs.follows = "nixpkgs";
+    notes.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     xmonad.inputs.nixpkgs.follows = "nixpkgs";
 
     alloy.url = "github:head-gardener/alloy";
     # alloy.url = "git+file:/home/hunter/Code/alloy";
-    blog.url = "github:head-gardener/blog";
-    # blog.url = "git+file:/home/hunter/Blog/";
+    notes.url = "github:head-gardener/notes";
+    # notes.url = "git+file:/home/hunter/notes/";
     xmonad.url = "github:head-gardener/xmonad";
     # xmonad.url = "git+file:/home/hunter/xmonad/";
 

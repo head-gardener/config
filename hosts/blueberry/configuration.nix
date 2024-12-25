@@ -3,7 +3,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.blog.nixosModules.blog
     (inputs.self.lib.mkKeys inputs.self "hunter")
     inputs.self.nixosModules.zram
   ];
