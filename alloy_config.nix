@@ -48,6 +48,7 @@ in {
     ambrosia = [
       cache
       docker
+      pass
       sing-box
       tailscale-client
       terraform
