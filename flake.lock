@@ -889,11 +889,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1735551756,
-        "narHash": "sha256-fQP6NRlfr9t1tjPI3kto9QRzrCokWOwVtrz+en1eD40=",
+        "lastModified": 1736039247,
+        "narHash": "sha256-tp6RQYQAcnA8s+0T7kNWefePoDntOD/OlaDO6kkjcxg=",
         "owner": "head-gardener",
         "repo": "notes",
-        "rev": "ca62405a4e02989ab0a3e36eba4328c72a2eaf85",
+        "rev": "9c0d8169b44cb6f33cffb821440a8d6ecbe7009e",
         "type": "github"
       },
       "original": {
