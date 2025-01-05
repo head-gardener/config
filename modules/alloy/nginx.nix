@@ -47,7 +47,7 @@ in
     commonHttpConfig = "limit_req_zone $binary_remote_addr zone=common:10m rate=10r/s;";
 
     virtualHosts = rec {
-      "s3.backyard-hg.xyz" = {
+      "s3.backyard-hg.net" = {
         enableACME = true;
         forceSSL = true;
         locations."/" = {

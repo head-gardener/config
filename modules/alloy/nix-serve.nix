@@ -15,7 +15,7 @@
     personal.gc.maxAge = 90;
 
     services.nix-serve = {
-      endpoint = "cache.backyard-hg.xyz";
+      endpoint = "cache.backyard-hg.net";
       pubkey = "blueberry:yZO3C9X6Beti/TAEXxoJaMHeIP3jXYVWscrYyqthly8=";
 
       enable = true;

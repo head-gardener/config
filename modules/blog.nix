@@ -1,6 +1,6 @@
 { inputs, pkgs, ... }:
 {
-  services.nginx.virtualHosts."backyard-hg.xyz" = {
+  services.nginx.virtualHosts."backyard-hg.net" = {
     enableACME = true;
     forceSSL = true;
     locations = {

@@ -25,7 +25,7 @@ in {
           mountPoint = lib.mkOption { type = lib.types.str; };
           url = lib.mkOption {
             type = lib.types.str;
-            default = "https://s3.backyard-hg.xyz";
+            default = "https://s3.backyard-hg.net";
           };
           passwdFile = lib.mkOption {
             type = lib.types.str;

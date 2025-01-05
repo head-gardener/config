@@ -87,6 +87,6 @@ $color3${cat /proc/pressure/io}
 $color3${font1}Networking$font
 
 ${color2}Up:$color ${upspeed} ${color2} - Down:$color ${downspeed}
-${color2}cache: ${color1}${tcp_ping cache.backyard-hg.xyz 80}us
+${color2}cache: ${color1}${tcp_ping cache.backyard-hg.net 80}us
 $color2${scroll 56 ${cat /proc/stat}}
 ]]

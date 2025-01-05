@@ -17,7 +17,7 @@
       ];
 
     services.hydra = rec {
-      endpoint = "hydra.backyard-hg.xyz";
+      endpoint = "hydra.backyard-hg.net";
       metricsPort = 9198;
 
       enable = true;
