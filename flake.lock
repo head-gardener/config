@@ -32,11 +32,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1731346419,
-        "narHash": "sha256-KWTrl9nPcTqAO3tvphc42V3JrqlkO0ESdhtmk/hDp0g=",
+        "lastModified": 1736121831,
+        "narHash": "sha256-JYfCA1mfyh6SW7XfyNg7wRKJLHnV3EBsjUtCQ/j2fAg=",
         "owner": "head-gardener",
         "repo": "alloy",
-        "rev": "6f606a1b264053d39269b1fb71e8dec7f88c3728",
+        "rev": "8590569b1535c60609cad5bff31b7fcdc245886c",
         "type": "github"
       },
       "original": {
