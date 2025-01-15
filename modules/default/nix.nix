@@ -31,7 +31,7 @@
         # needed for hydra. TODO investigate
         allowed-uris = [
           "https://"
-            "github:"
+          "github:"
         ];
       };
 
