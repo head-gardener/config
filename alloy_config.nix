@@ -63,6 +63,7 @@ in {
       backup-s3
       blog
       cache
+      gitea
       grafana
       jenkins-mono
       loki
