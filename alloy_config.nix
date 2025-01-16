@@ -49,6 +49,7 @@ in {
       cache
       docker
       pass
+      podman
       sing-box
       tailscale-client
       terraform
