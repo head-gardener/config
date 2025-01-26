@@ -27,6 +27,21 @@ resource "digitalocean_ssh_key" "ambrosia" {
   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIiiSLosPqVfFJUepkajqhuNSxn3+jjTNOGjyTpKzXKv hunter@ambrosia\n"
 }
 
+# resource "digitalocean_droplet" "temp" {
+#   backups            = "false"
+#   ipv6               = "false"
+#   monitoring         = "false"
+#   name               = "temp"
+#   region             = "fra1"
+#   size               = "s-1vcpu-512mb-10gb"
+#   vpc_uuid           = "bbd52e78-d996-4e4d-ba82-cfb485053d62"
+#   image              = "laravel-forge-ubuntu-24-04"
+
+#   ssh_keys           = [
+#     digitalocean_ssh_key.ambrosia.id,
+#   ]
+# }
+
 resource "digitalocean_droplet" "elderberry" {
   backups            = "false"
   ipv6               = "false"
