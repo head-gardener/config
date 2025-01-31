@@ -23,6 +23,7 @@ return {
         }),
         mapping = {
           ['<CR>'] = cmp.mapping.confirm({ select = false }),
+          ['<C-c>'] = cmp.mapping.complete({ "i", "s" }),
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
