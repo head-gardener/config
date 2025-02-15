@@ -8,7 +8,11 @@
     '';
   };
 
-  environment.systemPackages = with pkgs; [ tmuxinator ];
+  environment.systemPackages = with pkgs; [
+    tmuxinator
+    tmux-sessionizer
+    fzf
+  ];
 
   programs.tmux = {
     enable = true;
@@ -28,6 +32,10 @@
       set -g mouse on
       set -g status-right "=>> #H %H:%M"
       set -g allow-passthrough on
+
+      bind C-o display-popup -E "sesh"
+      bind C-j display-popup -E "tms switch"
+      bind C-e display-popup 'fish -c "$(fish -c history | fzf)"'
     '';
     plugins = with pkgs.tmuxPlugins; [
       extrakto

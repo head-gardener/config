@@ -15,7 +15,6 @@
       dconf
       easyeffects
       fish
-      fzf
       fzy
       libnotify
       neofetch
