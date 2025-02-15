@@ -1,5 +1,14 @@
 function sesh -d "Starts a new tmux session from the given target, which is queried from zoxide or represents an absolute path" -a target
-  set path (zoxide query "$target" || echo path)
+  if [ -n "$target" ]
+    set path (zoxide query "$target" || echo "$target")
+    if not [ -d "$path" ]
+      echo "'$path' not a directory!"
+      return
+    end
+  else
+    set path (zoxide query -i)
+    [ "$status" -eq 0 ] || return
+  end
   set name (echo $path | sed 's,.*/,,')
 
   echo -n "name: ";
@@ -17,4 +26,5 @@ function sesh -d "Starts a new tmux session from the given target, which is quer
   end
 
   tmux new-session -d -s "$name" -c "$path"
+  tmux switch-client -t "$name"
 end
