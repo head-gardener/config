@@ -28,7 +28,7 @@
     nixd.url = "github:nix-community/nixd";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:danth/stylix/release-24.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
