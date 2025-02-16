@@ -44,7 +44,6 @@
 
         slaveAgentPort = 10000;
         numExecutors = 0;
-        agentProtocols = [ "JNLP4-connect" ];
       };
     };
   in {
