@@ -36,6 +36,7 @@
       bind C-o display-popup -E "sesh"
       bind C-j display-popup -E "tms switch"
       bind C-e display-popup 'fish -c "$(fish -c history | fzf)"'
+      bind C-d display-popup -E 'fish -c dash'
     '';
     plugins = with pkgs.tmuxPlugins; [
       extrakto
