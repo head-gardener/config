@@ -34,12 +34,7 @@ function Dash.runline()
     output[i] = string.format(vim.bo.commentstring, "| " .. v)
   end
 
-  local current_line = vim.fn.line(".") - 1
-  local comment_prefix = string.format(vim.bo.commentstring, "| ")
-  while string.sub(vim.fn.getline(current_line), 1, string.len(comment_prefix)) == comment_prefix do
-   vim.fn.deletebufline("%", current_line)
-   current_line = current_line - 1
-  end
+  local current_line = Dash.clearline()
   vim.fn.append(current_line, output)
 end
 
@@ -53,6 +48,16 @@ function Dash.nextline()
   vim.fn.search("^[^(" .. comment_prefix .. ")]")
 end
 
+function Dash.clearline()
+  local current_line = vim.fn.line(".") - 1
+  local comment_prefix = string.format(vim.bo.commentstring, "| ")
+  while string.sub(vim.fn.getline(current_line), 1, string.len(comment_prefix)) == comment_prefix do
+   vim.fn.deletebufline("%", current_line)
+   current_line = current_line - 1
+  end
+  return current_line
+end
+
 function Dash.clearall()
   local comment_prefix = string.format(vim.bo.commentstring, "| ")
   vim.cmd("g/^" .. comment_prefix .. "/delete")
@@ -60,10 +65,11 @@ end
 
 vim.keymap.set("n", "<localleader>ls", Dash.sendline, { desc = "send current line to a pane" })
 vim.keymap.set("n", "<localleader>lr", Dash.runline, { desc = "execute current line in buffer" })
-vim.keymap.set("n", "<localleader>lp", Dash.prevline, { desc = "go to next command line" })
-vim.keymap.set("n", "<localleader>ln", Dash.nextline, { desc = "go to previous command line" })
-vim.keymap.set("n", "<localleader>lc", Dash.clearall, { desc = "clear all dash comments" })
+vim.keymap.set({ "n", "v" }, "<localleader>lp", Dash.prevline, { desc = "go to next command line" })
+vim.keymap.set({ "n", "v" }, "<localleader>ln", Dash.nextline, { desc = "go to previous command line" })
+vim.keymap.set("n", "<localleader>lc", Dash.clearline, { desc = "clear dash comment for current line" })
+vim.keymap.set("n", "<localleader>lw", Dash.clearall, { desc = "(w)ipe, clear all dash comments" })
 
-print("Welcome to dash! Use <localleader>ls to send current line to pane 0 and <localleader>lr to execute command in buffer")
+print("Welcome to dash! Use `:lua Dash.<command>()` or <localleader>l prefix to execute commands")
 ' > "$data/commands.lua"
 end
