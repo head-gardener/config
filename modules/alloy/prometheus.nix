@@ -16,6 +16,15 @@
         }];
       }
       {
+        job_name = "jenkins";
+        static_configs = [{
+          targets = [
+            "${alloy.jenkins-mono.address}:${toString alloy.jenkins-mono.config.services.jenkins.port}"
+          ];
+        }];
+        metrics_path = "prometheus/";
+      }
+      {
         job_name = "loki";
         static_configs = [{
           targets = [
