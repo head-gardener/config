@@ -6,6 +6,17 @@ let
   allowFor = user: {
     users.users.${mainUser}.openssh.authorizedKeys.keyFiles = [ ./ssh/${mainUser}/${user} ];
   };
+
+  strictSSH = {
+    services.fail2ban.jails = {
+      sshd = {
+        settings = {
+          findtime = "96h";
+          maxretries = 2;
+        };
+      };
+    };
+  };
 in {
   settings = {
     resolve = alloy-utils.fromTable {
@@ -85,7 +96,9 @@ in {
     ];
     elderberry = [
       cache
+      fail2ban
       sing-box-out
+      strictSSH
       wireguard-client
     ] ++ server;
   };
