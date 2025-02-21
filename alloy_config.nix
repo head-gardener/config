@@ -64,6 +64,7 @@ in {
       sing-box
       tailscale-client
       terraform
+      vagrant
       vault-agent
       wireguard-client
     ];
