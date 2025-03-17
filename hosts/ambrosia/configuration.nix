@@ -47,6 +47,9 @@
 
   services = {
     blueman.enable = true;
+    xserver.windowManager.myxmonad.extraCommands = ''
+      xinput set-prop "10" "libinput Accel Speed" 1
+    '';
   };
 
   programs = {
