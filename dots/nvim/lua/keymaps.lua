@@ -31,6 +31,9 @@ vim.keymap.set('n', '<Space>g', 'za', { noremap = true })
 vim.keymap.set('n', 'zl', 'zMzv', { noremap = true })
 
 -- Shortcuts
+vim.keymap.set({'n', 'v'}, '<leader>sm', ':s/\\v', { desc = 'Search and replace, verymagic' })
+vim.keymap.set({'n', 'v'}, '<leader>sn', ':s/\\m', { desc = 'Search and replace, magic' })
+vim.keymap.set({'n', 'v'}, 'g.', ':<Up><CR>', { desc = 'Repeat last command' })
 vim.keymap.set('v', '<C-s>', ':sort<CR>', { noremap = true })
 vim.keymap.set('n', '<C-i>', '<C-a>', { noremap = true })
 vim.keymap.set('n', '<Space>p', ':b#<CR>', { noremap = true })
