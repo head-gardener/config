@@ -31,6 +31,8 @@ vim.keymap.set('n', '<Space>g', 'za', { noremap = true })
 vim.keymap.set('n', 'zl', 'zMzv', { noremap = true })
 
 -- Shortcuts
+vim.keymap.set({'n', 'v'}, 'gy', '"+y', { desc = 'Yank to system buffer' })
+vim.keymap.set({'n', 'v'}, 'gp', '"+p', { desc = 'Paste from system buffer' })
 vim.keymap.set({'n', 'v'}, '<leader>sm', ':s/\\v', { desc = 'Search and replace, verymagic' })
 vim.keymap.set({'n', 'v'}, '<leader>sn', ':s/\\m', { desc = 'Search and replace, magic' })
 vim.keymap.set({'n', 'v'}, 'g.', ':<Up><CR>', { desc = 'Repeat last command' })
