@@ -49,6 +49,13 @@ end
 
 vim.opt.foldtext = 'v:lua.MyFoldText()'
 
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+  pattern = { 'yaml', 'json' },
+  callback = function()
+    vim.opt.foldmethod = "indent"
+  end,
+})
+
 -- Display
 vim.o.signcolumn = "yes"
 vim.o.hidden = true
