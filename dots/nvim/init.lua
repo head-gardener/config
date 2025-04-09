@@ -5,6 +5,11 @@ vim.g.mapleader = ";"
 vim.g.maplocalleader = " "
 vim.keymap.set({ 'n', 'v' }, ';;', ';', { noremap = true })
 
+vim.api.nvim_create_autocmd({ "Colorscheme" }, {
+  callback = function()
+    require('highlights')
+  end
+})
 -- require('lazy-bootstrap')
 require('lazy').setup('plugins', {
   dev = {

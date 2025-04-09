@@ -19,18 +19,6 @@ vim.opt.fillchars = {
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
--- Highlights
-vim.cmd [[highlight Folded guifg=#828282 guibg=#202020]]
-vim.cmd [[highlight Comment cterm=italic gui=italic]]
-vim.cmd [[highlight link LspInlayHint Comment]]
-vim.cmd [[highlight FloatBorder guibg='none']]
-vim.cmd [[highlight NormalFloat guibg='none']]
-vim.cmd [[highlight Pmenu guibg='none']]
-vim.cmd [[highlight link LspSignatureActiveParameter CmpItemKind]]
-vim.cmd [[highlight CurSearch guibg='#ccad8e']]
-vim.cmd [[highlight link Sneak Error]]
-vim.cmd [[highlight link SneakLabel Error]]
-
 local function spacesl(s)
   return string.gsub(s, "^(%s*).-$", "%1")
 end
