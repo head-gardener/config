@@ -37,6 +37,7 @@
       bind C-j display-popup -E "tms switch"
       bind C-e display-popup 'fish -c "$(fish -c history | fzf)"'
       bind C-d display-popup -E 'fish -c dash'
+      bind C-c 'copy-mode; send-keys -X search-backward "❯"'
     '';
     plugins = with pkgs.tmuxPlugins; [
       extrakto
