@@ -5,9 +5,10 @@
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480s
     (inputs.self.lib.mkKeys inputs.self "hunter")
     inputs.self.nixosModules.github
-    inputs.self.nixosModules.xmonad
-    inputs.self.nixosModules.upower
     inputs.self.nixosModules.steam
+    inputs.self.nixosModules.upower
+    inputs.self.nixosModules.xmonad
+    inputs.self.nixosModules.zram
   ];
 
   system.stateVersion = "24.11";
@@ -16,7 +17,7 @@
 
   swapDevices = [{
     device = "/swapfile";
-    size = 5120;
+    size = 16384;
   }];
 
   boot = {
