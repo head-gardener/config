@@ -16,6 +16,11 @@ in
       tp = "pushd $(mktemp -d)";
       mux-tp = "tmux new-session -d -c $(mktemp -d) -s tmp";
 
+      # e.g. `kubectl logs -f pod | foreach jq .`
+      foreach = ''
+        perl -E 'while (<STDIN>) { open(my $pipe, "|-", @ARGV); print $pipe $_; close $pipe or say $_; }'
+      '';
+
       d = "docker";
       e = "$EDITOR";
       c = "docker compose";
