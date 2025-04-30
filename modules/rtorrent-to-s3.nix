@@ -66,6 +66,7 @@ in {
       # Memory resource usage (increase if you have a large number of items loaded,
       # and/or the available resources to spend)
       pieces.memory.max.set = 1800M
+      pieces.hash.on_completion = no
       network.xmlrpc.size_limit.set = 4M
 
       # Basic operational settings (no need to change these)
