@@ -36,12 +36,26 @@
     imports = [
       alloy.flakeModule
       ./flake/modules.nix
+      ./flake/checks.nix
     ];
 
     modules = {
       nixosRoot = ./modules;
       homeRoot = ./home;
       withPrefix = [ "vm" ];
+    };
+
+    checks = {
+      enable = true;
+      inherit nixpkgs;
+      eval = {
+        specialArgs = { inherit inputs; };
+        modules = nixpkgs.lib.attrValues self.nixosModules;
+      };
+      check = {
+        specialArgs = { inherit inputs; };
+        modules = self.lib.mkHostModules "test";
+      };
     };
 
     flake = {
@@ -113,7 +127,7 @@
 
     systems = [ "x86_64-linux" ];
 
-    perSystem = { pkgs, system, self', ... }: {
+    perSystem = { pkgs, system, ... }: {
       _module.args.pkgs = self.lib.nixpkgsFor system;
 
       packages = import ./pkgs pkgs;
