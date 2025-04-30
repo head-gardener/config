@@ -34,7 +34,7 @@ rec {
         hosts = (builtins.fromJSON (builtins.readFile "${inputs.self}/hosts.json"));
       in {
         inherit hosts;
-        self = if hostname ? hosts then hosts.${hostname} else {};
+        self = if hosts ? ${hostname} then hosts.${hostname} else {};
       };
     }
     inputs.self.nixosModules.defaultImports
