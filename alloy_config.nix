@@ -57,6 +57,7 @@ in {
       cache
     ];
     ambrosia = [
+      ansible-node
       cache
       docker
       pass
