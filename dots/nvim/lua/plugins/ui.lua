@@ -1,5 +1,44 @@
 return {
   {
+    'smjonas/live-command.nvim',
+    lazy = false,
+    config = {
+      commands = {
+        Norm = { cmd = "norm" },
+        G = { cmd = "global" },
+        D = { cmd = "delete" },
+      },
+    },
+  },
+  {
+    'HiPhish/rainbow-delimiters.nvim',
+    lazy = false,
+    config = false,
+    init = function ()
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [''] = 'rainbow-delimiters.strategy.global',
+          vim = 'rainbow-delimiters.strategy.local',
+        },
+        query = {
+          [''] = 'rainbow-delimiters',
+        },
+        priority = {
+          [''] = 110,
+        },
+        highlight = {
+          'RainbowDelimiterViolet',
+          'RainbowDelimiterYellow',
+          'RainbowDelimiterRed',
+          'RainbowDelimiterOrange',
+          'RainbowDelimiterGreen',
+          'RainbowDelimiterCyan',
+          'RainbowDelimiterBlue',
+        },
+      }
+    end
+  },
+  {
     'xiyaowong/transparent.nvim',
     lazy = false,
   },
