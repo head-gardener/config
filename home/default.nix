@@ -20,8 +20,7 @@
       neofetch
       nix-prefetch-github
       obs-studio
-      pw-volume
-      qpwgraph
+      ripdrag
       tree
       unzip
       vlc
@@ -30,16 +29,18 @@
       xclip
     ] ++ [
       cabal-install
+      cloc
       entr
       gcc
       haskell-language-server
+      inputs.unstable.legacyPackages.${system}.cargo
       julia
       lua
       nixfmt
       stack
       stack
-      inputs.unstable.legacyPackages.${system}.cargo
     ] ++ [
+      feh
       gimp-with-plugins
       gmic
       graphviz

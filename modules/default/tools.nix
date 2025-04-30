@@ -5,7 +5,9 @@
     bat
     beep
     below
+    dig
     fd
+    file
     git
     grc
     jc

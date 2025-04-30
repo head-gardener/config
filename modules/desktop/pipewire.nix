@@ -1,4 +1,10 @@
-{
+{ pkgs, ... }: {
+  environment.systemPackages = with pkgs; [
+    pulseaudio
+    pw-volume
+    qpwgraph
+  ];
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
