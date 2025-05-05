@@ -135,6 +135,34 @@
 
       packages = import ./pkgs pkgs;
 
+      devShells = {
+
+        perl = pkgs.mkShell {
+          name = "perl";
+          buildInputs = with pkgs; [
+            perl.withPackages (ps: [
+              FileFindRule
+              IPCSystemSimple
+              YAMLTiny
+            ])
+          ];
+        };
+
+        k8s = pkgs.mkShell {
+          name = "k8s";
+          buildInputs = with pkgs; [
+            kubectl
+            kubectl-example
+            kubectl-explore
+            kubectl-klock
+            kubectl-ktop
+            kubernetes-helm
+            kustomize
+            yq
+          ];
+        };
+      };
+
       legacyPackages = pkgs;
     };
   };
