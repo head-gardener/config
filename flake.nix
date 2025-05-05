@@ -6,6 +6,7 @@
     hydra.inputs.nixpkgs.follows = "nixpkgs";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixd.inputs.nixpkgs.follows = "nixpkgs";
+    nixvirt.inputs.nixpkgs.follows = "nixpkgs";
     notes.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     xmonad.inputs.nixpkgs.follows = "nixpkgs";
@@ -28,6 +29,7 @@
     nixd.url = "github:nix-community/nixd";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixvirt.url = "github:AshleyYakeley/NixVirt";
     stylix.url = "github:danth/stylix/release-24.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
@@ -78,6 +80,7 @@
             { nixpkgs.overlays = nixpkgs.lib.attrValues self.overlays; }
             inputs.agenix.nixosModules.default
             inputs.impermanence.nixosModules.impermanence
+            inputs.nixvirt.nixosModules.default
             inputs.stylix.nixosModules.stylix
             inputs.xmonad.nixosModules.myxmonad
           ];

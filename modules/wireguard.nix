@@ -45,6 +45,8 @@
     services.dnsmasq = lib.mkIf (!cfg.isClient) {
       enable = true;
       settings = {
+        interface = cfg.interface;
+        bind-interfaces = true;
         no-hosts = true;
         addn-hosts = "${hosts-file}";
       };

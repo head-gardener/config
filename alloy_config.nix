@@ -77,6 +77,7 @@ in {
       backup-s3
       blog
       cache
+      farm
       gitea
       grafana
       jenkins-mono
