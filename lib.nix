@@ -37,6 +37,10 @@ rec {
         self = if hosts ? ${hostname} then hosts.${hostname} else {};
       };
     }
+    {
+      personal.facts = builtins.fromJSON
+        (builtins.readFile "${inputs.self}/hosts/${hostname}/facts.json");
+    }
     inputs.self.nixosModules.defaultImports
   ];
 

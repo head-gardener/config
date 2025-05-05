@@ -1,0 +1,10 @@
+{
+  "net": {
+    "interfaces": [
+      {
+        "mac": "e0:d5:5e:4b:d0:ce",
+        "name": "enp2s0"
+      }
+    ]
+  }
+}

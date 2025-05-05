@@ -12,6 +12,10 @@ Perpetual WIP.
 
 ## Highlights
 
-- **mainmenu** - *deprec* like rofi but hip and dmenu, with quick access to programs, configs and math stuff.
-- **lilex** - lilex font packaged and patched, to allow building nerd font from sources on any nix machine - select all your favourite ligatures.
+- **alloy** - framework for nix-module-centric inter-host data exchange.
+- **facts** - scripts for collecting and building facts about hosts.
+- **term-farm** - mostly declarative non-NixOS virtual machines, a DIY cloud.
+- **wg** - declarative wireguard setup.
+- **lilex** - lilex font packaged and patched, to allow building nerd font from
+  sources on any nix machine - select all your favourite ligatures.
 - **xmonad** - xmonad.

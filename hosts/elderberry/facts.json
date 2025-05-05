@@ -1,0 +1,14 @@
+{
+  "net": {
+    "interfaces": [
+      {
+        "name": "ens3",
+        "mac": "b6:3e:ea:d6:02:d8"
+      },
+      {
+        "name": "ens4",
+        "mac": "a2:5c:dc:81:ca:7f"
+      }
+    ]
+  }
+}
