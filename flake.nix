@@ -139,18 +139,18 @@
 
         perl = pkgs.mkShell {
           name = "perl";
-          buildInputs = with pkgs; [
-            perl.withPackages (ps: [
+          packages = with pkgs; [
+            (perl.withPackages (ps: [
               FileFindRule
               IPCSystemSimple
               YAMLTiny
-            ])
+            ]))
           ];
         };
 
         k8s = pkgs.mkShell {
           name = "k8s";
-          buildInputs = with pkgs; [
+          packages = with pkgs; [
             kubectl
             kubectl-example
             kubectl-explore
@@ -161,6 +161,22 @@
             yq
           ];
         };
+
+        ansible = pkgs.mkShell {
+          name = "ansible";
+          packages = with pkgs; [
+            ansible
+            ansible-lint
+            (python3.withPackages (ps: [
+              ps.docker
+              ps.molecule
+              ps.molecule-plugins
+              ps.podman
+              ps.python-vagrant
+            ]))
+          ];
+        };
+
       };
 
       legacyPackages = pkgs;
