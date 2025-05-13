@@ -1,8 +1,7 @@
 { alloy, inputs, lib, config, net, pkgs, ... }: {
-  imports = [
-    inputs.self.nixosModules.container-host
-    inputs.self.nixosModules.docker
-  ];
+  imports = [ inputs.self.nixosModules.docker ];
+
+  networking.nat = { enable = true; };
 
   personal.va.templates.jenkins-slave = {
     path = "services/jenkins/slave";
@@ -13,6 +12,7 @@
   };
 
   networking.firewall.allowedTCPPorts = [ config.services.jenkins.port ];
+  networking.firewall.trustedInterfaces = [ "ve-*" ];
 
   services.jenkins = let
     cfg = lib.generators.toYAML { } {
@@ -58,9 +58,27 @@
     ];
   };
 
-  systemd.services."container@jenkins-slave".after = [ "jenkins.service" ];
+  systemd.services."container@j-slave".after = [ "jenkins.service" ];
 
-  containers.jenkins-slave = {
+  # libvirt probably overrides this so zero clue if it works
+  systemd.services."container@j-slave".preStart = ''
+    ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o enp2s0 -j MASQUERADE
+    ${pkgs.iptables}/bin/iptables -A FORWARD -i enp2s0 -o ve-j-slave -j ACCEPT
+    ${pkgs.iptables}/bin/iptables -A FORWARD -i ve-j-slave -o enp2s0 -j ACCEPT
+  '';
+  systemd.services."container@j-slave".postStop = ''
+    ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -o enp2s0 -j MASQUERADE
+    ${pkgs.iptables}/bin/iptables -D FORWARD -i enp2s0 -o ve-j-slave -j ACCEPT
+    ${pkgs.iptables}/bin/iptables -D FORWARD -i ve-j-slave -o enp2s0 -j ACCEPT
+  '';
+
+  services.dnsmasq = {
+    enable = true;
+    interfaces = [ "ve-j-slave" ];
+    dynamic-interfaces = true;
+  };
+
+  containers.j-slave = {
     autoStart = true;
     restartIfChanged = true;
     ephemeral = true;
@@ -74,19 +92,15 @@
       "/run/secrets/jenkins-slave-secret" = {
         hostPath = config.personal.va.templates.jenkins-slave.destination;
       };
-      "/var/run/docker.sock" = {
-        hostPath = "/var/run/docker.sock";
-      };
+      "/var/run/docker.sock" = { hostPath = "/var/run/docker.sock"; };
     };
 
     config = let
       inherit (config.services.jenkins) port;
-      inherit (config.containers.jenkins-slave) hostAddress;
+      inherit (config.containers.j-slave) hostAddress;
       dockerGID = config.ids.gids.docker;
     in ({ config, ... }: {
-      imports = [
-        inputs.self.nixosModules.nix-minimal
-      ];
+      imports = [ inputs.self.nixosModules.nix-minimal ];
 
       services.jenkinsSlave.enable = true;
 
@@ -94,15 +108,13 @@
 
       users.groups.docker.gid = dockerGID;
 
-      systemd.services.jenkins-slave = {
+      systemd.services.j-slave = {
         enable = true;
 
         wantedBy = [ "multi-user.target" ];
         wants = [ "network-online.target" ];
 
-        environment = {
-          NATS_SERVER = net.hosts.${alloy.nats.hostname}.ipv4;
-        };
+        environment = { NATS_SERVER = net.hosts.${alloy.nats.hostname}.ipv4; };
 
         serviceConfig = {
           User = "jenkins";

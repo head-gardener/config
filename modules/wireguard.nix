@@ -44,9 +44,10 @@
     # TODO: restart trigger
     services.dnsmasq = lib.mkIf (!cfg.isClient) {
       enable = true;
+      interfaces = [
+        cfg.interface
+      ];
       settings = {
-        interface = cfg.interface;
-        bind-interfaces = true;
         no-hosts = true;
         addn-hosts = "${hosts-file}";
       };
