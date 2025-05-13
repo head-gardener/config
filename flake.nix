@@ -141,9 +141,9 @@
           name = "perl";
           packages = with pkgs; [
             (perl.withPackages (ps: [
-              FileFindRule
-              IPCSystemSimple
-              YAMLTiny
+              ps.FileFindRule
+              ps.IPCSystemSimple
+              ps.YAMLTiny
             ]))
           ];
         };
