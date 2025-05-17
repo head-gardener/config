@@ -37,11 +37,15 @@ pipeline {
     stage('blessed') {
       steps {
         script {
-          def hosts = readJSON(file: "./hosts.json")
-          hosts.each { name, val ->
-            if (val.blessed) {
-              sh "nix build .#nixosConfigurations.${name}.config.system.build.toplevel ${BUILD_FLAGS}"
+          if (env.GIT_BRANCH == 'origin/master') {
+            def hosts = readJSON(file: "./hosts.json")
+            hosts.each { name, val ->
+              if (val.blessed) {
+                sh "nix build .#nixosConfigurations.${name}.config.system.build.toplevel ${BUILD_FLAGS}"
+              }
             }
+          } else {
+            echo "Not building blessed hosts on branch ${env.GIT_BRANCH}"
           }
         }
       }
