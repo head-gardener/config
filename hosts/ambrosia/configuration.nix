@@ -43,6 +43,7 @@
 
   environment = {
     systemPackages = with pkgs; [
+      inputs.self.packages.${pkgs.system}.vaul7y
       sshfs
     ];
   };

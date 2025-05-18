@@ -3,6 +3,8 @@ pkgs: {
 
   main-menu = pkgs.callPackage ./menu { };
 
+  vaul7y = pkgs.callPackage ./vaul7y.nix { };
+
   projectMSDL = pkgs.projectmsdl.override { preset = pkgs.projectm-presets-en-d; };
 
   lilex =
