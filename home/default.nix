@@ -17,6 +17,7 @@
       fish
       fzy
       libnotify
+      nautilus
       neofetch
       nix-prefetch-github
       obs-studio
