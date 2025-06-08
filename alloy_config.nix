@@ -97,6 +97,11 @@ in {
     cherry = [
       cache
     ];
+    damson = [
+      backup-local
+      cache
+      wireguard-client
+    ] ++ server;
     elderberry = [
       cache
       fail2ban

@@ -23,6 +23,8 @@ locals {
       vault_policy.service_user["hosts"].name,
       vault_policy.service_user["sing-box"].name,
     ]
+    damson = [
+    ]
   }
 
   service = {

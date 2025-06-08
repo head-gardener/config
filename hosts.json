@@ -18,5 +18,10 @@
     "ipv4": "10.100.0.4",
     "blessed": false,
     "publicKey": "4W39mo8QozQvolpi7w6v6G6LLgJS2sj4fvvRQZM6GVU="
+  },
+  "damson": {
+    "ipv4": "10.100.0.5",
+    "blessed": false,
+    "publicKey": "lMbHZFjKy21zQolVx9CtnU/P78wZoapnv+fxCMLQwTw="
   }
 }

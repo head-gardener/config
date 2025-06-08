@@ -97,6 +97,7 @@
         apple = self.lib.mkHost "x86_64-linux" "apple" [ ];
         blueberry = self.lib.mkHost "x86_64-linux" "blueberry" [ ];
         cherry = self.lib.mkHost "x86_64-linux" "cherry" [ ];
+        damson = self.lib.mkHost "x86_64-linux" "damson" [ ];
         elderberry = self.lib.mkHost "x86_64-linux" "elderberry" [
           "${nixpkgs}/nixos/modules/virtualisation/digital-ocean-image.nix"
         ];
