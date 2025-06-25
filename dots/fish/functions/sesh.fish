@@ -1,7 +1,6 @@
 function sesh -d "Starts a new tmux session from the given target, which is queried from zoxide or represents an absolute path" -a target
   if [ -n "$target" ]
-    set target "$(realpath $target)"
-    set path "$(zoxide query "$target" || echo "$target")"
+    set path "$(zoxide query "$target" || echo "$(realpath target)")"
     if not [ -d "$path" ]
       switch (read -P "'$path' not a directory. Should it be created? (Y/n): ")
         case N n
