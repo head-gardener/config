@@ -8,6 +8,7 @@
     inputs.self.nixosModules.github
     inputs.self.nixosModules.steam
     inputs.self.nixosModules.upower
+    inputs.self.nixosModules.awesomewm
     inputs.self.nixosModules.xmonad
     inputs.self.nixosModules.zram
   ];
