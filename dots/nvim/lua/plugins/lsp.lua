@@ -226,6 +226,7 @@ return {
   'LhKipp/nvim-nu',
   {
     'nvimtools/none-ls.nvim',
+    enabled = false,
     init = function()
       local null_ls = require('null-ls')
       null_ls.setup {
