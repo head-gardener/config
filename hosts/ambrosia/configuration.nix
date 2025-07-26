@@ -13,7 +13,7 @@
     inputs.self.nixosModules.zram
   ];
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 
   systemd.services.tailscaled.wantedBy = lib.mkForce [];
 
