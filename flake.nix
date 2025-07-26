@@ -21,16 +21,16 @@
     agenix.url = "github:ryantm/agenix";
     dmenu-conf.url = "github:head-gardener/nixpkgs/master";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     hydra.url = "github:NixOS/hydra";
     impermanence.url = "github:nix-community/impermanence";
     musnix.url = "github:musnix/musnix";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     nixd.url = "github:nix-community/nixd";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixvirt.url = "github:AshleyYakeley/NixVirt";
-    stylix.url = "github:danth/stylix/release-24.11";
+    stylix.url = "github:danth/stylix/release-25.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
@@ -141,17 +141,30 @@
         perl = pkgs.mkShell {
           name = "perl";
           packages = with pkgs; [
+            gnumake
             (perl.withPackages (ps: [
-              ps.FileFindRule
-              ps.IPCSystemSimple
-              ps.YAMLTiny
+              ps.CPANDistnameInfo
+              ps.CPANMeta
+              ps.LogLog4perl
+              ps.ModuleBuild
+              ps.locallib
             ]))
           ];
+
+          shellHook = ''
+            echo 'checking for cpan updates...'
+            echo 'r CPAN::DistnameInfo Log::Log4perl Module::Build' \
+              | cpan \
+              | grep "^\w\+::" \
+              || echo 'all good!'
+            echo "PERL5LIB: $PERL5LIB"
+          '';
         };
 
         k8s = pkgs.mkShell {
           name = "k8s";
           packages = with pkgs; [
+            kind
             kubectl
             kubectl-example
             kubectl-explore
