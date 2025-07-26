@@ -15,6 +15,19 @@ return {
               ["<c-j>"] = require("telescope.actions").select_default,
             },
           },
+          vimgrep_arguments = {
+            "rg",
+            "--hidden",
+            "--glob", "!**/.git/*",
+            "--color=never",
+            "--no-heading",
+            "--follow",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--trim"
+          }
         },
         extensions = {
           hoogle = {
@@ -41,11 +54,17 @@ return {
         { '<Leader>fb', ":Telescope file_browser<CR>", noremap = true, desc = "Telescope file browser" },
         { '<Leader>fh', tbuiltin.help_tags,            noremap = true, desc = "Telescope help tags" },
         { '<Leader>ft', tbuiltin.treesitter,           noremap = true, desc = "Telescope treesitter search" },
+        { '<Leader>fl', tbuiltin.resume,               noremap = true, desc = "Telescope open last search" },
+        { '<leader>fp', tbuiltin.diagnostics,          noremap = true, desc = "Telescope diagnostics" },
+        { 'gr',         tbuiltin.lsp_references,       noremap = true, desc = "Telescope lsp references" },
+        { 'gd',         tbuiltin.lsp_definitions,      noremap = true, desc = "Telescope lsp definitions" },
+        { '<space>d',   tbuiltin.lsp_type_definitions, noremap = true, desc = "Telescope lsp type definitions" },
       }
     end,
   },
   {
     'psiska/telescope-hoogle.nvim',
+    enabled = false,
     init = function()
       require('telescope').load_extension('hoogle')
     end,

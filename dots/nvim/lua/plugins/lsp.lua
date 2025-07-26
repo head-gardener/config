@@ -42,7 +42,6 @@ local _bmap = function(bufnr)
 end
 
 local on_attach = function(client, bufnr)
-  local lsp_selection_range = require('lsp-selection-range')
   local bmap = _bmap(bufnr)
 
   if client.server_capabilities.inlayHintProvider then
@@ -51,21 +50,15 @@ local on_attach = function(client, bufnr)
 
   require "lsp_signature".on_attach(lsp_signature_cfg, bufnr)
 
-  bmap('n', 'vv', lsp_selection_range.trigger)
-  bmap('v', 'vv', lsp_selection_range.expand)
   bmap('n', '<space>e', vim.diagnostic.open_float)
   bmap('n', '[d', vim.diagnostic.goto_prev)
   bmap('n', ']d', vim.diagnostic.goto_next)
   bmap('n', '<space>q', vim.diagnostic.setloclist)
   bmap('n', 'gD', vim.lsp.buf.declaration)
-  bmap('n', 'gd', vim.lsp.buf.definition)
   bmap('n', 'K', vim.lsp.buf.hover)
-  bmap('n', 'gi', vim.lsp.buf.implementation)
   bmap({ 'n', 'i' }, '<C-s>', vim.lsp.buf.signature_help)
-  bmap('n', '<space>D', vim.lsp.buf.type_definition)
   bmap('n', '<space>rn', vim.lsp.buf.rename)
   bmap('n', '<space>a', vim.lsp.buf.code_action)
-  bmap('n', 'gr', vim.lsp.buf.references)
   bmap('n', '<space>f', function()
     vim.lsp.buf.format { async = true }
   end)
@@ -188,40 +181,8 @@ return {
   },
   {
     'williamboman/mason-lspconfig.nvim',
-    init = function()
-      local lspconfig = require('lspconfig')
-
-      require("mason-lspconfig").setup_handlers {
-        function(server_name)
-          lspconfig[server_name].setup {
-            capabilities = capabilities,
-            on_attach = on_attach,
-          }
-        end,
-        ["rust_analyzer"] = function()
-          local rt = require("rust-tools")
-          rt.setup {
-            server = {
-              on_attach = function(_, bufnr)
-                local bufopts = { noremap = true, silent = true, buffer = bufnr }
-                vim.keymap.set("n", "K", rt.hover_actions.hover_actions, bufopts)
-                vim.keymap.set("n", "<leader>a", rt.code_action_group.code_action_group, bufopts)
-                vim.keymap.set("n", "<M-r>", rt.runnables.runnables, bufopts)
-                vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-                vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-                vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-                vim.keymap.set({ 'n', 'i' }, '<M-s>', vim.lsp.buf.signature_help, bufopts)
-                vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-                vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-              end,
-            },
-          }
-        end,
-        ["lua_ls"] = function()
-        end,
-      }
-    end
+    enabled = true,
+    opts = {}
   },
   'LhKipp/nvim-nu',
   {

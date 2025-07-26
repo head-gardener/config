@@ -11,6 +11,7 @@ return {
         return {}
       end)
 
+      -- ga
       setup('mini.align', function()
         return {}
       end)
