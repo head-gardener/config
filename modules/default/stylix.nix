@@ -2,6 +2,8 @@
 
 {
   stylix = {
+    enable = true;
+
     image = "${inputs.self}/dots/static/11.png";
 
     polarity = "dark";
