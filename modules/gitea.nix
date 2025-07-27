@@ -1,5 +1,11 @@
-{ net, ... }:
+{ alloy, config, ... }:
 {
+
+  personal.mappings."gitea.local".nginx = {
+    enable = true;
+    port = config.services.gitea.settings.server.HTTP_PORT;
+  };
+
  services.gitea = {
     enable = true;
     lfs.enable = true;
@@ -9,8 +15,8 @@
         SSH_PORT = 2222;
         PROTOCOL = "http";
         HTTP_PORT = 7090;
-        HTTP_ADDR = net.self.ipv4;
-        ROOT_URL = "http://${net.self.ipv4}:7090/";
+        HTTP_ADDR = "gitea.local";
+        ROOT_URL = "http://gitea.local/";
       };
       log.LEVEL = "Warn";
       session.COOKIE_SECURE = false;

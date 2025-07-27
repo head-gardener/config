@@ -3,6 +3,11 @@
 
   networking.nat = { enable = true; };
 
+  personal.mappings."jenkins.local".nginx = {
+    enable = true;
+    port = config.services.jenkins.port;
+  };
+
   personal.va.templates.jenkins-slave = {
     path = "services/jenkins/slave";
     field = "secret";
@@ -186,7 +191,7 @@
         };
         gitHubConfiguration = { apiRateLimitChecker = "ThrottleForNormalize"; };
         gitHubPluginConfig = {
-          hookUrl = "http://blueberry:8080/github-webhook/";
+          hookUrl = "http://jenkins.local/github-webhook/";
         };
         globalTimeOutConfiguration = {
           operations = [ "abortOperation" ];
@@ -195,7 +200,7 @@
         junitTestResultStorage = { storage = "file"; };
         location = {
           adminAddress = "address not configured yet <nobody@nowhere>";
-          url = "http://blueberry:8080/";
+          url = "http://jenkins.local/";
         };
         mailer = {
           charset = "UTF-8";

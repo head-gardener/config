@@ -15,10 +15,21 @@
       for = "minio.service";
     };
 
+    personal.mappings."minio.local".nginx = {
+      enable = true;
+      port = config.services.minio.port;
+    };
+
+    personal.mappings."minio-console.local".nginx = {
+      enable = true;
+      port = config.services.minio.consolePort;
+    };
+
     services.minio = {
       enable = true;
       dataDir = [ "/mnt/minio" ];
-      rootCredentialsFile = config.personal.va.templates.minio-admin.destination;
+      rootCredentialsFile =
+        config.personal.va.templates.minio-admin.destination;
       port = 9000;
       consolePort = 9001;
     };

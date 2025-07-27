@@ -1,4 +1,4 @@
-{ inputs, lib, config, ... }:
+{ alloy, inputs, lib, config, ... }:
 let downloadDir = "/mnt/s3_torrent";
 in {
   imports = [ inputs.self.nixosModules.s3-mounts ];
@@ -14,6 +14,11 @@ in {
     after = [ "vault-agent-machine.service" ];
     mountPoint = downloadDir;
     passwdFile = config.personal.va.templates.s3-torrent.destination;
+  };
+
+  personal.mappings."flood.local".nginx = {
+    enable = true;
+    port = config.services.flood.port;
   };
 
   systemd.services.rtorrent.after = [ "mnt_s3-torrent.mount" ];

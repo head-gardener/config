@@ -21,9 +21,6 @@
   config = let
     cfg = config.personal.wg;
     server = net.hosts."${alloy.wireguard-server.hostname}";
-    hosts-file = pkgs.writeText "dnsmasq-wg-hosts"
-      (builtins.concatStringsSep "\n"
-        (map (h: "${h.value.ipv4} ${h.name}.wg") (lib.attrsToList net.hosts)));
 
   in {
     age.secrets.wg = {
@@ -44,12 +41,13 @@
     # TODO: restart trigger
     services.dnsmasq = lib.mkIf (!cfg.isClient) {
       enable = true;
-      interfaces = [
-        cfg.interface
-      ];
+      interfaces = [ cfg.interface ];
+      additional-hosts = map (h: {
+        address = h.value.ipv4;
+        name = "${h.name}.wg";
+      }) (lib.attrsToList net.hosts);
       settings = {
         no-hosts = true;
-        addn-hosts = "${hosts-file}";
       };
     };
 

@@ -34,6 +34,9 @@ in {
       imports = [ ./modules/wireguard.nix ];
       personal.wg.isClient = true;
     };
+    # dnsmasq is actually managed by wireguard, but it's nice to have it named
+    # as a separate module in case i would move it out.
+    dnsmasq = {};
   };
 
   hosts = mods: with mods; let
@@ -77,6 +80,7 @@ in {
       backup-s3
       blog
       cache
+      dnsmasq
       farm
       gitea
       grafana

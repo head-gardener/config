@@ -1,6 +1,11 @@
-{ alloy, lib, ... }:
+{ alloy, config, lib, ... }:
 {
   networking.firewall.allowedTCPPorts = [ 4000 ];
+
+  personal.mappings."prometheus.local".nginx = {
+    enable = true;
+    port = config.services.prometheus.port;
+  };
 
   services.prometheus = {
     enable = true;

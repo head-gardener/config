@@ -1,8 +1,10 @@
-{ alloy, config, inputs, ... }:
+{ alloy, net, ... }:
 let
-  serviceToAddress = svc: "http://${alloy.${svc}.address}:${toString alloy.${svc}.config.services.${svc}.port}";
-in
-{
+  serviceToAddress = svc:
+    "http://${alloy.${svc}.address}:${
+      toString alloy.${svc}.config.services.${svc}.port
+    }";
+in {
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   security = {
@@ -44,7 +46,10 @@ in
       add_header X-Content-Type-Options nosniff;
     '';
 
-    commonHttpConfig = "limit_req_zone $binary_remote_addr zone=common:10m rate=10r/s;";
+    commonHttpConfig =
+      "limit_req_zone $binary_remote_addr zone=common:10m rate=10r/s;";
+
+    defaultListenAddresses = [ "0.0.0.0" ];
 
     virtualHosts = rec {
       "s3.backyard-hg.net" = {
