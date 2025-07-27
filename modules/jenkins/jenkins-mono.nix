@@ -16,15 +16,62 @@
 
   services.jenkins = let
     cfg = lib.generators.toYAML { } {
+      credentials = {
+        system = {
+          domainCredentials = [{ domain = { name = "verification"; }; }];
+        };
+      };
       jenkins = {
+        authorizationStrategy = {
+          loggedInUsersCanDoAnything = { allowAnonymousRead = false; };
+        };
+        crumbIssuer = { standard = { excludeClientIPFromCrumb = false; }; };
+        disableRememberMe = false;
+        disabledAdministrativeMonitors = [ "hudson.util.DoubleLaunchChecker" ];
+        labelAtoms = [
+          { name = "built-in"; }
+          { name = "container"; }
+          { name = "docker"; }
+          { name = "linux"; }
+          { name = "master"; }
+          { name = "nats"; }
+          { name = "nix"; }
+        ];
+        labelString = "master";
+        markupFormatter = "plainText";
+        mode = "EXCLUSIVE";
+        myViewsTabBar = "standard";
+        nodeMonitors = [
+          "architecture"
+          "clock"
+          {
+            diskSpace = {
+              freeSpaceThreshold = "1GiB";
+              freeSpaceWarningThreshold = "2GiB";
+            };
+          }
+          "swapSpace"
+          {
+            tmpSpace = {
+              freeSpaceThreshold = "1GiB";
+              freeSpaceWarningThreshold = "2GiB";
+            };
+          }
+          "responseTime"
+        ];
         nodes = [{
           permanent = {
-            name = "container";
             labelString = "linux nix nats docker";
-            remoteFS = "/var/lib/jenkins";
-            retentionStrategy = "always";
-            numExecutors = 2;
-
+            launcher = {
+              inbound = {
+                workDirSettings = {
+                  disabled = false;
+                  failIfWorkDirIsMissing = true;
+                  internalDir = "remoting";
+                };
+              };
+            };
+            name = "container";
             nodeProperties = [{
               diskSpaceMonitor = {
                 freeDiskSpaceThreshold = "100MiB";
@@ -33,17 +80,175 @@
                 freeTempSpaceWarningThreshold = "100MiB";
               };
             }];
-
-            launcher.inbound.workDirSettings = {
-              disabled = false;
-              failIfWorkDirIsMissing = true;
-              internalDir = "remoting";
-            };
+            numExecutors = 2;
+            remoteFS = "/var/lib/jenkins";
+            retentionStrategy = "always";
           };
         }];
-
-        slaveAgentPort = 10000;
         numExecutors = 0;
+        primaryView = { all = { name = "all"; }; };
+        projectNamingStrategy = "standard";
+        quietPeriod = 5;
+        remotingSecurity = { enabled = true; };
+        scmCheckoutRetryCount = 0;
+        securityRealm = {
+          local = {
+            allowsSignup = false;
+            enableCaptcha = false;
+            users = [{
+              id = "hunter";
+              name = "hunter";
+              properties = [
+                "apiToken"
+                "consoleUrlProvider"
+                { mailer = { emailAddress = "trashbin2019np@gmail.com"; }; }
+                { preferredProvider = { providerId = "default"; }; }
+                "experimentalFlags"
+                { theme = { theme = "dark"; }; }
+              ];
+            }];
+          };
+        };
+        slaveAgentPort = 10000;
+        systemMessage = ''
+          Jenkins configured automatically by Jenkins Configuration as Code plugin
+
+        '';
+        updateCenter = {
+          sites = [{
+            id = "default";
+            url = "https://updates.jenkins.io/update-center.json";
+          }];
+        };
+        views = [{ all = { name = "all"; }; }];
+        viewsTabBar = "standard";
+      };
+      globalCredentialsConfiguration = {
+        configuration = {
+          providerFilter = "none";
+          typeFilter = "none";
+        };
+      };
+      appearance = {
+        prism = { theme = "PRISM"; };
+        themeManager = { disableUserThemes = false; };
+      };
+      security = {
+        apiToken = {
+          creationOfLegacyTokenEnabled = false;
+          tokenGenerationOnCreationEnabled = false;
+          usageStatisticsEnabled = true;
+        };
+        cps = { hideSandbox = false; };
+        gitHooks = {
+          allowedOnAgents = false;
+          allowedOnController = false;
+        };
+        gitHostKeyVerificationConfiguration = {
+          sshHostKeyVerificationStrategy = "knownHostsFileVerificationStrategy";
+        };
+        sSHD = { port = -1; };
+        scriptApproval = {
+          approvedScriptHashes = [
+            "SHA512:cb8c72eef710af200cd3b7e7003b630a87127bf256aefc483806939c7d7aa56677294e0b72ad6976ddb9375958102908371beb565dbffd5e0a210d5dcfdcd2bf"
+          ];
+          forceSandbox = false;
+        };
+      };
+      unclassified = {
+        buildDiscarders = {
+          configuredBuildDiscarders = [ "jobBuildDiscarder" ];
+        };
+        buildStepOperation = { enabled = false; };
+        email-ext = {
+          adminRequiredForTemplateTesting = false;
+          allowUnregisteredEnabled = false;
+          charset = "UTF-8";
+          debugMode = false;
+          defaultBody = ''
+            $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
+
+                  Check console output at $BUILD_URL to view the results.'';
+          defaultContentType = "text/plain";
+          defaultSubject =
+            "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!";
+          defaultTriggerIds =
+            [ "hudson.plugins.emailext.plugins.trigger.FailureTrigger" ];
+          maxAttachmentSize = -1;
+          maxAttachmentSizeMb = -1;
+          precedenceBulk = false;
+          throttlingEnabled = false;
+          watchingEnabled = false;
+        };
+        fingerprints = {
+          fingerprintCleanupDisabled = false;
+          storage = "file";
+        };
+        gitHubConfiguration = { apiRateLimitChecker = "ThrottleForNormalize"; };
+        gitHubPluginConfig = {
+          hookUrl = "http://blueberry:8080/github-webhook/";
+        };
+        globalTimeOutConfiguration = {
+          operations = [ "abortOperation" ];
+          overwriteable = false;
+        };
+        junitTestResultStorage = { storage = "file"; };
+        location = {
+          adminAddress = "address not configured yet <nobody@nowhere>";
+          url = "http://blueberry:8080/";
+        };
+        mailer = {
+          charset = "UTF-8";
+          useSsl = false;
+          useTls = false;
+        };
+        pollSCM = { pollingThreadCount = 10; };
+        prometheusConfiguration = {
+          appendParamLabel = false;
+          appendStatusLabel = false;
+          collectCodeCoverage = false;
+          collectDiskUsage = true;
+          collectNodeStatus = true;
+          collectingMetricsPeriodInSeconds = 120;
+          countAbortedBuilds = true;
+          countFailedBuilds = true;
+          countNotBuiltBuilds = true;
+          countSuccessfulBuilds = true;
+          countUnstableBuilds = true;
+          defaultNamespace = "default";
+          fetchTestResults = true;
+          jobAttributeName = "jenkins_job";
+          path = "prometheus";
+          perBuildMetrics = false;
+          processingDisabledBuilds = false;
+          useAuthenticatedEndpoint = false;
+        };
+        scmGit = {
+          addGitTagAction = false;
+          allowSecondFetch = false;
+          createAccountBasedOnEmail = false;
+          disableGitToolChooser = false;
+          hideCredentials = false;
+          showEntireCommitSummaryInChanges = false;
+          useExistingAccountWithSameEmail = false;
+        };
+        timestamper = {
+          allPipelines = false;
+          elapsedTimeFormat = "'<b>'HH:mm:ss.S'</b> '";
+          systemTimeFormat = "'<b>'HH:mm:ss'</b> '";
+        };
+      };
+      tool = {
+        git = {
+          installations = [{
+            home = "git";
+            name = "Default";
+          }];
+        };
+        mavenGlobalConfig = {
+          globalSettingsProvider = "standard";
+          settingsProvider = "standard";
+        };
       };
     };
   in {
