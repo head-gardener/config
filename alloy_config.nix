@@ -104,6 +104,7 @@ in {
     damson = [
       backup-local
       cache
+      docker
       wireguard-client
     ] ++ server;
     elderberry = [
