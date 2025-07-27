@@ -9,16 +9,19 @@ switch:
 get-secret secret:
   cd ./secrets && agenix -d {{ secret }}
 
-# send sources to the target, build and activate remotely
-deploy tgt:
+# same as deploy, but host address and config hostname can be different
+deploy-as host tgt:
   rsync --exclude-from=.gitignore --filter=':- .gitignore' \
-    . {{ tgt }}:/tmp/config -azv
-  ssh -tt {{ tgt }} ' \
+    . {{ host }}:/tmp/config -azv
+  ssh -tt {{ host }} ' \
   set -ex; \
   sys="$(nix build \
     /tmp/config#nixosConfigurations.{{ tgt }}.config.system.build.toplevel \
     --no-link --print-out-paths)"; \
   sudo "$sys/bin/switch-to-configuration" switch;'
+
+deploy tgt:
+  @just deploy-as "{{ tgt }}" "{{ tgt }}"
 
 change-nixos-release from to:
   rg --files-with-matches {{ from }} | rg -v '^flake.lock$' | \
