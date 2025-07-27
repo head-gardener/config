@@ -16,6 +16,7 @@
     less
     neovim
     nix-tree
+    nix-converter
     nushell
     ripgrep
     rsync

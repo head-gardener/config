@@ -5,6 +5,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hydra.inputs.nixpkgs.follows = "nixpkgs";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
+    nix-converter.inputs.nixpkgs.follows = "nixpkgs";
     nixd.inputs.nixpkgs.follows = "nixpkgs";
     nixvirt.inputs.nixpkgs.follows = "nixpkgs";
     notes.inputs.nixpkgs.follows = "nixpkgs";
@@ -25,6 +26,7 @@
     hydra.url = "github:NixOS/hydra";
     impermanence.url = "github:nix-community/impermanence";
     musnix.url = "github:musnix/musnix";
+    nix-converter.url = "github:theobori/nix-converter";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     nixd.url = "github:nix-community/nixd";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -64,7 +66,7 @@
       lib = import ./lib.nix inputs nixpkgs.lib;
 
       overlays = self.lib.mkOverlays inputs ./overlays // {
-        packages = final: _: import ./pkgs final;
+        packages = final: _: import ./pkgs inputs final;
       };
 
       images = {
@@ -134,7 +136,7 @@
     perSystem = { pkgs, system, ... }: {
       _module.args.pkgs = self.lib.nixpkgsFor system;
 
-      packages = import ./pkgs pkgs;
+      packages = import ./pkgs inputs pkgs;
 
       devShells = {
 
