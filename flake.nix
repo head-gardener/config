@@ -56,11 +56,17 @@
       inherit nixpkgs;
       eval = {
         specialArgs = { inherit inputs; };
-        modules = nixpkgs.lib.attrValues self.nixosModules;
+        modules = (nixpkgs.lib.attrValues self.nixosModules)
+        ++ [
+          inputs.alloy.nixosModules.default
+        ];
       };
       check = {
         specialArgs = { inherit inputs; };
-        modules = self.lib.mkHostModules "test";
+        modules = (self.lib.mkHostModules "test")
+        ++ [
+          inputs.alloy.nixosModules.default
+        ];
       };
     };
 
