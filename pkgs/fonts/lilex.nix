@@ -23,7 +23,7 @@ in stdenv.mkDerivation {
   pname = "lilex";
   inherit version src;
 
-  outputHash = "sha256-Hnqzfw55v7xWQnh1wCSt4RSYgjxF91Eqm6DctDR66a4=";
+  outputHash = "sha256-kr6gZ5LT5MJAMcPOehUmUJYVe0KOGA2PpZHVxtzA7Ok=";
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
 
