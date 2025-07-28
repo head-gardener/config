@@ -14,6 +14,8 @@
 
     alloy.url = "github:head-gardener/alloy";
     # alloy.url = "git+file:/home/hunter/Code/alloy";
+    capt.url = "github:head-gardener/capt-flake";
+    # capt.url = "git+file:/home/hunter/Downloads/capt-0.1";
     notes.url = "github:head-gardener/notes";
     # notes.url = "git+file:/home/hunter/notes/";
     xmonad.url = "github:head-gardener/xmonad";

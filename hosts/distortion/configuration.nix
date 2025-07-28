@@ -8,7 +8,6 @@
     inputs.self.nixosModules.nvidia
     inputs.self.nixosModules.xmonad
     inputs.self.nixosModules.github
-    inputs.self.nixosModules.hp-lj-1018
     inputs.self.nixosModules.docker
     inputs.self.nixosModules.steam
   ];

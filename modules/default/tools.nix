@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+  environment.pathsToLink = [ "/share/nvim/runtime" ];
+
+  # if tool is from an input, add it to ../desktop/tools-extras.nix!
+
   environment.systemPackages = with pkgs; [
     atop
     bat

@@ -4,11 +4,12 @@
     ./hardware-configuration.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480s
     (inputs.self.lib.mkKeys inputs.self "hunter")
+    inputs.self.nixosModules.awesomewm
     inputs.self.nixosModules.daw
     inputs.self.nixosModules.github
+    inputs.self.nixosModules.printing
     inputs.self.nixosModules.steam
     inputs.self.nixosModules.upower
-    inputs.self.nixosModules.awesomewm
     inputs.self.nixosModules.xmonad
     inputs.self.nixosModules.zram
   ];
