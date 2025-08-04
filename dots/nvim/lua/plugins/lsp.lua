@@ -112,7 +112,11 @@ return {
               globals = { "vim", "describe", "it", "assert" },
             },
             workspace = {
-              -- library = { os.getenv('HOME') .. 'Source/luassert/src/' },
+              library = {
+                '/run/current-system/sw/share/awesome/lib',
+                '/run/current-system/sw/share/nvim/runtime/lua',
+                '/run/current-system/sw/share/nvim/runtime/lua/lsp',
+              },
             },
             telemetry = {
               enable = false,

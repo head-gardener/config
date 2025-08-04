@@ -66,7 +66,7 @@ in {
     '';
   };
 
-  config = {
+  config = lib.mkIf (lib.length (lib.attrsToList cfg) != 0) {
     alloy.extend.dnsmasq = [
       ({ net, ... }: {
         services.dnsmasq.additional-hosts = lib.mapAttrsToList (n: v: {
