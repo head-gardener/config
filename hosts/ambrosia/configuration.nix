@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -40,7 +40,12 @@
   };
 
   users.users.hunter = {
-    extraGroups = [ "networkmanager" ];
+    extraGroups = [
+      "networkmanager"
+      "keyd-ctl"
+      "sing-box-ctl"
+      "wg-quick-${config.personal.wg.interface}-ctl"
+    ];
   };
 
   environment = {

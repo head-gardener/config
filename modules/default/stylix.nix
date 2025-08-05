@@ -12,6 +12,10 @@
     autoEnable = false;
     targets = {
       lightdm.enable = true;
+      grub = {
+        enable = true;
+        useWallpaper = true;
+      };
     };
 
     opacity.terminal = 0.6;
@@ -19,7 +23,7 @@
     fonts = {
       monospace = {
         name = "Lilex Nerd Font";
-        package = pkgs.lilex;
+        package = inputs.lilex.packages.${pkgs.system}.default;
       };
       sizes = {
         terminal = 10;

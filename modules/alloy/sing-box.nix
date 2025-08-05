@@ -11,6 +11,9 @@
     for = "sing-box.service";
   };
 
+  personal.polkit.allowUnitControl."sing-box.service".groups = [ "sing-box-ctl" ];
+  users.groups.sing-box-ctl = { };
+
   systemd.services.sing-box.wantedBy = lib.mkForce [ ];
 
   services.sing-box = {

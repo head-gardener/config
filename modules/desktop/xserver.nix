@@ -14,6 +14,9 @@
     networkmanager_dmenu
   ];
 
+  personal.polkit.allowUnitControl."keyd.service".groups = [ "keyd-ctl" ];
+  users.groups.keyd-ctl = { };
+
   services.keyd = {
     enable = true;
     keyboards = {

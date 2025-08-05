@@ -5,7 +5,10 @@
         type = lib.types.port;
         default = 43721;
       };
-      isClient = lib.mkOption { type = lib.types.bool; default = false; };
+      isClient = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
       interface = lib.mkOption {
         type = lib.types.str;
         default = "wg0";
@@ -46,10 +49,12 @@
         address = h.value.ipv4;
         name = "${h.name}.wg";
       }) (lib.attrsToList net.hosts);
-      settings = {
-        no-hosts = true;
-      };
+      settings = { no-hosts = true; };
     };
+
+    personal.polkit.allowUnitControl."wg-quick-${config.personal.wg.interface}.service".groups =
+      lib.mkIf (cfg.isClient) [ "wg-quick-${config.personal.wg.interface}-ctl" ];
+    users.groups."wg-quick-${config.personal.wg.interface}-ctl" = { };
 
     networking.wg-quick.interfaces.${cfg.interface} = {
       address = [ "${net.self.ipv4}/24" ];
@@ -64,17 +69,23 @@
         '')
         ''
           echo 'nameserver ${server.ipv4}' \
-            | ${lib.getExe config.networking.resolvconf.package} -a ${cfg.interface}
+            | ${
+              lib.getExe config.networking.resolvconf.package
+            } -a ${cfg.interface}
         ''
       ];
 
-      preDown = lib.mkMerge [(lib.mkIf (!cfg.isClient) ''
-        ${pkgs.iptables}/bin/iptables -D FORWARD -i ${cfg.interface} -j ACCEPT
-        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s ${server.ipv4}/24 -o enp2s0 -j MASQUERADE
-      '')
-      ''
-        ${lib.getExe config.networking.resolvconf.package} -d ${cfg.interface} -f
-      ''];
+      preDown = lib.mkMerge [
+        (lib.mkIf (!cfg.isClient) ''
+          ${pkgs.iptables}/bin/iptables -D FORWARD -i ${cfg.interface} -j ACCEPT
+          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s ${server.ipv4}/24 -o enp2s0 -j MASQUERADE
+        '')
+        ''
+          ${
+            lib.getExe config.networking.resolvconf.package
+          } -d ${cfg.interface} -f
+        ''
+      ];
 
       peers = lib.mkMerge [
         (lib.mkIf cfg.isClient [{
