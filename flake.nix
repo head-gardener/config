@@ -20,6 +20,8 @@
     # notes.url = "git+file:/home/hunter/notes/";
     xmonad.url = "github:head-gardener/xmonad";
     # xmonad.url = "git+file:/home/hunter/xmonad/";
+    lilex.url = "github:head-gardener/lilex-flake";
+    # lilex.url = "git+file:/home/hunter/Code/lilex-flake/";
 
     agenix.url = "github:ryantm/agenix";
     dmenu-conf.url = "github:head-gardener/nixpkgs/master";
