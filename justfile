@@ -5,6 +5,12 @@ default:
 switch:
   sudo nixos-rebuild switch --flake .
 
+# nixos-rebuild switch from remote builder
+switch-via builder:
+  sudo "$( \
+    nixos-rebuild build --flake . --build-host "{{ builder }}" --use-substitutes \
+  )/bin/switch-to-configuration" switch
+
 # pwd-agnostic agenix -d
 get-secret secret:
   cd ./secrets && agenix -d {{ secret }}
