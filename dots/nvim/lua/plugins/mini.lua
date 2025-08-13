@@ -8,7 +8,12 @@ return {
       end
 
       setup('mini.ai', function()
-        return {}
+        return {
+          custom_textobjects = {
+            -- [j]inja template
+            j = { '{{%s*().-()%s*}}' }
+          },
+        }
       end)
 
       -- ga
