@@ -30,20 +30,30 @@ vim.keymap.set('n', '<Space>g', 'za', { noremap = true })
 -- lens
 vim.keymap.set('n', 'zl', 'zMzv', { noremap = true })
 
+-- qflist
+vim.api.nvim_create_user_command(
+  "QFaddcurrent",
+  [[caddexpr expand("%") .. ":" .. line(".") ..  ":" .. getline(".")]],
+  {
+    desc = "Add current line to qflist",
+  }
+)
+vim.keymap.set('n', '<LocalLeader>Q', ':cope<CR>', { noremap = true })
+vim.keymap.set('n', '<LocalLeader>q', ':cclose<CR>', { noremap = true })
+vim.keymap.set('n', '<LocalLeader>la', ':QFaddcurrent<CR>', { noremap = true })
+vim.keymap.set('n', ']q', ':cnext<CR>', { noremap = true })
+vim.keymap.set('n', '[q', ':cprev<CR>', { noremap = true })
+
 -- Shortcuts
-vim.keymap.set({'n', 'v'}, 'gP', '"+]pV\']', { desc = 'Paste from system buffer, indented' })
-vim.keymap.set({'n', 'v'}, 'gy', '"+y', { desc = 'Yank to system buffer' })
-vim.keymap.set({'n', 'v'}, 'gp', '"+p', { desc = 'Paste from system buffer' })
-vim.keymap.set({'n', 'v'}, '<leader>sm', ':s/\\v', { desc = 'Search and replace, verymagic' })
-vim.keymap.set({'n', 'v'}, '<leader>sn', ':s/\\m', { desc = 'Search and replace, magic' })
-vim.keymap.set({'n', 'v'}, 'g.', ':<Up><CR>', { desc = 'Repeat last command' })
+vim.keymap.set({ 'n', 'v' }, 'gP', '"+]pV\']', { desc = 'Paste from system buffer, indented' })
+vim.keymap.set({ 'n', 'v' }, 'gy', '"+y', { desc = 'Yank to system buffer' })
+vim.keymap.set({ 'n', 'v' }, 'gp', '"+p', { desc = 'Paste from system buffer' })
+vim.keymap.set({ 'n', 'v' }, '<leader>sm', ':s/\\v', { desc = 'Search and replace, verymagic' })
+vim.keymap.set({ 'n', 'v' }, '<leader>sn', ':s/\\m', { desc = 'Search and replace, magic' })
+vim.keymap.set({ 'n', 'v' }, 'g.', ':<Up><CR>', { desc = 'Repeat last command' })
 vim.keymap.set('v', '<C-s>', ':sort<CR>', { noremap = true })
 vim.keymap.set('n', '<C-i>', '<C-a>', { noremap = true })
 vim.keymap.set('n', '<Space>p', ':b#<CR>', { noremap = true })
-vim.keymap.set('n', '<LocalLeader>Q', ':cope<CR>', { noremap = true })
-vim.keymap.set('n', '<LocalLeader>q', ':cclose<CR>', { noremap = true })
-vim.keymap.set('n', ']q', ':cnext<CR>', { noremap = true })
-vim.keymap.set('n', '[q', ':cprev<CR>', { noremap = true })
 vim.keymap.set('n', '<BS>', ':bprev<CR>', { noremap = true })
 vim.keymap.set('n', '<M-BS>', ':bnext<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
