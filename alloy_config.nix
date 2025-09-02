@@ -58,9 +58,11 @@ in {
     ];
     shears = [
       cache
+      bluetooth
     ];
     ambrosia = [
       ansible-node
+      bluetooth
       cache
       docker
       pass
