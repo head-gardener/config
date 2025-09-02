@@ -10,9 +10,7 @@
     config = builtins.readFile "${inputs.self}/dots/conky/conkyrc";
   };
 
-  environment.systemPackages = with pkgs; [
-    networkmanager_dmenu
-  ];
+  programs.nm-applet.enable = true;
 
   personal.polkit.allowUnitControl."keyd.service".groups = [ "keyd-ctl" ];
   users.groups.keyd-ctl = { };
