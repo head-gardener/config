@@ -8,7 +8,7 @@ function dash -d ""
 
   gen-commands "$data"
 
-  set file "$data/$(pwd | sed 's/[\/ ]/_/g').fish"
+  set file "$data/$(pathtofile "$(pwd)").fish"
   touch "$file"
 
   nvim -c "source $data/commands.lua" "$file"

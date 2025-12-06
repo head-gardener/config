@@ -11,3 +11,6 @@ function fundesc -d "Get function description" -a func
   functions --details --verbose $func 2>/dev/null | tail -1
 end
 
+function pathtofile -d "Get a valid filename from a path" -a path
+  echo "$path" | sed 's/[\/ ]/_/g'
+end
