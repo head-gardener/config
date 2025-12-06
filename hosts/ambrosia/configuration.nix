@@ -6,7 +6,7 @@
     (inputs.self.lib.mkKeys inputs.self "hunter")
     inputs.self.nixosModules.awesomewm
     inputs.self.nixosModules.daw
-    inputs.self.nixosModules.github
+    # inputs.self.nixosModules.github
     inputs.self.nixosModules.printing
     inputs.self.nixosModules.steam
     inputs.self.nixosModules.upower
@@ -44,7 +44,7 @@
       "networkmanager"
       "keyd-ctl"
       "sing-box-ctl"
-      "wg-quick-${config.personal.wg.interface}-ctl"
+      # "wg-quick-${config.personal.wg.interface}-ctl"
     ];
   };
 

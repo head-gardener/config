@@ -42,40 +42,40 @@ in {
   hosts = mods: with mods; let
     server = [
       ansible-node
-      prometheus-node
-      promtail
-      tuner
-      vault-agent
+      # prometheus-node
+      # promtail
+      # tuner
+      # vault-agent
     ];
   in {
     distortion = [
       (allowFor "tackle")
-      cache
+      # cache
       sing-box
       terraform
       vault-agent
       wireguard-client
     ];
     shears = [
-      cache
+      # cache
       bluetooth
     ];
     ambrosia = [
       ansible-node
       bluetooth
-      cache
+      # cache
       docker
       pass
       podman
-      sing-box
+      # sing-box
       tailscale-client
       terraform
       vagrant
-      vault-agent
-      wireguard-client
+      # vault-agent
+      # wireguard-client
     ];
     apple = [
-      cache
+      # cache
     ];
     blueberry = [
       backup-local
@@ -98,23 +98,24 @@ in {
       rotate-all
       rtorrent-to-s3
       vault
+      vault-agent
       wireguard-server
     ] ++ server;
     cherry = [
-      cache
+      # cache
     ];
     damson = [
       backup-local
-      cache
+      # cache
       docker
       wireguard-client
     ] ++ server;
     elderberry = [
-      cache
+      # cache
       fail2ban
-      sing-box-out
+      # sing-box-out
       strictSSH
-      wireguard-client
+      # wireguard-client
     ] ++ server;
   };
 }
