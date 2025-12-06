@@ -5,7 +5,7 @@
     forceSSL = true;
     locations = {
       "/" = {
-        root = "${inputs.notes.packages.${pkgs.system}.blog}/";
+        root = "${inputs.notes.packages.${pkgs.stdenv.hostPlatform.system}.blog}/";
       };
     };
   };

@@ -32,7 +32,7 @@
     nix.buildMachines = [
       {
         hostName = "localhost";
-        inherit (pkgs) system;
+        inherit (pkgs.stdenv.hostPlatform) system;
         supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
         maxJobs = 8;
       }

@@ -10,5 +10,5 @@
   networking.firewall.allowedTCPPorts = [ 80 3000 ];
   networking.useDHCP = false;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }

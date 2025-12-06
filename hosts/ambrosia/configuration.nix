@@ -14,7 +14,7 @@
     inputs.self.nixosModules.zram
   ];
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 
   systemd.services.tailscaled.wantedBy = lib.mkForce [];
 
@@ -50,7 +50,7 @@
 
   environment = {
     systemPackages = with pkgs; [
-      inputs.self.packages.${pkgs.system}.vaul7y
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.vaul7y
       sshfs
     ];
   };

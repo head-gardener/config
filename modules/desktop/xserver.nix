@@ -1,7 +1,7 @@
 { pkgs, inputs, lib, ... }: {
-  services.logind.extraConfig = ''
-    HandlePowerKey=suspend
-  '';
+  # services.logind.extraConfig = ''
+  #   HandlePowerKey=suspend
+  # '';
 
   services.unclutter-xfixes.enable = true;
 

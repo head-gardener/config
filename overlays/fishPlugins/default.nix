@@ -3,7 +3,7 @@ inputs: final: prev: rec {
 
   fishPluginsOverlay = {
     done = prev.fishPlugins.done.overrideAttrs (old: {
-      src = inputs.unstable.legacyPackages.${final.stdenv.system}.stdenvNoCC.mkDerivation {
+      src = inputs.unstable.legacyPackages.${final.stdenv.hostPlatform.system}.stdenvNoCC.mkDerivation {
         inherit (old.src) rev name;
         inherit (old) src;
 
@@ -56,7 +56,7 @@ inputs: final: prev: rec {
     };
 
     forgit-no-grc = final.fishPlugins.forgit.overrideAttrs (old: {
-      src = inputs.unstable.legacyPackages.${final.stdenv.system}.stdenvNoCC.mkDerivation {
+      src = inputs.unstable.legacyPackages.${final.stdenv.hostPlatform.system}.stdenvNoCC.mkDerivation {
         inherit (old.src) rev name;
         inherit (old) src;
 

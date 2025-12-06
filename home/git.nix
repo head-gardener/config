@@ -1,9 +1,11 @@
 {
   programs.git = {
     enable = true;
-    userName = "Head Gardener";
-    userEmail = "trashbin2019np@gmail.com";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Head Gardener";
+        email = "trashbin2019np@gmail.com";
+      };
       diff.tool = "nvimdiff";
       merge.tool = "nvimdiff";
     };

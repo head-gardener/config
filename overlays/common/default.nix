@@ -3,9 +3,7 @@ inputs: final: prev: {
     ${final.lib.getExe final.vivid} generate catppuccin-mocha > $out
   '';
 
-  inherit (inputs.unstable.legacyPackages.${final.system})
-    neovim
-    neovim-unwrapped
+  inherit (inputs.unstable.legacyPackages.${final.stdenv.hostPlatform.system})
     nerd-font-patcher
     nixd;
 }

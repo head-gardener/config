@@ -23,7 +23,7 @@
     fonts = {
       monospace = {
         name = "Lilex Nerd Font";
-        package = inputs.lilex.packages.${pkgs.system}.default;
+        package = inputs.lilex.packages.${pkgs.stdenv.hostPlatform.system}.default;
       };
       sizes = {
         terminal = 10;

@@ -8,7 +8,7 @@
 
   home = {
     username = "hunter";
-    stateVersion = "25.05";
+    stateVersion = "25.11";
     packages = with pkgs; [
       arkpandora_ttf
       bemoji
@@ -34,7 +34,7 @@
       entr
       gcc
       haskell-language-server
-      inputs.unstable.legacyPackages.${system}.cargo
+      inputs.unstable.legacyPackages.${stdenv.hostPlatform.system}.cargo
       julia
       lua
       nixfmt

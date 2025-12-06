@@ -18,7 +18,7 @@
 
   services.sing-box = {
     enable = true;
-    package = inputs.unstable.legacyPackages.${pkgs.system}.sing-box;
+    package = inputs.unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.sing-box;
     settings = {
       log.level = "warn";
 

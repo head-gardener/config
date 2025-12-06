@@ -1,10 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+    package = inputs.neovim-nightly.packages.${pkgs.stdenv.hostPlatform.system}.default;
     extraPackages = with pkgs; [
       commitlint
       deadnix

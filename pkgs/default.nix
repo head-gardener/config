@@ -7,7 +7,7 @@ inputs: pkgs: {
 
   vaul7y = pkgs.callPackage ./vaul7y.nix { };
 
-  nix-converter = inputs.nix-converter.packages.${pkgs.system}.default;
+  nix-converter = inputs.nix-converter.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
   inherit (pkgs.fishPlugins) done abbreviation-tips forgit-no-grc gitnow spark;
 }

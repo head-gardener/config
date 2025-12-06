@@ -11,7 +11,7 @@
     users.hunter = import "${inputs.self}/home";
     extraSpecialArgs = {
       inherit inputs;
-      inherit (pkgs) system;
+      inherit (pkgs.stdenv.hostPlatform) system;
     };
   };
 }

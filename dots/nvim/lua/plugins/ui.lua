@@ -13,11 +13,7 @@ return {
   {
     'Bekaboo/dropbar.nvim',
     enabled = true,
-    config = {
-      bar = {
-        enable = true,
-      },
-    },
+    config = { },
   },
   {
     'HiPhish/rainbow-delimiters.nvim',

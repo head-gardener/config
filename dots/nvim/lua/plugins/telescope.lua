@@ -85,7 +85,8 @@ return {
         --   cmd = {"yaml-language-server"}
         -- },
       })
-      require('lspconfig').yamlls.setup(cfg)
+      vim.lsp.enable('yamlls')
+      vim.lsp.config('yamlls', cfg)
     end,
   },
 }

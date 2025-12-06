@@ -72,8 +72,6 @@ return {
   {
     'neovim/nvim-lspconfig',
     config = function()
-      local lspconfig = require('lspconfig')
-
       vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         virtual_text = false,
         underline = false,
@@ -86,23 +84,94 @@ return {
         title = " Hover ",
       })
 
-      lspconfig.nixd.setup {
+      vim.lsp.enable('nixd')
+      vim.lsp.config('nixd', {
         capabilities = capabilities,
         on_attach = on_attach,
-      }
+      })
 
-      lspconfig.hls.setup {
+      vim.lsp.enable('hls')
+      vim.lsp.config('hls', {
         capabilities = capabilities,
-        on_attach = on_attach,
-      }
+        on_attach = function (client, bufnr)
+          client.server_capabilities.inlayHintProvider = nil
+          client.server_capabilities.signatureHelpProvider = nil
+          on_attach(client, bufnr)
+        end,
+        settings = {
+          haskell = {
+            plugin = {
+              [ 'ghcide-code-actions-fill-holes' ] = {
+                globalOn = true,
+              },
+              [ 'ghcide-completions' ] = {
+                globalOn = true,
+              },
+              [ 'ghcide-hover-and-symbols' ] = {
+                globalOn = true,
+              },
+              [ "ghcide-type-lenses" ] = {
+                globalOn = true,
+              },
+              [ "ghcide-code-actions-type-signatures" ] = {
+                globalOn = true,
+              },
+              [ "ghcide-code-actions-bindings" ] = {
+                globalOn = true,
+              },
+              [ "ghcide-code-actions-imports-exports" ] = {
+                globalOn = true,
+              },
+              eval = {
+                globalOn = true,
+              },
+              [ "explicit-fields" ] = {
+                globalOn = false,
+              },
+              moduleName = {
+                globalOn = true,
+              },
+              pragmas = {
+                globalOn = true,
+              },
+              importLens = {
+                globalOn = false,
+              },
+              class = {
+                globalOn = true,
+              },
+              hlint = {
+                globalOn = false,
+              },
+              retrie = {
+                globalOn = true,
+              },
+              rename = {
+                globalOn = true,
+              },
+              splice = {
+                globalOn = true,
+              },
+              stan = {
+                globalOn = true,
+              },
+              signatureHelp = {
+                globalOn = false,
+              },
+            }
+          }
+        }
+      })
 
-      lspconfig.julials.setup {
+      vim.lsp.enable('julials')
+      vim.lsp.config('julials', {
         settings = {},
         capabilities = capabilities,
         on_attach = on_attach,
-      }
+      })
 
-      lspconfig.lua_ls.setup {
+      vim.lsp.enable('lua_ls')
+      vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
             runtime = {
@@ -125,7 +194,7 @@ return {
         },
         capabilities = capabilities,
         on_attach = on_attach,
-      }
+      })
     end,
   },
   {

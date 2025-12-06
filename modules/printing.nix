@@ -11,8 +11,8 @@
       canon-capt
       foo2zjs
       hplipWithPlugin
-      inputs.capt.packages.${pkgs.system}.capt-bin
-      inputs.capt.packages.${pkgs.system}.default
+      inputs.capt.packages.${pkgs.stdenv.hostPlatform.system}.capt-bin
+      inputs.capt.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
   };
 }
