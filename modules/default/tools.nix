@@ -13,14 +13,16 @@
     fd
     file
     git
+    git-crypt
     grc
     jc
     jq
     just
     less
+    lsof
     neovim
-    nix-tree
     nix-converter
+    nix-tree
     nushell
     ripgrep
     rsync
