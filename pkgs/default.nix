@@ -3,6 +3,10 @@ inputs: pkgs: {
 
   cpanel = pkgs.callPackage ./cpanel { };
 
+  perlHeaders = pkgs.callPackage ./perlHeaders.nix {
+    # sources = with pkgs; [ ];
+  };
+
   main-menu = pkgs.callPackage ./menu { };
 
   vaul7y = pkgs.callPackage ./vaul7y.nix { };

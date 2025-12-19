@@ -143,9 +143,7 @@
 
     systems = [ "x86_64-linux" ];
 
-    perSystem = { pkgs, system, ... }: {
-      _module.args.pkgs = self.lib.nixpkgsFor system;
-
+    perSystem = { pkgs, self', ... }: {
       packages = import ./pkgs inputs pkgs;
 
       devShells = {
@@ -160,17 +158,18 @@
               ps.LogLog4perl
               ps.ModuleBuild
               ps.locallib
+              self'.packages.perlHeaders
             ]))
           ];
 
-          shellHook = ''
-            echo 'checking for cpan updates...'
-            echo 'r CPAN::DistnameInfo Log::Log4perl Module::Build' \
-              | cpan \
-              | grep "^\w\+::" \
-              || echo 'all good!'
-            echo "PERL5LIB: $PERL5LIB"
-          '';
+#           shellHook = ''
+#             echo 'checking for cpan updates...' 1>&2
+#             echo 'r CPAN::DistnameInfo Log::Log4perl Module::Build' \
+#               | cpan \
+#               | grep "^\w\+::" 1>&2 \
+#               || echo 'all good!' 1>&2
+#             echo "PERL5LIB: $PERL5LIB" 1>&2
+#           '';
         };
 
         k8s = pkgs.mkShell {
