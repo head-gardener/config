@@ -29,16 +29,12 @@ in
     };
     shellAbbrs = {
       loc = "XDG_CONFIG_HOME=~/config/dots";
-      n = "nix";
-      nbl = "nix build .";
-      sus = "systemctl --user";
-      sys = "systemctl";
-      xi = "xargs -i";
       limit = "systemd-run --property MemoryMax=(math '1024 * 1024 * 1024 * 2') --property CPUQuota=100% --setenv=PATH=\"$PATH\" --same-dir --wait --pty --user";
+      nohosts = ''-o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null"'';
     };
     interactiveShellInit =
       (builtins.readFile "${inputs.self}/dots/config.fish") + ''
-        setenv LS_COLORS "${builtins.readFile pkgs.ls_colors}"
+        setenv LS_COLORS "$(cat ${pkgs.ls_colors})"
         set sponge_delay 8
 
         abbr unfree --set-cursor=! "NIXPKGS_ALLOW_UNFREE=1 nix ! --impure"
