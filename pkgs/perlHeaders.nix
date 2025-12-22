@@ -21,8 +21,12 @@ stdenv.mkDerivation {
     ${builtins.concatStringsSep "\n" (
       map (s: ''
         cd "${s}"
-        [ -d ./include ] && cd ./include
+        [ -d "${s}/include" ] && cd "${s}/include"
         h2ph -d "$dst" -r *
+        if [ -d "${s}/include/linux" ]; then
+          cd "${s}/include/linux"
+          h2ph -d "$dst" -r *
+        fi
       '') sources
     )}
   '';
