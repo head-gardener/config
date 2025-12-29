@@ -12,10 +12,6 @@
     autoEnable = false;
     targets = {
       lightdm.enable = true;
-      grub = {
-        enable = true;
-        useWallpaper = true;
-      };
     };
 
     opacity.terminal = 0.6;
