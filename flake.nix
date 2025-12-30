@@ -94,7 +94,6 @@
             inputs.impermanence.nixosModules.impermanence
             inputs.nixvirt.nixosModules.default
             inputs.stylix.nixosModules.stylix
-            inputs.xmonad.nixosModules.myxmonad
           ];
         };
       };
