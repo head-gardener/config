@@ -26,7 +26,8 @@ function nix3-expr \
           echo -n '"'
           echo " = shorten (builtins.getFlake \"$(echo "$f" | cut -d' ' -f3)\");"
         end)
-      dot = shorten (builtins.getFlake \"s\");
+      dot = shorten (builtins.getFlake \"git+file:$(pwd)\");
+      f = p: shorten (builtins.getFlake p);
     in $expr" \
     $argv[3..]
 end
