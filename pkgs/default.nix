@@ -9,7 +9,7 @@ inputs: pkgs: {
 
   cloud-vm = pkgs.callPackage ./cloud-vm.nix {
     imgUrl = "https://cloud-images.ubuntu.com/noble/20251213/noble-server-cloudimg-amd64.img";
-    imgHash = "sha256-K1+Q/+gYDe9gHAIch05V2DA+i8v8Zv7iuUQU9DrF6x8=";
+    imgHash = "sha256-iWx2Fk4+AHWDZMjqdTaj9l5/tezy8Zt8grrMeZ5xkGI=";
   };
 
   main-menu = pkgs.callPackage ./menu { };

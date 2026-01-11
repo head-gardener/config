@@ -15,6 +15,8 @@
     "<cloud-vm> Please provide hash value from "
     + "the error below as imgHash: cloud-vm.override { imgHash = \"<hash>\"; }"
   ) lib.fakeHash,
+  imgSize ? "10G",
+  extraUserData ? "",
   userData ? ''
     #cloud-config
 
@@ -23,6 +25,8 @@
       users:
         - {name: root, password: password, type: text}
       expire: false
+
+    ${extraUserData}
   '',
   metaData ? "",
 }:
@@ -30,6 +34,12 @@ let
   img = fetchurl {
     url = imgUrl;
     hash = imgHash;
+
+    downloadToTemp = true;
+    postFetch = ''
+      ${qemu}/bin/qemu-img resize "$downloadedFile" "${imgSize}"
+      mv "$downloadedFile" "$out"
+    '';
   };
   seed =
     let
@@ -40,13 +50,15 @@ let
       ${cloud-utils}/bin/cloud-localds "$out" ${userDataFile} ${metaDataFile}
     '';
 in
-writeShellScript "run-cloud-vm" ''
+(writeShellScript "run-cloud-vm" ''
   exec ${qemu}/bin/qemu-system-x86_64 \
     -name "cloud-vm" \
     -cpu host -machine type=q35,accel=kvm -m 2048 \
-    -nographic \
     -snapshot \
     -drive if=virtio,format=qcow2,file=${img} \
     -drive if=virtio,format=raw,file=${seed} \
-    $ARGV
-''
+    $@
+'') // {
+  img = "${img}";
+  seed = "${seed}";
+}

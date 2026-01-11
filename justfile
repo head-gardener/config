@@ -39,12 +39,15 @@ change-nixos-release from to:
 
 # build system locally, send it and activate it on the remote
 build-deploy tgt:
+  @just build-deploy-as ${tgt} ${tgt}
+
+build-deploy-as host tgt:
   #! /usr/bin/env bash
   set -ex
   sys="$(nix build .#nixosConfigurations.{{ tgt }}.config.system.build.toplevel \
     --no-link --print-out-paths)"
-  nix copy --to ssh://{{ tgt }} "$sys"
-  ssh -tt {{ tgt }} sudo "$sys/bin/switch-to-configuration" switch
+  nix copy --to ssh://{{ host }} "$sys"
+  ssh -tt {{ host }} sudo "$sys/bin/switch-to-configuration" switch
 
 # stop autoupgrade timer on the remote
 stop-upgrade tgt:
