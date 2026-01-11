@@ -9,14 +9,10 @@
     i3status
   ];
 
-  services.xmobar = {
-    enable = true;
-    config = builtins.readFile "${inputs.self}/dots/xmobar/xmobarrc";
-  };
-
   services.xserver.windowManager.myxmonad = {
     extraCommands = ''
       ${lib.getExe pkgs.activate-linux} -p windows -d
+      ${lib.getExe pkgs.xmobar} "${inputs.self}/dots/xmobar/xmobarrc" &
     '';
   };
 }
