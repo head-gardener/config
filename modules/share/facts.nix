@@ -12,7 +12,16 @@ let
   perlEnv = pkgs.perl;
   pkg = pkgs.writeShellApplication {
     name = "facts";
-    runtimeInputs = with pkgs; [ iproute2 ];
+    runtimeInputs = with pkgs; [
+      btrfs-progs
+      e2fsprogs
+      iproute2
+      systemd
+      util-linux
+    ];
+    runtimeEnv = {
+      FACTS_SWAPFILES = if config.personal.hibernate.enable then config.personal.hibernate.file else "";
+    };
     text = ''
       "${lib.getExe' perlEnv "perl"}" "${inputs.self}/scripts/gather-facts.pl" \
         | ${lib.getExe pkgs.jq} -S .

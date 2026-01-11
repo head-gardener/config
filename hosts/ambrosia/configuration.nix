@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, ... }:
+{ inputs, pkgs, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -14,13 +14,18 @@
     inputs.self.nixosModules.zram
   ];
 
+  personal.hibernate = {
+    enable = true;
+    file = "/swap/swapfile";
+  };
+
   system.stateVersion = "25.11";
 
   systemd.services.tailscaled.wantedBy = lib.mkForce [];
 
   swapDevices = [{
-    device = "/swapfile";
-    size = 16384;
+    device = "/swap/swapfile";
+    size = 24 * 1024;
   }];
 
   boot = {

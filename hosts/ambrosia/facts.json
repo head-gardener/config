@@ -10,5 +10,12 @@
         "name": "wlp61s0"
       }
     ]
-  }
+  },
+  "swapfiles": [
+    {
+      "device": "/dev/disk/by-uuid/db5cab8c-391d-4fa6-aa1a-c5b9e0c4a892",
+      "offset": "710747",
+      "path": "/swap/swapfile"
+    }
+  ]
 }
