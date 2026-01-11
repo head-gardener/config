@@ -2,9 +2,19 @@
 
 {
   imports = [
+    "${inputs.nixpkgs}/nixos/modules/virtualisation/digital-ocean-config.nix"
     (inputs.self.lib.mkKeys inputs.self "hunter")
     inputs.self.nixosModules.zram
   ];
+
+  fileSystems."/" =
+    { label = "nixos";
+      fsType = "btrfs";
+      options = [
+        "subvolid=5"
+        "x-systemd.growfs"
+      ];
+    };
 
   swapDevices = [{
     device = "/swapfile";

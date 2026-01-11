@@ -1,3 +1,5 @@
+clean := ""
+
 # login using terraform approle. pipe into `source`
 login:
   sudo true
@@ -31,3 +33,108 @@ update-role tgt role path=".":
   echo -n \"$role_id\" | sudo tee /etc/vault/{{ path }}/role_id > /dev/null; \
   echo -n \"$secret_id\" | sudo tee /etc/vault/{{ path }}/secret_id > /dev/null; \
   "
+
+def_nixos_infect_path := "/tmp/do-test-nixos-infect"
+def_btrfs_convert_path := "/tmp/do-test-btrfs-convert"
+test-do-remote:
+  [ -z "{{ clean }}" ] \
+    || rm -rf {{ def_nixos_infect_path }} {{ def_btrfs_convert_path }}
+  [ -d {{ def_nixos_infect_path }} ] \
+    || git clone --depth 1 https://github.com/head-gardener/nixos-infect {{ def_nixos_infect_path }}
+  [ -d {{ def_btrfs_convert_path }} ] \
+    || git clone --depth 1 https://github.com/head-gardener/digitalocean-ext4-to-btrfs {{ def_btrfs_convert_path }}
+  @just test-do {{ def_btrfs_convert_path }} {{ def_nixos_infect_path }}
+
+test-do btrfs_convert_path nixos_infect_path:
+  #! /usr/bin/env bash
+
+  set -euxo pipefail
+
+  [ -z "{{ clean }}" ] \
+    || TF_VAR_do_token="" terraform -chdir=digitalocean destroy -target shell_script.eval_store -auto-approve
+  TF_VAR_do_token="" terraform -chdir=digitalocean apply -target shell_script.eval_store -auto-approve
+  chmod +w --recursive /tmp/store
+  rm -rf /tmp/store
+  mkdir -p /tmp/store
+  cp /tmp/do_eval_store.tar.gz /tmp/store/eval_store.tar.gz
+
+  qemu=""
+  on_exit() {
+    echo "Trapped exit!"
+    [ -z "$qemu" ] || kill "$qemu"
+    wait
+    rm -f /tmp/do-test-fifo
+  }
+  trap on_exit EXIT
+
+  mkfifo /tmp/do-test-fifo
+  vm="$(nix build .#digitaloceanUbuntu --no-link --print-out-paths)"
+  sh -c "
+    exec 3>/tmp/do-test-fifo
+    exec '$vm' -nographic \
+      -virtfs local,path={{ absolute_path(btrfs_convert_path) }},mount_tag=host1,security_model=passthrough,id=host1 \
+      -virtfs local,path=/tmp/store/,mount_tag=host2,security_model=passthrough,id=host2 \
+      -virtfs local,path={{ absolute_path(nixos_infect_path) }},mount_tag=host3,security_model=passthrough,id=host3 \
+      -device e1000,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:22 \
+      -m 1024 \
+      > >(tee /tmp/do-test-fifo)
+  " &
+  qemu="$!"
+
+  set +ex
+
+  boots=0
+  btrfs_convert_ok=""
+  nixos_infect_ok=""
+
+  while :; do
+    IFS= read -t 120 -r line
+    rc="$?"
+    if [ "$rc" -gt 128 ]; then
+      echo "Read timed out! Is VM idle?"
+      exit 1
+    elif [ "$rc" -ne 0 ]; then
+      echo "QEMU exited unexpectedly!"
+      exit 1
+    elif echo "$line" | grep "Welcome to .*Ubuntu.*"; then
+      if [ "$boots" -ge 2 ]; then
+        echo "VM rebooted too many times!"
+        exit 1
+      elif [ "$boots" -eq 2 -a -z "$btrfs_convert_ok" ]; then
+        echo "btrfs-convert didn't complete before first reboot!"
+        exit 1
+      else
+        boots="$(("$boots" + 1))"
+        echo "---- Ubuntu booted OK"
+      fi
+    elif echo "$line" | grep "btrfs-convert: === init done ==="; then
+      btrfs_convert_ok="ok"
+      echo "---- btrfs-convert OK"
+    elif echo "$line" | grep "Installation finished. No error reported."; then
+      if [ -z "$btrfs_convert_ok" ]; then
+        echo "nixos-infect completed but btrfs-convert didn't!"
+        exit 1
+      else
+        echo "---- nixos-infect OK"
+        nixos_infect_ok="ok"
+      fi
+    elif echo "$line" | grep "Welcome to .*NixOS.*"; then
+        echo "---- NixOS booted OK"
+      break
+    elif echo "$line" | grep "Failed to run module scripts_user"; then
+      echo "Cloud-init script error!"
+      exit 1
+    elif echo "$line" | grep "Kernel panic"; then
+      echo "Kernel panic!"
+      exit 1
+    fi
+  done < /tmp/do-test-fifo
+
+  rc="$?"
+  if [ "$rc" -gt 128 ]; then
+    echo "Read timed out! Is VM idle?"
+    exit 1
+  elif [ "$rc" -ne 0 ]; then
+    echo "QEMU exited unexpectedly!"
+    exit 1
+  fi

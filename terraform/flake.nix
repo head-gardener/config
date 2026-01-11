@@ -1,6 +1,6 @@
 {
   inputs = {
-    parent.url = "git+path:/..";
+    parent.url = "git+file:..";
   };
 
   outputs =
@@ -10,7 +10,7 @@
       systems = [ "x86_64-linux" ];
 
       perSystem =
-        { inputs' }:
+        { inputs', ... }:
         {
           packages = {
             digitaloceanUbuntu = inputs'.parent.packages.cloud-vm.override {
@@ -23,7 +23,7 @@
                     mount -t 9p host1 /mnt1 --mkdir
                     mount -t 9p host2 /mnt2 --mkdir
                     mount -t 9p host3 /mnt3 --mkdir
-                    INIT_OPTS="-x" CLOUD_CLEAR_SEMAPHORE=auto TMPFS_BALANCE=1 \
+                    SSHD=1 INIT_OPTS="-x" CLOUD_CLEAR_SEMAPHORE=auto TMPFS_BALANCE=1 \
                       /mnt1/ext2btrfs -x || exit 0
                     btrfs filesystem show /
                     mkdir /tmp/store
@@ -35,6 +35,8 @@
                     btrfs filesystem label / nixos
                     sync
                     reboot -f
+                ssh_authorized_keys:
+                  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIiiSLosPqVfFJUepkajqhuNSxn3+jjTNOGjyTpKzXKv hunter@ambrosia"
               '';
             };
           };
