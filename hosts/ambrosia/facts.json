@@ -2,12 +2,12 @@
   "net": {
     "interfaces": [
       {
-        "name": "enp0s31f6",
-        "mac": "e8:6a:64:f1:bf:bd"
+        "mac": "e8:6a:64:f1:bf:bd",
+        "name": "enp0s31f6"
       },
       {
-        "name": "wlp61s0",
-        "mac": "a0:51:0b:b0:43:7f"
+        "mac": "a0:51:0b:b0:43:7f",
+        "name": "wlp61s0"
       }
     ]
   }
