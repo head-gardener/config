@@ -12,6 +12,7 @@
     dig
     fd
     file
+    fuse-archive
     git
     git-crypt
     grc
@@ -24,6 +25,7 @@
     nix-converter
     nix-tree
     nushell
+    psmisc
     ripgrep
     rsync
     s3fs
