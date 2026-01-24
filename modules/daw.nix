@@ -21,8 +21,8 @@ let
         src = pkgs.fetchFromGitHub args;
 
         installPhase = ''
-          mkdir -p "$out/opt/sfz/$name"
-          cp -r . "$out/opt/sfz/$name/"
+          mkdir -p "$out/share/sounds/sfz/$name"
+          cp -r . "$out/share/sounds/sfz/$name"
         '';
       }
     );
@@ -36,7 +36,7 @@ in
   ];
 
   environment.pathsToLink = pluginPaths ++ [
-    "/opt/sfz"
+    "/share/sounds/sfz"
   ];
 
   musnix.enable = true;
@@ -49,6 +49,8 @@ in
     guitarix
     hydrogen
     reaper
+    reaper-sws-extension
+    reaper-reapack-extension
     inputs.unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.sfizz-ui
 
     (repoToSFZ {
@@ -72,23 +74,35 @@ in
 
     aether-lv2
     airwindows
+    artyFX
+    boops
     calf
     carla
     chow-centaur
     chow-kick
     chow-phaser
     chow-tape-model
+    csa
     distrho-ports
     dragonfly-reverb
+    fire
     geonkick
+    gxplugins-lv2
     helm
+    igorski-vsts
+    infamousPlugins
     lsp-plugins
+    mda_lv2
     neural-amp-modeler-lv2
     ninjas2
+    noise-repellent
     oxefmsynth
+    plugdata
     surge-XT
     tap-plugins
+    uhhyou-plugins
     x42-plugins
     zam-plugins
+    zlsplitter
   ];
 }
