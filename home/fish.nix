@@ -34,6 +34,9 @@ in
     };
     interactiveShellInit =
       (builtins.readFile "${inputs.self}/dots/config.fish") + ''
+        bind alt-backspace backward-kill-word
+        bind ctrl-alt-h backward-kill-word
+
         setenv LS_COLORS "$(cat ${pkgs.ls_colors})"
         set sponge_delay 8
 
