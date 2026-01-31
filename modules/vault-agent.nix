@@ -2,13 +2,6 @@
 let
   cfg = config.personal.va;
 
-  applyTemplate = n:
-    t@{ owner ? "root", group ? "root", ... }:
-    {
-      inherit owner group;
-      destination = "${cfg.secretsMountPoint}/${n}";
-    } // t;
-
   mkTemplate = n:
     t@{ perms ? "0400", destination, ... }:
     {
@@ -35,20 +28,6 @@ let
     chown "${t.owner}:${t.group}" "${cfg.secretsMountPoint}/${n}"
   '';
 in {
-  options = {
-    personal.va = {
-      templates = lib.mkOption {
-        default = { };
-        type = with lib.types; lazyAttrsOf (lazyAttrsOf raw);
-        apply = lib.mapAttrs applyTemplate;
-      };
-      secretsMountPoint = lib.mkOption {
-        default = "/run/vault";
-        type = lib.types.str;
-      };
-    };
-  };
-
   config = {
     nixpkgs.allowUnfreeByName = [ "vault" ];
     systemd.services.vault.after = [ config.personal.wg.service ];

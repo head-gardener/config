@@ -113,7 +113,8 @@ in {
     elderberry = [
       # cache
       fail2ban
-      # sing-box-out
+      sing-box-out
+      { personal.sing-box.vaultless = true; }
       strictSSH
       # wireguard-client
     ] ++ server;
