@@ -28,6 +28,8 @@
     size = 24 * 1024;
   }];
 
+  btrfs.autoConfigure.compressStore = true;
+
   boot = {
     tmp.useTmpfs = true;
 
@@ -36,6 +38,11 @@
       efi.canTouchEfiVariables = true;
       efi.efiSysMountPoint = "/boot";
     };
+
+    nixStoreMountOpts = [
+      "noatime"
+      # "compress=zstd"
+    ];
   };
 
   networking = {

@@ -9,6 +9,7 @@
     bat
     beep
     below
+    compsize
     dig
     fd
     file
