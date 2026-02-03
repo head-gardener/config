@@ -51,8 +51,8 @@ local on_attach = function(client, bufnr)
   require "lsp_signature".on_attach(lsp_signature_cfg, bufnr)
 
   bmap('n', '<space>e', vim.diagnostic.open_float)
-  bmap('n', '[d', vim.diagnostic.goto_prev)
-  bmap('n', ']d', vim.diagnostic.goto_next)
+  bmap('n', '[d', function() vim.diagnostic.jump({ count = -1 }) end)
+  bmap('n', ']d', function() vim.diagnostic.jump({ count = 1 }) end)
   bmap('n', '<space>q', vim.diagnostic.setloclist)
   bmap('n', 'gD', vim.lsp.buf.declaration)
   bmap('n', 'K', vim.lsp.buf.hover)
@@ -71,6 +71,7 @@ return {
   },
   {
     'neovim/nvim-lspconfig',
+    lazy = false,
     config = function()
       vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         virtual_text = false,
@@ -84,48 +85,43 @@ return {
         title = " Hover ",
       })
 
-      vim.lsp.enable('nixd')
-      vim.lsp.config('nixd', {
+      vim.lsp.config('*', {
         capabilities = capabilities,
         on_attach = on_attach,
       })
 
-      vim.lsp.enable('hls')
+      vim.lsp.config('nixd', {})
+      vim.lsp.enable('nixd')
+
       vim.lsp.config('hls', {
-        capabilities = capabilities,
-        on_attach = function (client, bufnr)
-          client.server_capabilities.inlayHintProvider = nil
-          client.server_capabilities.signatureHelpProvider = nil
-          on_attach(client, bufnr)
-        end,
         settings = {
           haskell = {
             plugin = {
-              [ 'ghcide-code-actions-fill-holes' ] = {
+              ['ghcide-code-actions-fill-holes'] = {
                 globalOn = true,
               },
-              [ 'ghcide-completions' ] = {
+              ['ghcide-completions'] = {
                 globalOn = true,
               },
-              [ 'ghcide-hover-and-symbols' ] = {
+              ['ghcide-hover-and-symbols'] = {
                 globalOn = true,
               },
-              [ "ghcide-type-lenses" ] = {
+              ["ghcide-type-lenses"] = {
                 globalOn = true,
               },
-              [ "ghcide-code-actions-type-signatures" ] = {
+              ["ghcide-code-actions-type-signatures"] = {
                 globalOn = true,
               },
-              [ "ghcide-code-actions-bindings" ] = {
+              ["ghcide-code-actions-bindings"] = {
                 globalOn = true,
               },
-              [ "ghcide-code-actions-imports-exports" ] = {
+              ["ghcide-code-actions-imports-exports"] = {
                 globalOn = true,
               },
               eval = {
                 globalOn = true,
               },
-              [ "explicit-fields" ] = {
+              ["explicit-fields"] = {
                 globalOn = false,
               },
               moduleName = {
@@ -162,15 +158,11 @@ return {
           }
         }
       })
+      vim.lsp.enable('hls')
 
+      vim.lsp.config('julials', {})
       vim.lsp.enable('julials')
-      vim.lsp.config('julials', {
-        settings = {},
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
 
-      vim.lsp.enable('lua_ls')
       vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
@@ -192,9 +184,16 @@ return {
             },
           },
         },
-        capabilities = capabilities,
-        on_attach = on_attach,
       })
+      vim.lsp.enable('lua_ls')
+
+      vim.lsp.config('ts_ls', {
+        root_markers = {
+          'tsconfig.json',
+          '.git',
+        },
+      })
+      vim.lsp.enable('ts_ls')
     end,
   },
   {
@@ -249,13 +248,19 @@ return {
     }
   },
   {
-    'williamboman/mason.nvim',
-    config = true,
+    'mason-org/mason.nvim',
+    lazy = false,
+    opts = {},
   },
   {
-    'williamboman/mason-lspconfig.nvim',
+    'mason-org/mason-lspconfig.nvim',
     enabled = true,
-    opts = {}
+    opts = { },
+    lazy = false,
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "mason-org/mason.nvim",
+    },
   },
   'LhKipp/nvim-nu',
   {
