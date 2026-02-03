@@ -18,7 +18,7 @@ let
 in
 {
   home.file = mkPaths [
-    # "awesome"
+    "awesome"
     "fish"
     "nvim"
     "tms"
