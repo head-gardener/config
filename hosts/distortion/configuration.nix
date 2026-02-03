@@ -3,7 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.musnix.nixosModules.musnix
+    inputs.self.nixosModules.awesomewm
     inputs.self.nixosModules.android-debug
     inputs.self.nixosModules.nvidia
     inputs.self.nixosModules.xmonad
