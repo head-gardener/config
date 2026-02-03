@@ -18,6 +18,8 @@
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
 
+  btrfs.autoConfigure.compressStore = true;
+
   boot = {
     tmp.useTmpfs = true;
 
@@ -35,12 +37,16 @@
         canTouchEfiVariables = true;
       };
     };
+
+    nixStoreMountOpts = [
+      "noatime"
+    ];
   };
 
   environment = {
     pathsToLink = [ "/libexec" ];
     systemPackages = with pkgs; [
-      transmission-gtk
+      transmission_4-gtk
       sshfs
       networkmanager-openvpn
     ];
