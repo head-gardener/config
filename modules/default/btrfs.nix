@@ -52,10 +52,16 @@ let
         script = ''
           set -eo pipefail;
 
-          tgt="$(findmnt --noheadings --types btrfs --options subvolid=5 \
-            --output TARGET --notruncate "${dev}" | head -1)"
-          thres="$(btrfs filesystem show --raw "$tgt" \
-            | awk '/devid/ { printf "%d", 10 + ($6 / $4)*20 }')"
+          tgt="$( \
+            findmnt --noheadings --types btrfs --options subvolid=5 \
+            --output TARGET --notruncate --first-only "${dev}" \
+            || \
+            findmnt --noheadings --types btrfs --options subvolid=5 \
+            --output TARGET --notruncate --first-only \
+              "$(btrfs filesystem show "${dev}" | awk '/devid\s*1/ { print $8 }')" \
+          )"
+          thres="$(btrfs filesystem df --raw "$tgt" \
+            | awk '/Data/ { printf "%d", 10 + ($4 / $3)*20 }')"
           echo "Balancing ${dev} at $tgt with threshold $thres"
           btrfs balance start "$tgt" "-dusage=$thres" --enque
         '';
