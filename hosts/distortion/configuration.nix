@@ -13,8 +13,6 @@
   ];
 
   environment.binsh = "${pkgs.dash}/bin/dash";
-  musnix.enable = true;
-  users.users.hunter.extraGroups = [ "audio" ];
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
 

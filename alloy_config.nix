@@ -51,10 +51,10 @@ in {
     distortion = [
       (allowFor "tackle")
       # cache
-      sing-box
+      # sing-box
       terraform
-      vault-agent
-      wireguard-client
+      # vault-agent
+      # wireguard-client
     ];
     shears = [
       # cache
