@@ -1,6 +1,10 @@
 default:
   @just --list
 
+# nix copy host's config to remote store
+push-cfg to:
+  nix copy --to {{ to }} .#nixosConfigurations.$(hostname).config.system.build.toplevel
+
 # nixos-rebuild switch
 switch:
   sudo nixos-rebuild switch --flake .
