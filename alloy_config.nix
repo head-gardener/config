@@ -108,7 +108,7 @@ in {
       backup-local
       # cache
       docker
-      wireguard-client
+      # wireguard-client
     ] ++ server;
     elderberry = [
       # cache
