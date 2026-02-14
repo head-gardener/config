@@ -8,7 +8,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.hunter = import "${inputs.self}/home";
+    users.hunter = inputs.self.homeModules.default;
     extraSpecialArgs = {
       inherit inputs;
       inherit (pkgs.stdenv.hostPlatform) system;

@@ -92,4 +92,21 @@ rec {
   importAll = path: genAttrsFromDir path import;
 
   mkOverlays = imports: path: genAttrsFromDir path (p: (import p) imports);
+
+  # override module importing a directory.
+  # Example:
+  # import = [
+  #   (overrideModDir nixosModules.default { exclude = "btrfs"; })
+  # ]
+  overrideModDir =
+    m:
+    if (m ? "config") then
+      m.config.passthru.override
+    else
+      lib.pipe m [
+        (x: builtins.head x.imports)
+        (x: builtins.head x.imports)
+        (x: builtins.head x.imports)
+        (x: x.config.passthru.override)
+      ];
 }

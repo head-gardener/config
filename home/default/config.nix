@@ -1,11 +1,6 @@
-{ lib, pkgs, inputs, ... }:
+{ pkgs, inputs, ... }:
 
 {
-  imports =
-    (builtins.filter (x: !(lib.hasSuffix "default.nix" x))
-      (inputs.self.lib.ls "${inputs.self}/home"))
-    ++ [ ];
-
   home = {
     username = "hunter";
     stateVersion = "25.11";
