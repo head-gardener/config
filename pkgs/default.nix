@@ -20,4 +20,6 @@ inputs: pkgs: rec {
 
   vst3sdk = pkgs.callPackage ./vst3sdk.nix { };
   igorski-vsts = pkgs.callPackage ./igorski-vsts { inherit vst3sdk; };
+
+  jjazzlab = pkgs.callPackage ./jjazzlab.nix { };
 }

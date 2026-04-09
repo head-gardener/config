@@ -48,10 +48,11 @@ in
     ffmpeg
     guitarix
     hydrogen
-    reaper
-    reaper-sws-extension
-    reaper-reapack-extension
     inputs.unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.sfizz-ui
+    jjazzlab
+    reaper
+    reaper-reapack-extension
+    reaper-sws-extension
 
     (repoToSFZ {
       owner = "sfzinstruments";
