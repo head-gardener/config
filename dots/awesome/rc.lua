@@ -2,8 +2,14 @@
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
+local awesome = awesome
+local client = client
+local root = root
+local screen = screen
+
 local tools = require('tools.config')
 local todo = require('todo')
+local batt = require('batt')
 
 -- Standard awesome library
 local gears = require("gears")
@@ -247,6 +253,7 @@ awful.screen.connect_for_each_screen(function(s)
 
   local myramwidget = ram_widget()
   local myfswidget = fs_widget()
+  local mybattwidget = batt()
   -- local mytodowidget = todo_widget()
   -- local mybatterywidget = battery_widget()
 
@@ -265,10 +272,11 @@ awful.screen.connect_for_each_screen(function(s)
       mykeyboardlayout,
       wibox.widget.systray(),
       mytextclock,
+      mybattwidget,
       mycpuwidget,
-      -- mybatterywidget,
       myramwidget,
       -- mytodowidget,
+      -- mybattwidget,
       myfswidget,
       todo(),
       s.mylayoutbox,
