@@ -45,6 +45,8 @@
     ];
   };
 
+  programs.kdeconnect.enable = true;
+
   networking = {
     firewall.enable = false;
     networkmanager.enable = true;
