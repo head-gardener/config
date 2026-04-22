@@ -93,6 +93,11 @@ return {
       vim.lsp.config('nixd', {})
       vim.lsp.enable('nixd')
 
+      vim.lsp.config('pyright', {
+        on_attach = on_attach
+      })
+      vim.lsp.enable('pyright')
+
       vim.lsp.config('hls', {
         settings = {
           haskell = {
