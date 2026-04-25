@@ -27,6 +27,8 @@
     extraConfigBeforePlugins = ''
     '';
     extraConfig = ''
+      unbind-key 'C-Space'
+
       set -g status-style bg=default
       set -g status-keys emacs
       set -g mouse on
