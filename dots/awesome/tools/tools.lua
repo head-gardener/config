@@ -44,6 +44,26 @@ function M.note()
   awful.spawn([[kitty fish -c "note --select"]])
 end
 
+function M.note_push()
+  local sel = selection()
+  local tmpfile = os.tmpname()
+  local f = io.open(tmpfile, "w")
+  if f then
+    f:write(sel or "")
+    f:close()
+  end
+  awful.spawn.easy_async(
+    string.format(
+      [[kitty fish -c ". /home/hunter/config/dots/fish/functions/note.fish; cat %s | note-push-interactive"]],
+      tmpfile,
+      tmpfile
+    ),
+    function (_, _, _, _)
+      os.remove(tmpfile)
+    end
+  )
+end
+
 function M.toggle()
   local units = {
     "keyd.service",
