@@ -1,9 +1,15 @@
-local io = io
-
 local gears = require("gears")
 local wibox = require("wibox")
 
 local batt = { mt = {} }
+
+local function find_battery()
+  for i = 0, 2 do
+    local path = "/sys/class/power_supply/BAT" .. i
+    if gears.filesystem.is_dir(path) then return path end
+  end
+  return nil
+end
 
 local function read(filename)
   local handle = io.open(filename, "r")
@@ -18,38 +24,55 @@ local function read(filename)
 end
 
 local function new()
-  -- battery detection
-  -- error handling
+  local bat_path = find_battery()
+  if not bat_path then
+    return wibox.widget.textbox("No battery")
+  end
+
   local w = wibox.widget.textbox()
   gears.table.crush(w, batt, true)
 
   do
-    local e = tonumber(read("/sys/class/power_supply/BAT0/energy_full"))
-    local p = tonumber(read("/sys/class/power_supply/BAT0/power_now"))
+    local e = tonumber(read(bat_path .. "/energy_full"))
+    local p = tonumber(read(bat_path .. "/power_now"))
+    if not e or not p then
+      return wibox.widget.textbox("Battery error")
+    end
     w._private.energy_full = e
     w._private.power_avg = p
   end
 
   function w.update()
-    local energy_now = tonumber(read("/sys/class/power_supply/BAT0/energy_now"))
-    local power_now = tonumber(read("/sys/class/power_supply/BAT0/power_now"))
+    local energy_now = tonumber(read(bat_path .. "/energy_now"))
+    local power_now = tonumber(read(bat_path .. "/power_now"))
+    local status = read(bat_path .. "/status")
 
-    -- better running avg
-    w._private.power_avg = (w._private.power_avg + 2 * power_now) / 3
+    if not energy_now or not power_now then return end
+
+    local power = math.abs(power_now)
+    w._private.power_avg = (w._private.power_avg + 2 * power) / 3
+    if w._private.power_avg < 0.1 then
+      w:set_text("Full")
+      return
+    end
+
     local left_hours, left_minutes = math.modf(energy_now / w._private.power_avg)
 
-    -- leftpad
     local txt = string.format(
-      "%i%% (%i:%i)",
+      "%i%% (%i:%02i)",
       100 * energy_now / w._private.energy_full,
       left_hours,
       left_minutes * 60
     )
+
+    if status and status:match("Charging") then
+      txt = "⚡ " .. txt
+    end
+
     w:set_text(txt)
   end
 
-  -- replace with fsnotify
-  gears.timer {
+  w._private.timer = gears.timer {
     timeout   = 5,
     call_now  = true,
     autostart = true,
