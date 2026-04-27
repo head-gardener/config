@@ -10,6 +10,7 @@ local screen = screen
 local tools = require('tools.config')
 local todo = require('todo')
 local batt = require('batt')
+local notif = require('notif')
 
 -- Standard awesome library
 local gears = require("gears")
@@ -74,6 +75,8 @@ do
   end)
 end
 -- }}}
+
+notif.init()
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
@@ -254,6 +257,7 @@ awful.screen.connect_for_each_screen(function(s)
   local myramwidget = ram_widget()
   local myfswidget = fs_widget()
   local mybattwidget = batt()
+  local mynotifbutton = notif.create_button(s)
   -- local mytodowidget = todo_widget()
   -- local mybatterywidget = battery_widget()
 
@@ -279,6 +283,7 @@ awful.screen.connect_for_each_screen(function(s)
       -- mybattwidget,
       myfswidget,
       todo(),
+      mynotifbutton,
       s.mylayoutbox,
     },
   }
