@@ -77,7 +77,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 local terminal = "kitty"
@@ -131,8 +131,8 @@ local mypowermenu = {
 
 local mymainmenu = awful.menu({
   items = {
-    { "awesome", myawesomemenu, beautiful.awesome_icon },
-    { "power", mypowermenu },
+    { "awesome",       myawesomemenu, beautiful.awesome_icon },
+    { "power",         mypowermenu },
     { "open terminal", terminal },
   }
 })
