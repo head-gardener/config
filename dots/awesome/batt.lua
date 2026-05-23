@@ -47,23 +47,24 @@ local function new()
     local power_now = tonumber(read(bat_path .. "/power_now"))
     local status = read(bat_path .. "/status")
 
-    if not energy_now or not power_now then return end
+    if not energy_now or not power_now then
+      w:set_text("Batery error")
+      return
+    end
 
     local power = math.abs(power_now)
     w._private.power_avg = (w._private.power_avg + 2 * power) / 3
-    if w._private.power_avg < 0.1 then
-      w:set_text("Full")
-      return
-    end
 
     local left_hours, left_minutes = math.modf(energy_now / w._private.power_avg)
 
     local txt = string.format(
-      "%i%% (%i:%02i)",
-      100 * energy_now / w._private.energy_full,
+      "%i%%",
+      100 * energy_now / w._private.energy_full
+    ) .. (w._private.power_avg > 0 and string.format(
+      " (%i:%02i)",
       left_hours,
       left_minutes * 60
-    )
+    ) or "")
 
     if status and status:match("Charging") then
       txt = "⚡ " .. txt
