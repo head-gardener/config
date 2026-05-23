@@ -46,14 +46,17 @@ in
     bespokesynth-with-vst2
     cardinal
     ffmpeg
+    fluidsynth
     guitarix
     hydrogen
     inputs.unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.sfizz-ui
     jjazzlab
+    musescore
     reaper
     reaper-reapack-extension
     reaper-sws-extension
 
+    # sfz
     (repoToSFZ {
       owner = "sfzinstruments";
       repo = "SplendidGrandPiano";
@@ -73,6 +76,10 @@ in
       hash = "sha256-27ZoDI3hqPp25H0XzQl6atnwfEKBSrx8YI1mFGtEGAI=";
     })
 
+    # sf2
+    soundfont-ydp-grand
+
+    # plugins
     aether-lv2
     airwindows
     artyFX
