@@ -56,7 +56,6 @@
       enable = true;
       enableSSHSupport = true;
     };
-    dconf.enable = true;
   };
 
   networking = {
