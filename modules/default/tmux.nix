@@ -27,7 +27,7 @@
     extraConfigBeforePlugins = ''
     '';
     extraConfig = ''
-      unbind-key 'C-Space'
+      unbind-key -T prefix 'Space'
 
       set -g status-style bg=default
       set -g status-keys emacs
