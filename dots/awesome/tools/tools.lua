@@ -66,33 +66,35 @@ end
 
 function M.toggle()
   local units = {
-    "keyd.service",
-    "sing-box.service",
-    "wg-quick-wg0.service",
+    { name = "keyd.service", system = true },
+    { name = "sing-box.service", system = true },
+    { name = "wg-quick-wg0.service", system = true },
+    { name = "kdeconnectd.service", system = false },
   }
 
+  local function systemctl(unit, op)
+    local cmd = 'systemctl'
+    if not unit.system then
+      cmd = cmd .. ' --user'
+    end
+    return cmd .. ' ' .. op .. ' ' .. unit.name
+  end
+
   local function is_active(unit, callback)
-    awful.spawn.easy_async(
-      'systemctl is-active ' .. unit,
-      function (_, _, _, code)
-        local active = code ~= 3
-        callback(active)
+    awful.spawn.easy_async(systemctl(unit, 'is-active'), function (_, _, _, code)
+      callback(code ~= 3)
     end)
   end
 
   local function toggle(unit)
     is_active(unit, function (active)
-      local op = 'start'
-      local verb = 'started'
-      if active then
-        op = 'stop'
-        verb = 'stoped'
-      end
+      local op = active and 'stop' or 'start'
+      local verb = active and 'stoped' or 'started'
 
-      awful.spawn.easy_async('systemctl ' .. op .. ' ' .. unit, function (stdout, stderr, _, code)
+      awful.spawn.easy_async(systemctl(unit, op), function (stdout, stderr, _, code)
         if code ~= 0 then
           naughty.notify({
-            title = 'Unit ' .. unit .. ' failed ' .. op .. '!',
+            title = 'Unit ' .. unit.name .. ' failed ' .. op .. '!',
             text = 'Stdout:\n' .. stdout .. '\nStderr:\n' .. stderr,
             preset = naughty.config.presets.warn
           })
@@ -100,7 +102,7 @@ function M.toggle()
         end
 
         naughty.notify({
-          title = 'Unit ' .. unit .. ' ' .. verb .. '!',
+          title = 'Unit ' .. unit.name .. ' ' .. verb .. '!',
           preset = naughty.config.presets.info
         })
       end)
@@ -117,7 +119,7 @@ function M.toggle()
   for _, v in pairs(units) do
     is_active(v, function (active)
       menu:add({
-        (active and '●' or '○') .. ' ' .. v,
+        (active and '●' or '○') .. ' ' .. v.name,
         mk_toggle(v),
       })
       menu:show()
