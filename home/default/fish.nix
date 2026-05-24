@@ -15,6 +15,7 @@ in
       mux = "tmuxinator";
       tp = "pushd $(mktemp -d)";
       mux-tp = "tmux new-session -d -c $(mktemp -d) -s tmp";
+      notehere = "note \"unmanaged/$(tmux display-message -p '#S')\"";
 
       # e.g. `kubectl logs -f pod | foreach jq .`
       foreach = ''
