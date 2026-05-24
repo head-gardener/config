@@ -3,6 +3,9 @@ local awful = require("awful")
 local gears = require("gears")
 local string = require("string")
 
+-- x11 selection
+local selection = selection
+
 local function sh(s)
   return("'" .. s .. "'")
 end
@@ -42,6 +45,11 @@ end
 
 function M.note()
   awful.spawn([[kitty fish -c "note --select"]])
+end
+
+function M.note_search()
+  local cmd = "kitty notesearch search"
+  awful.spawn(cmd)
 end
 
 function M.note_push()

@@ -9,6 +9,7 @@
     nixd.inputs.nixpkgs.follows = "nixpkgs";
     nixvirt.inputs.nixpkgs.follows = "nixpkgs";
     notes.inputs.nixpkgs.follows = "nixpkgs";
+    # notesearch.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     xmonad.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -18,6 +19,8 @@
     # capt.url = "git+file:/home/hunter/Downloads/capt-0.1";
     notes.url = "github:head-gardener/notes";
     # notes.url = "git+file:/home/hunter/notes/";
+    notesearch.url = "github:head-gardener/notesearch";
+    # notesearch.url = "git+file:/home/hunter/Code/note-search/";
     xmonad.url = "github:head-gardener/xmonad";
     # xmonad.url = "git+file:/home/hunter/xmonad/";
     lilex.url = "github:head-gardener/lilex-flake";
