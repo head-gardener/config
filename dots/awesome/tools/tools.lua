@@ -2,9 +2,54 @@ local naughty = require("naughty")
 local awful = require("awful")
 local gears = require("gears")
 local string = require("string")
+local wibox = require("wibox")
 
 -- x11 selection
 local selection = selection
+
+local function fuzzy_tool_select(title, items, on_select)
+  local beautiful = require("beautiful")
+  local awesomex = require("awesomex")
+
+  local runner = awesomex.widget.fuzzy_select {
+    title = title,
+    source = function() return items end,
+    filter = function(q, name) return awesomex.fzy.has_match(q, name) end,
+    sort = function(q, a, b) return awesomex.fzy.score(q, a) > awesomex.fzy.score(q, b) end,
+    item = function(name)
+      return wibox.widget {
+        {
+          text = "  " .. name,
+          font = beautiful.font,
+          widget = wibox.widget.textbox,
+        },
+        margins = 6,
+        widget = wibox.container.margin,
+      }
+    end,
+    keybindings = {
+      {{'Control'}, 'j', function(self)
+        local name = self.fuzzy.selected_item.value
+        self:stop()
+        if name then on_select(name) end
+      end},
+      {{}, 'Return', function(self)
+        local name = self.fuzzy.selected_item.value
+        self:stop()
+        if name then on_select(name) end
+      end},
+      {{'Control'}, 'n', function(self) self.fuzzy:select_next() end},
+      {{'Control'}, 'p', function(self) self.fuzzy:select_previous() end},
+      {{}, 'Down', function(self) self.fuzzy:select_next() end},
+      {{}, 'Up', function(self) self.fuzzy:select_previous() end},
+    },
+  }
+  runner.bg = beautiful.bg_normal
+  runner.minimum_width = 320
+  runner.maximum_height = 480
+  runner.screen = awful.screen.focused()
+  runner:run()
+end
 
 local function sh(s)
   return("'" .. s .. "'")
@@ -19,23 +64,22 @@ local function init(config)
 end
 
 function M.ssh()
-  awful.spawn.easy_async_with_shell(
-    "cat $HOME/.ssh/known_hosts | cut -d ' ' -f 1 | sort -u | dmenu",
-    function (host, _, _, code)
-      host = string.gsub(host, "%s+$", "")
+  local handle = io.popen("cat $HOME/.ssh/known_hosts 2>/dev/null | cut -d ' ' -f 1 | sort -u")
+  if not handle then return end
+  local hosts = {}
+  for host in handle:lines() do
+    table.insert(hosts, host)
+  end
+  handle:close()
+  table.sort(hosts)
 
-      if code ~= 0 or host == "" then
-        return
-      end
-
-      local _, _, h, p = string.find(host, "%[(.+)%]:(%d+)")
-
-      if h ~= nil and p ~= nil then
-        awful.spawn("kitty ssh " .. sh(h) .. " -p " .. sh(p))
-        return
-      end
-
+  fuzzy_tool_select('SSH', hosts, function(host)
+    local _, _, h, p = string.find(host, "%[(.+)%]:(%d+)")
+    if h and p then
+      awful.spawn("kitty ssh " .. sh(h) .. " -p " .. sh(p))
+    else
       awful.spawn("kitty ssh " .. sh(host))
+    end
   end)
 end
 
@@ -136,15 +180,19 @@ function M.toggle()
 end
 
 function M.cmds()
-  local terms = {}
+  local tool_map = {}
+  local tool_names = {}
   for n, f in pairs(M) do
-    if n == "cmds" or n == "config" then
-      goto continue
+    if n ~= "cmds" and n ~= "config" then
+      table.insert(tool_names, n)
+      tool_map[n] = f
     end
-    table.insert(terms, { n, f, })
-    ::continue::
   end
-  awful.menu.new(terms):show()
+  table.sort(tool_names)
+
+  fuzzy_tool_select('Tools', tool_names, function(name)
+    if tool_map[name] then tool_map[name]() end
+  end)
 end
 
 return setmetatable(M, { __call =  init })
