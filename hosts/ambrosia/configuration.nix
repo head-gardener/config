@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480s
+    inputs.notesearch.nixosModules.default
     (inputs.self.lib.mkKeys inputs.self "hunter")
     inputs.self.nixosModules.awesomewm
     inputs.self.nixosModules.daw
@@ -13,6 +14,10 @@
     inputs.self.nixosModules.xmonad
     inputs.self.nixosModules.zram
   ];
+
+  services.notesearch = {
+    enable = true;
+  };
 
   personal.hibernate = {
     enable = true;

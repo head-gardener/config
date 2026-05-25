@@ -1159,11 +1159,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1779629242,
-        "narHash": "sha256-bLFfq/TXfSTnXOTUTZwcnzmvMfjqvfPP/uApwtjWWrI=",
+        "lastModified": 1779634074,
+        "narHash": "sha256-tY/1VnQk6m1l0HlDd3cixgHHTs+vUtPSJVYt+UEs0SU=",
         "owner": "head-gardener",
         "repo": "notesearch",
-        "rev": "922b2179ee9f97a12ff4aedae944a53a4b46561a",
+        "rev": "beaf5306bef67b7d53389473dbfffa29ad727bc6",
         "type": "github"
       },
       "original": {
