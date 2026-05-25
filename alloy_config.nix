@@ -112,6 +112,7 @@ in {
     ] ++ server;
     elderberry = [
       # cache
+      docker
       fail2ban
       sing-box-out
       { personal.sing-box.vaultless = true; }

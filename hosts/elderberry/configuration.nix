@@ -9,7 +9,7 @@
 
   fileSystems."/" =
     { label = "nixos";
-      fsType = "btrfs";
+      fsType = "ext4";
       options = [
         "subvolid=5"
         "x-systemd.growfs"
@@ -18,7 +18,7 @@
 
   swapDevices = [{
     device = "/swapfile";
-    size = 5120;
+    size = 2048;
   }];
 
   networking.networkmanager.enable = false;
