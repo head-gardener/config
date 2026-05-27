@@ -72,7 +72,6 @@ in {
       terraform
       vagrant
       # vault-agent
-      # wireguard-client
     ];
     apple = [
       # cache
@@ -109,6 +108,7 @@ in {
       # cache
       docker
       # wireguard-client
+      tailscale-client
     ] ++ server;
     elderberry = [
       # cache
