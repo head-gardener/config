@@ -120,6 +120,7 @@ function M.toggle()
   local units = {
     { name = "keyd.service", system = true },
     { name = "sing-box.service", system = true },
+    { name = "tailscaled.service", system = true },
     { name = "wg-quick-wg0.service", system = true },
     { name = "kdeconnectd.service", system = false },
   }

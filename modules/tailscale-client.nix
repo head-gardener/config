@@ -1,5 +1,4 @@
 { pkgs, ... }:
-
 {
   environment = {
     pathsToLink = [ "/libexec" ];
@@ -7,6 +6,9 @@
       tailscale
     ];
   };
+
+  personal.polkit.allowUnitControl."tailscaled.service".groups = [ "tailscale-ctl" ];
+  users.groups.tailscale-ctl = { };
 
   services.tailscale.enable = true;
 }

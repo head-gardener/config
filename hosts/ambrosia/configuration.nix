@@ -61,6 +61,7 @@
       "networkmanager"
       "keyd-ctl"
       "sing-box-ctl"
+      "tailscale-ctl"
       # "wg-quick-${config.personal.wg.interface}-ctl"
     ];
   };
