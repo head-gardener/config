@@ -73,10 +73,10 @@ resource "digitalocean_ssh_key" "init" {
   public_key = file("./ssh/init.pub")
 }
 
-resource "digitalocean_droplet" "temp" {
-  name               = "temp"
+resource "digitalocean_droplet" "elderberry" {
+  name               = "elderberry"
   backups            = "false"
-  ipv6               = "true"
+  ipv6               = "false"
   monitoring         = "false"
   region             = "fra1"
   size               = "s-1vcpu-1gb"
@@ -103,7 +103,7 @@ resource "digitalocean_droplet" "temp" {
         tar xzf /tmp/store.tar.gz -C /tmp/store
         curl https://raw.githubusercontent.com/head-gardener/nixos-infect/master/nixos-infect \
           | PROVIDER=digitalocean NIXOS_FLAKE="github:head-gardener/config" \
-            HOSTNAME="unnamed" EVAL_STORE="/tmp/store" NO_REBOOT="1" \
+            HOSTNAME="elderberry" EVAL_STORE="/tmp/store" NO_REBOOT="1" \
             bash -x
 
         btrfs filesystem label / nixos
@@ -163,10 +163,12 @@ resource "digitalocean_droplet" "temp" {
   }
 }
 
-resource "digitalocean_droplet" "elderberry" {
-  name               = "elderberry"
+resource "digitalocean_droplet" "elderberry-leg" {
+  count              = 0
+
+  name               = "elderberry-leg"
   backups            = "false"
-  ipv6               = "true"
+  ipv6               = "false"
   monitoring         = "false"
   region             = "fra1"
   size               = "s-1vcpu-1gb"
@@ -194,5 +196,5 @@ resource "digitalocean_droplet" "elderberry" {
 }
 
 output "ip" {
-  value = digitalocean_droplet.temp.ipv4_address
+  value = digitalocean_droplet.elderberry.ipv4_address
 }

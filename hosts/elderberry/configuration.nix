@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, lib, ... }:
 
 {
   imports = [
@@ -9,7 +9,7 @@
 
   fileSystems."/" =
     { label = "nixos";
-      fsType = "ext4";
+      fsType = "btrfs";
       options = [
         "subvolid=5"
         "x-systemd.growfs"
@@ -31,6 +31,12 @@
   networking.firewall.allowedTCPPorts = [ ];
   networking.firewall.allowedUDPPorts = [ ];
   networking.firewall.allowPing = false;
+
+  networking.useDHCP = lib.mkForce false;
+  services.cloud-init = {
+    enable = true;
+    network.enable = true;
+  };
 
   programs = {
     atop = {
