@@ -121,8 +121,12 @@ return {
     },
     keys = function()
       return {
-        { '<Space>hs', ':Gitsigns stage_hunk<CR>', noremap = true },
-        { '<Space>nh', ':Gitsigns next_hunk<CR>',  noremap = true },
+        { '<C-h><C-s>', ':Gitsigns stage_hunk<CR>', noremap = true },
+        { '<C-h><C-n>', ':Gitsigns next_hunk<CR>',  noremap = true },
+        { '<C-h><C-p>', ':Gitsigns preview_hunk_inline<CR>',  noremap = true },
+        { '<C-h><C-r>', ':Gitsigns reset_hunk<CR>',  noremap = true },
+        { '<C-h><C-b>', ':Gitsigns blame<CR>',  noremap = true },
+        { '<C-h><C-d>', ':Gitsigns diff_this<CR>',  noremap = true },
       }
     end,
   },
