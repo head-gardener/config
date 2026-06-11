@@ -6,6 +6,7 @@
     brightnessctl
     cloc
     entr
+    flameshot
     haskellPackages.base91
     inputs.agenix.packages.${stdenv.hostPlatform.system}.default
     inputs.notesearch.packages.${stdenv.hostPlatform.system}.default
