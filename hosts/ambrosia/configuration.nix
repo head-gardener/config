@@ -7,6 +7,7 @@
     (inputs.self.lib.mkKeys inputs.self "hunter")
     inputs.self.nixosModules.awesomewm
     inputs.self.nixosModules.daw
+    inputs.self.nixosModules.dev-agents
     # inputs.self.nixosModules.github
     inputs.self.nixosModules.printing
     inputs.self.nixosModules.steam
