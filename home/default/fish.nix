@@ -17,6 +17,8 @@ in
       mux-tp = "tmux new-session -d -c $(mktemp -d) -s tmp";
       notehere = "note \"unmanaged/$(tmux display-message -p '#S')\"";
 
+      y = "yazi";
+
       # e.g. `kubectl logs -f pod | foreach jq .`
       foreach = ''
         perl -E 'while (<STDIN>) { open(my $pipe, "|-", @ARGV); print $pipe $_; close $pipe or say $_; }'
@@ -42,6 +44,7 @@ in
         set sponge_delay 8
 
         abbr unfree --set-cursor=! "NIXPKGS_ALLOW_UNFREE=1 nix ! --impure"
+        abbr fdstore --set-cursor=! "fd -td -d1 ! /nix/store"
         abbr nom-rebuild --set-cursor=! "nixos-rebuild ! --log-format internal-json -v 2>| nom --json"
       '';
     plugins = map nixplug (with pkgs.fishPlugins; [
