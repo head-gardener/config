@@ -61,7 +61,7 @@ let
               "$(btrfs filesystem show "${dev}" | awk '/devid\s*1/ { print $8 }')" \
           )"
           thres="$(btrfs filesystem df --raw "$tgt" \
-            | awk '/Data/ { printf "%d", 10 + ($4 / $3)*20 }')"
+            | awk '/Data/ { gsub(/.*=/, "", $3); gsub(/.*=/, "", $4); printf "%d", 10 + ($4 / $3)*20 }')"
           echo "Balancing ${dev} at $tgt with threshold $thres"
           btrfs balance start "$tgt" "-dusage=$thres" --enque
         '';
