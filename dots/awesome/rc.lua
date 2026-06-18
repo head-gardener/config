@@ -11,6 +11,7 @@ local tools = require('tools.config')
 local todo = require('todo')
 local batt = require('batt')
 local notif = require('notif')
+local scratch = require('scratch')
 
 -- Standard awesome library
 local gears = require("gears")
@@ -77,6 +78,7 @@ end
 -- }}}
 
 notif.init()
+scratch.init()
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
@@ -86,6 +88,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 local terminal = "kitty"
 local editor = "nvim"
 local editor_cmd = terminal .. " -e " .. editor
+local home = os.getenv('HOME') or os.getenv('PWD')
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -347,6 +350,19 @@ local globalkeys = gears.table.join(
   -- Standard program
   awful.key({ modkey, }, "Return", function() awful.spawn(terminal) end,
     { description = "open a terminal", group = "launcher" }),
+  awful.key({ modkey, "Control" }, "s", scratch.toggle,
+    { description = "toggle scratchpad terminal", group = "launcher" }),
+
+  -- Screenshots
+  awful.key({}, "Print", function() awful.spawn("flameshot full -c") end,
+    { description = "screenshot to clipboard", group = "launcher" }),
+  awful.key({ "Control" }, "Print", function() awful.spawn(
+    "flameshot full -p " .. home .. "/Pictures/Screenshots/"
+  ) end,
+    { description = "screenshot save to file", group = "launcher" }),
+  awful.key({ "Shift" }, "Print", function() awful.spawn("flameshot gui") end,
+    { description = "screenshot overlay", group = "launcher" }),
+
   awful.key({ modkey, "Control" }, "r", awesome.restart,
     { description = "reload awesome", group = "awesome" }),
   awful.key({ modkey, "Shift" }, "q", awesome.quit,
