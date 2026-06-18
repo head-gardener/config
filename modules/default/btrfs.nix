@@ -150,13 +150,14 @@ in
         script = ''
           set -o pipefail;
 
-          if [ \
-            "$(df -P /nix/store | awk 'NR==2 { print int($4 / $2 * 100) }')" -le 10 \
-            -a "$( \
-              compsize -b /nix/store \
-              | awk '/none/ { none = $4 }; /zstd/ { zstd = $4 }; END { print (none*2 > zstd) }' \
-            )" == "1" \
-          ]; then
+          free="$(df -P /nix/store | awk 'NR==2 { print int($4 / $2 * 100) }')"
+          # total == 0 is an absurd case so we fail fast
+          comprat="$( \
+            compsize -b /nix/store \
+            | awk '/TOTAL/ { total = $4 }; /none/ { none = $4 }; END { print 1 - none / total }' \
+          )"
+          echo "free = $free%, compression ratio = $comprat%"
+          if [ "$free" -le 10 -a "$comprat" -le 0.7 ]; then
             echo "Compressing /nix/store..."
             unshare -m bash -e -c '
               mount -o remount,rw /nix/store
