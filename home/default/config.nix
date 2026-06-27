@@ -13,7 +13,7 @@
       fzy
       libnotify
       nautilus
-      neofetch
+      fastfetch.minimal
       nix-prefetch-github
       obs-studio
       ripdrag
