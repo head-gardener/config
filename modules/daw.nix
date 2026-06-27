@@ -106,7 +106,7 @@ in
     noise-repellent
     oxefmsynth
     plugdata
-    surge-XT
+    surge-xt
     tap-plugins
     uhhyou-plugins
     x42-plugins
