@@ -56,22 +56,23 @@
       withPrefix = [ "vm" ];
     };
 
-    checks = {
+    checks = let
+      commonMods = [
+        inputs.alloy.nixosModules.default
+        ({ lib, ... }: {
+          users.users."root".hashedPasswordFile = lib.mkForce null;
+        })
+      ];
+    in {
       enable = true;
       inherit nixpkgs;
       eval = {
         specialArgs = { inherit inputs; };
-        modules = (nixpkgs.lib.attrValues self.nixosModules)
-        ++ [
-          inputs.alloy.nixosModules.default
-        ];
+        modules = (nixpkgs.lib.attrValues self.nixosModules) ++ commonMods;
       };
       check = {
         specialArgs = { inherit inputs; };
-        modules = (self.lib.mkHostModules "test")
-        ++ [
-          inputs.alloy.nixosModules.default
-        ];
+        modules = (self.lib.mkHostModules "test") ++ commonMods;
       };
     };
 
