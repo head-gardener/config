@@ -59,6 +59,7 @@
   fileSystems."/etc/ssh" = {
     depends = [ "/persist" ];
     neededForBoot = true;
+    fsType = "none";
   };
 
   networking.networkmanager.enable = false;
