@@ -18,6 +18,9 @@
         http_port = 2342;
         http_addr = net.self.ipv4;
       };
+
+      # FIXME: handle this
+      security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
     };
   };
 }
