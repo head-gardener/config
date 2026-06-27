@@ -59,9 +59,11 @@
     checks = let
       commonMods = [
         inputs.alloy.nixosModules.default
+        "${nixpkgs}/nixos/modules/virtualisation/qemu-vm.nix"
         ({ lib, ... }: {
           users.users."root".hashedPasswordFile = lib.mkForce null;
         })
+        self.nixosModules.vm-btrfs
       ];
     in {
       enable = true;
