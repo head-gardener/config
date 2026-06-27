@@ -53,6 +53,23 @@ in
 
   config = lib.mkMerge [
     {
+      personal.checks.facts = {
+        modules = [
+          inputs.self.nixosModules.facts
+          inputs.self.nixosModules.btrfs
+        ];
+        script = ''
+          machine.wait_for_unit("multi-user.target")
+          output = machine.succeed("${lib.getExe cfg.package}")
+          import json
+          facts = json.loads(output)
+          assert "swapfiles" in facts
+          assert "net" in facts
+          assert "interfaces" in facts["net"]
+        '';
+      };
+    }
+    {
       personal.facts.facts = lib.mkMerge [
         (lib.mkIf (exists && cfg.enable) (builtins.fromJSON (builtins.readFile cfg.factsFile)))
         (lib.mkIf (!(exists && cfg.enable)) (
