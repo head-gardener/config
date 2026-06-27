@@ -20,7 +20,7 @@
       tree
       unzip
       vlc
-      wineWowPackages.stable
+      wineWow64Packages.stable
       winetricks
       xclip
     ] ++ [
