@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
+    inputs.self.nixosModules.impermanence
     inputs.self.nixosModules.zram
   ];
 
@@ -24,35 +25,9 @@
   boot.loader.efi = {
     canTouchEfiVariables = true;
   };
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    mkdir /btrfs_tmp
-    mount ${config.fileSystems."/".device} /btrfs_tmp
-    if [[ -e /btrfs_tmp/root ]]; then
-        mkdir -p /btrfs_tmp/old_roots
-        timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
-        mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
-    fi
-
-    delete_subvolume_recursively() {
-        IFS=$'\n'
-        for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-            delete_subvolume_recursively "/btrfs_tmp/$i"
-        done
-        btrfs subvolume delete "$1"
-    }
-
-    for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
-        delete_subvolume_recursively "$i"
-    done
-
-    btrfs subvolume create /btrfs_tmp/root
-    umount /btrfs_tmp
-  '';
 
   environment.persistence."/persistent" = {
-    hideMounts = true;
     directories = [
-      "/etc/ssh"
       {
         directory = "/etc/vault";
         user = "root";
@@ -60,25 +35,6 @@
         mode = "u=rwx,g=,o=";
       }
     ];
-    users.hunter = {
-      directories = [
-        ".local/share/fish"
-        ".local/share/kitty-ssh-kitten"
-        ".terminfo"
-      ];
-    };
-    files = [ ];
-  };
-
-  # TODO: i don't remember why i put this in. there's no file system there,
-  # imperm doesn't create filesystems. this probably tricks nix into something
-  # having to do with neededForBoot for mount ordering, but i don't understand
-  # how exactly this works. investigate once i have access to rebooting this
-  # thing.
-  fileSystems."/etc/ssh" = {
-    depends = [ "/persist" ];
-    neededForBoot = true;
-    fsType = "none";
   };
 
   networking.networkmanager.enable = false;
