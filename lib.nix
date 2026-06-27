@@ -109,4 +109,6 @@ rec {
         (x: builtins.head x.imports)
         (x: x.config.passthru.override)
       ];
+
+  parent = lib;
 }
