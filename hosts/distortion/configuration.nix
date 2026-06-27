@@ -58,7 +58,6 @@
   };
 
   networking = {
-    wireless.enable = false;
     networkmanager.enable = true;
     firewall.enable = false;
   };
