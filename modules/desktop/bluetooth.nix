@@ -3,7 +3,7 @@
   hardware.bluetooth.enable = true;
 
   environment.systemPackages = with pkgs; [
-    blueberry
+    blueman
     pavucontrol
   ];
 }
