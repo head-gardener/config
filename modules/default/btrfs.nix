@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  utils,
   ...
 }:
 let
@@ -14,31 +15,10 @@ let
   enable = builtins.length detect != 0;
   cfg = config.btrfs.autoConfigure;
 
-  escapeDev =
-    lib.replaceStrings
-      [
-        "\\"
-        "/"
-        " "
-        "@"
-        ":"
-        "["
-        "]"
-      ]
-      [
-        "_"
-        "_"
-        "_"
-        "_"
-        "_"
-        "_"
-        "_"
-      ];
-
   mkBalancer =
     dev:
     let
-      devEscaped = escapeDev dev;
+      devEscaped = utils.escapeSystemdPath dev;
     in
     {
       services."balance${devEscaped}" = {
