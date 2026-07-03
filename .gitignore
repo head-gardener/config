@@ -4,6 +4,8 @@
 result*
 \#*
 
+.gitlab-ci-local
+
 # temp
 ansible/*
 monitrc

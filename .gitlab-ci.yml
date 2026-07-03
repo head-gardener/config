@@ -1,0 +1,24 @@
+stages:
+  - generate
+  - child
+
+generate-pipeline:
+  stage: generate
+  image: nixpkgs/nix-flakes
+  script:
+    - |-
+      nix flake show --json \
+        | nix shell .#legacyPackages.x86_64-linux.python3 \
+          -c python3 scripts/generate-gitlab-ci.py \
+        | tee generated-pipeline.yml
+  artifacts:
+    paths:
+      - generated-pipeline.yml
+
+run-pipeline:
+  stage: child
+  trigger:
+    include:
+      - artifact: generated-pipeline.yml
+        job: generate-pipeline
+    strategy: depend
