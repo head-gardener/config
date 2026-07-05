@@ -16,23 +16,4 @@
     # "--kubelet-arg=v=4" # Optionally add additional args to k3s
   ];
   environment.systemPackages = [ pkgs.k3s ];
-
-  services.btrbk.instances.k3s = {
-    onCalendar = "*:0/10:00";
-    settings = {
-      snapshot_create = "ondemand";
-      snapshot_dir = "snapshots";
-      snapshot_preserve = "no";
-      snapshot_preserve_min = "latest";
-      target = "/mnt/btr_backup/k3s";
-      target_preserve = "5d";
-      target_preserve_min = "1d";
-      incremental = "no";
-      volume = {
-        "/mnt/btr_pool" = {
-          subvolume = "var/lib/rancher/k3s/storage";
-        };
-      };
-    };
-  };
 }

@@ -107,8 +107,9 @@ in {
       backup-local
       # cache
       docker
-      # wireguard-client
+      k3s-singleton
       tailscale-client
+      # wireguard-client
     ] ++ server;
     elderberry = [
       # cache
