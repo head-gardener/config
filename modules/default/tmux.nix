@@ -40,11 +40,12 @@
       bind C-e display-popup 'fish -c "$(fish -c history | fzf)"'
       bind C-d display-popup -E 'fish -c dash'
       bind C-c 'copy-mode; send-keys -X search-backward "❯+"'
+
+      bind s choose-tree -Z -s -O name
     '';
     plugins = with pkgs.tmuxPlugins; [
       extrakto
       fuzzback
-      resurrect
       sensible
       urlview
       yank
