@@ -9,6 +9,27 @@ push-cfg to:
 switch:
   sudo nixos-rebuild switch --flake .
 
+sync-cfg to:
+  rsync --exclude-from=.gitignore --filter=':- .gitignore' \
+    . {{ to }}:config -azv
+
+input-path input:
+  nix eval --raw --impure --expr \
+    '(builtins.getFlake "{{ justfile_directory() }}").inputs.{{ input }}.outPath'
+
+pkg-defined-from host:
+  nix eval \
+    .#nixosConfigurations.{{ host }}.options.environment.systemPackages.definitionsWithLocations \
+    --json | jq .
+
+build-all output='packages' tgt='.':
+  nix flake show --json \
+    | jq -r ".{{ output }}.$(nix eval --impure --expr "builtins.currentSystem") | keys[]" \
+    | grep '{{ tgt }}' \
+    | xargs -t -I {} \
+        nix build --no-link --print-build-logs --show-trace \
+          ".#{{ output }}.$(nix eval --impure --expr "builtins.currentSystem").{}"
+
 # nixos-rebuild switch from remote builder
 switch-via builder:
   sudo "$( \
@@ -19,8 +40,8 @@ switch-via builder:
 get-secret secret:
   cd ./secrets && agenix -d {{ secret }}
 
-# same as deploy, but host address and config hostname can be different
-deploy-as host tgt:
+# deploy configuration
+deploy-as host tgt=host:
   rsync --exclude-from=.gitignore --filter=':- .gitignore' \
     . {{ host }}:/tmp/config -azv
   ssh -tt {{ host }} ' \
@@ -29,9 +50,6 @@ deploy-as host tgt:
     /tmp/config#nixosConfigurations.{{ tgt }}.config.system.build.toplevel \
     --no-link --print-out-paths)"; \
   sudo "$sys/bin/switch-to-configuration" switch;'
-
-deploy tgt:
-  @just deploy-as "{{ tgt }}" "{{ tgt }}"
 
 change-nixos-release from to:
   rg --files-with-matches {{ from }} | rg -v '^flake.lock$' | \
@@ -42,10 +60,7 @@ change-nixos-release from to:
   nix flake lock
 
 # build system locally, send it and activate it on the remote
-build-deploy tgt:
-  @just build-deploy-as ${tgt} ${tgt}
-
-build-deploy-as host tgt:
+build-deploy-as host tgt=host:
   #! /usr/bin/env bash
   set -ex
   sys="$(nix build .#nixosConfigurations.{{ tgt }}.config.system.build.toplevel \
