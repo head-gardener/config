@@ -5,6 +5,7 @@
   ...
 }:
 
+# migrate this to /persist
 {
   personal.checks.impermanence = {
     modules = [
@@ -155,7 +156,7 @@
     hideMounts = true;
     directories = [
       "/etc/ssh"
-      "/var/lib/nixos"
+      # TODO: check if var is on separate vol, add here if not
     ];
     users.hunter = {
       directories = [
@@ -167,14 +168,7 @@
     files = [ ];
   };
 
-  # TODO: i don't remember why i put this in. there's no file system there,
-  # imperm doesn't create filesystems. this probably tricks nix into something
-  # having to do with neededForBoot for mount ordering, but i don't understand
-  # how exactly this works. investigate once i have access to rebooting this
-  # thing.
-  fileSystems."/etc/ssh" = {
-    depends = [ "/persist" ];
-    neededForBoot = true;
-    fsType = "none";
-  };
+  age.identityPaths = [
+    "/persistent/etc/ssh/ssh_host_ed25519_key"
+  ];
 }
