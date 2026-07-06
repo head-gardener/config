@@ -1,5 +1,29 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, inputs, config, ... }:
 {
+  home.activation.fetchNeoVimPlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    set -eo pipefail
+
+    run --quiet "${lib.getExe config.programs.neovim.finalPackage}" --headless \
+      -c '
+        lua local L=require("lazy.manage.lock");
+        L.update=function()end;
+        require("lazy").restore({wait=true})
+      ' \
+      +qa
+
+    ! ${lib.getExe pkgs.jq} -r 'to_entries[] | "\(.key)\t\(.value.commit)"' \
+      ${inputs.self}/dots/nvim/lazy-lock.json \
+      | while read n c; do
+          a="$(${lib.getExe pkgs.gitMinimal} -C "~/.local/share/nvim/lazy/$n" rev-parse HEAD 2>/dev/null || true)"
+          [ -z "$a" ] && continue
+          if [ "$c" != "$a" ]; then
+            echo "$n bad. expected $c, got $a"
+          fi
+        done \
+      | grep '.'
+  '';
+
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -10,6 +34,7 @@
       commitlint
       deadnix
       editorconfig-checker
+      git
       glow
       gnumake
       gopls
