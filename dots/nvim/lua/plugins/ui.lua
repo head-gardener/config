@@ -442,7 +442,7 @@ return {
         test = { 'Identifier', '#FF00FF' }
       },
       search = {
-        command = 'rp',
+        command = 'rg',
         args = {
           '--color=never',
           '--no-heading',
