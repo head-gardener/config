@@ -53,9 +53,13 @@ local function new()
     end
 
     local power = math.abs(power_now)
-    w._private.power_avg = (w._private.power_avg + 2 * power) / 3
-
-    local left_hours, left_minutes = math.modf(energy_now / w._private.power_avg)
+    local left_hours, left_minutes
+    if power == 0 then
+      w._private.power_avg = 0
+    else
+      w._private.power_avg = (w._private.power_avg + 2 * power) / 3
+      left_hours, left_minutes = math.modf(energy_now / w._private.power_avg)
+    end
 
     local txt = string.format(
       "%i%%",
