@@ -5,3 +5,9 @@ function docs -a type -d "Find and open docs symlinked by NixOS"
     xdg-open "$tgt"
   end
 end
+
+function nix-fzf-bin -d "Find an executable's dir in nix store"
+  set r "$(fd '^bin$' -d2 /nix/store -td | fzf --preview 'ls {}')"
+  [ -e "$r" ] || return 1
+  echo -n "$r"
+end
