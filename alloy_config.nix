@@ -78,7 +78,7 @@ in {
     ];
     blueberry = [
       backup-local
-      backup-s3
+      # backup-s3
       blog
       cache
       dnsmasq
@@ -87,7 +87,7 @@ in {
       grafana
       jenkins-mono
       loki
-      minio
+      # minio
       nats
       nginx
       nix-serve
@@ -95,7 +95,7 @@ in {
       refresher-config
       refresher-staging
       rotate-all
-      rtorrent-to-s3
+      # rtorrent-to-s3
       vault
       vault-agent
       wireguard-server

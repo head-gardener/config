@@ -52,18 +52,18 @@ in {
     defaultListenAddresses = [ "0.0.0.0" ];
 
     virtualHosts = rec {
-      "s3.backyard-hg.net" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          recommendedProxySettings = true;
-          proxyPass = "http://${alloy.minio.address}:9000";
-        };
-        extraConfig = ''
-          # s3fs can exceed the limit sometimes
-          client_max_body_size 20m;
-        '';
-      };
+      # "s3.backyard-hg.net" = {
+      #   enableACME = true;
+      #   forceSSL = true;
+      #   locations."/" = {
+      #     recommendedProxySettings = true;
+      #     proxyPass = "http://${alloy.minio.address}:9000";
+      #   };
+      #   extraConfig = ''
+      #     # s3fs can exceed the limit sometimes
+      #     client_max_body_size 20m;
+      #   '';
+      # };
 
       ${alloy.nix-serve.config.services.nix-serve.endpoint} = blueberry // {
         enableACME = true;

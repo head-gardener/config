@@ -8,7 +8,7 @@
   ];
 
   services.backup-local.subvols = [ "root" "var" ];
-  services.backup-s3.subvols = [ "root" ];
+  # services.backup-s3.subvols = [ "root" ];
 
   services.prometheus.exporters.smartctl = {
     devices = [ "/dev/sda" "/dev/sdb" "/dev/sdc" ];
