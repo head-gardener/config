@@ -29,7 +29,7 @@
     agenix.url = "github:ryantm/agenix";
     dmenu-conf.url = "github:head-gardener/nixpkgs/master";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     hydra.url = "github:NixOS/hydra";
     impermanence.url = "github:nix-community/impermanence";
     musnix.url = "github:musnix/musnix";
@@ -37,9 +37,9 @@
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     nixd.url = "github:nix-community/nixd";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixvirt.url = "github:AshleyYakeley/NixVirt";
-    stylix.url = "github:danth/stylix/release-25.11";
+    stylix.url = "github:danth/stylix/release-26.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 

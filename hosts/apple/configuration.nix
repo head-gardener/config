@@ -24,7 +24,7 @@
     };
   };
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 
   # services.logind.extraConfig = ''
   #   HandleLidSwitch=ignore
