@@ -7,10 +7,7 @@ inputs: pkgs: rec {
     # sources = with pkgs; [ ];
   };
 
-  cloud-vm = pkgs.callPackage ./cloud-vm.nix {
-    imgUrl = "https://cloud-images.ubuntu.com/noble/20251213/noble-server-cloudimg-amd64.img";
-    imgHash = "sha256-iWx2Fk4+AHWDZMjqdTaj9l5/tezy8Zt8grrMeZ5xkGI=";
-  };
+  cloud-vm = pkgs.callPackage ./cloud-vm.nix { };
 
   main-menu = pkgs.callPackage ./menu { };
 

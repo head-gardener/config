@@ -61,4 +61,8 @@ in
 '') // {
   img = "${img}";
   seed = "${seed}";
+} // {
+  meta = {
+    hydraPlatforms = [];
+  };
 }
