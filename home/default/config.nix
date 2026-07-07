@@ -3,7 +3,7 @@
 {
   home = {
     username = "hunter";
-    stateVersion = "25.11";
+    stateVersion = "26.05";
     packages = with pkgs; [
       arkpandora_ttf
       bemoji
