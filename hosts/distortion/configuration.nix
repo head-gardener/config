@@ -6,7 +6,6 @@
     inputs.self.nixosModules.awesomewm
     inputs.self.nixosModules.android-debug
     inputs.self.nixosModules.nvidia
-    inputs.self.nixosModules.xmonad
     inputs.self.nixosModules.github
     inputs.self.nixosModules.docker
     inputs.self.nixosModules.steam

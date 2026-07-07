@@ -12,7 +12,6 @@
     inputs.self.nixosModules.printing
     inputs.self.nixosModules.steam
     inputs.self.nixosModules.upower
-    inputs.self.nixosModules.xmonad
     inputs.self.nixosModules.zram
   ];
 
@@ -74,11 +73,12 @@
     ];
   };
 
-  services = {
-    xserver.windowManager.myxmonad.extraCommands = ''
-      xinput set-prop "10" "libinput Accel Speed" 1
-    '';
-  };
+  # TODO: do this xmonad free
+  # services = {
+  #   xserver.windowManager.myxmonad.extraCommands = ''
+  #     xinput set-prop "10" "libinput Accel Speed" 1
+  #   '';
+  # };
 
   programs = {
     gnupg.agent = {
