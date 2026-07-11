@@ -5,6 +5,7 @@
     awscli
     brightnessctl
     cloc
+    dmenu
     entr
     flameshot
     haskellPackages.base91
