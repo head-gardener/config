@@ -20,6 +20,16 @@ require('lazy').setup('plugins', {
   change_detection = {
     enabled = false,
   },
+  rocks = {
+    enabled = false,
+  },
+  performance = {
+    rtp = {
+      paths = {
+        os.getenv("NVIM_TS_SITE"),
+      },
+    },
+  }
 })
 require('functions')
 require('config')

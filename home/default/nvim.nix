@@ -1,4 +1,10 @@
-{ pkgs, lib, inputs, config, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  config,
+  ...
+}:
 {
   home.activation.fetchNeoVimPlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     set -eo pipefail
@@ -23,33 +29,48 @@
       | grep '.'
   '';
 
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    package = inputs.neovim-nightly.packages.${pkgs.stdenv.hostPlatform.system}.default;
-    extraPackages = with pkgs; [
-      commitlint
-      deadnix
-      editorconfig-checker
-      git
-      glow
-      gnumake
-      gopls
-      haskellPackages.hoogle
-      lua-language-server
-      lua51Packages.luarocks
-      lua5_1
-      nixd
-      nixpkgs-fmt
-      nodejs_latest
-      proselint
-      statix
-    ];
-    plugins = with pkgs.vimPlugins; [
-      lazy-nvim
-    ];
-  };
+  programs.neovim =
+    let
+      parsers = pkgs.runCommand "nvim-tree-sitter-parsers" { } ''
+        mkdir -p $out/share/parser
+        path="$out/share/parser"
+        ln -s ${pkgs.tree-sitter-grammars.tree-sitter-norg}/parser      "$path/norg.so"
+        ln -s ${pkgs.tree-sitter-grammars.tree-sitter-norg-meta}/parser "$path/norg_meta.so"
+        ln -s ${pkgs.tree-sitter-grammars.tree-sitter-yaml}/parser      "$path/yaml.so"
+      '';
+    in
+    {
+      enable = true;
+      defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
+      package = inputs.neovim-nightly.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      extraPackages = with pkgs; [
+        commitlint
+        deadnix
+        editorconfig-checker
+        git
+        glow
+        gnumake
+        gopls
+        haskellPackages.hoogle
+        lua-language-server
+        lua51Packages.luarocks
+        lua5_1
+        nixd
+        nixpkgs-fmt
+        nodejs_latest
+        proselint
+        statix
+      ];
+      extraWrapperArgs = [
+        "--suffix"
+        "NVIM_TS_SITE"
+        ":"
+        "${parsers}/share"
+      ];
+      plugins = with pkgs.vimPlugins; [
+        lazy-nvim
+      ];
+    };
 }
