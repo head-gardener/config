@@ -17,7 +17,6 @@
   "fade-out-step": 0.03,
   "fading": true,
   "frame-opacity": 1,
-  "glx-no-stencil": true,
   "inactive-opacity": 1,
   "inactive-opacity-override": false,
   "log-level": "warn",
