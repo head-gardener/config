@@ -1,37 +1,11 @@
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- TODO: review this
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = { "documentation", "detail", "additionalTextEdits" },
 }
-capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown" }
-capabilities.textDocument.codeAction = {
-  dynamicRegistration = true,
-  codeActionLiteralSupport = {
-    codeActionKind = {
-      valueSet = (function()
-        local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
-        table.sort(res)
-        return res
-      end)(),
-    },
-  },
-}
-
-local lsp_signature_cfg = {
-  handler_opts = {
-    border = "rounded",
-  },
-  floating_window = false,
-  doc_lines = 0,
-  floating_window_off_x = 1,
-  floating_window_off_y = -2,
-  hint_prefix = ' |- ',
+capabilities.textDocument.completion.completionItem.documentationFormat = {
+  "markdown",
+  "plaintext"
 }
 
 local _bmap = function(bufnr)
@@ -47,8 +21,6 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.inlayHintProvider then
     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end
-
-  require "lsp_signature".on_attach(lsp_signature_cfg, bufnr)
 
   bmap('n', '<space>e', vim.diagnostic.open_float)
   bmap('n', '[d', function() vim.diagnostic.jump({ count = -1 }) end)
@@ -66,23 +38,27 @@ end
 
 return {
   {
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-    config = {},
-  },
-  {
     'neovim/nvim-lspconfig',
     lazy = false,
     config = function()
-      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false,
+      vim.diagnostic.config({
         underline = false,
         signs = true,
         update_in_insert = false,
-      })
+        severity_sort = true,
 
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
-        title = " Hover ",
+        virtual_text = true,
+        virtual_lines = false,
+
+        jump = {
+          on_jump = function(_, bufnr)
+            vim.diagnostic.open_float {
+              bufnr = bufnr,
+              scope = 'cursor',
+              focus = false,
+            }
+          end,
+        },
       })
 
       vim.lsp.config('*', {
@@ -93,9 +69,6 @@ return {
       vim.lsp.config('nixd', {})
       vim.lsp.enable('nixd')
 
-      vim.lsp.config('pyright', {
-        on_attach = on_attach
-      })
       vim.lsp.enable('pyright')
 
       vim.lsp.config('hls', {
@@ -247,12 +220,6 @@ return {
     dependencies = { "nvim-lua/plenary.nvim", "mfussenegger/nvim-dap" }
   },
   {
-    'simrat39/rust-tools.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim', 'mfussenegger/nvim-dap',
-    }
-  },
-  {
     'mason-org/mason.nvim',
     lazy = false,
     opts = {},
@@ -280,11 +247,6 @@ return {
         }
       }
     end,
-  },
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "VeryLazy",
-    opts = {},
   },
   'ckolkey/ts-node-action',
   'camilledejoye/nvim-lsp-selection-range',
