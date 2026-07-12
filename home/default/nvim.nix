@@ -61,6 +61,7 @@
         nodejs_latest
         proselint
         statix
+        tree-sitter
       ];
       extraWrapperArgs = [
         "--suffix"
