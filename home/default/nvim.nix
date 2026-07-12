@@ -88,7 +88,7 @@
         nodejs_latest
         proselint
         statix
-        tree-sitter
+        yaml-language-server
       ];
       extraWrapperArgs = [
         "--suffix"
