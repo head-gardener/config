@@ -38,6 +38,43 @@
         ln -s ${pkgs.tree-sitter-grammars.tree-sitter-norg-meta}/parser "$path/norg_meta.so"
         ln -s ${pkgs.tree-sitter-grammars.tree-sitter-yaml}/parser      "$path/yaml.so"
       '';
+
+      # vscode-style snippet packages pulled from GitHub. Each must ship a
+      # package.json (at the repo root) with `contributes.snippets` mapping
+      # languages to json/jsonc files.
+      vscodeSnippetPkgs = with pkgs; [
+        (fetchFromGitHub {
+          owner = "hnkuanx";
+          repo = "vscode-golang-snippets";
+          rev = "fd82acb9b9f4cdfa2482bd9364426287f1af312e";
+          sha256 = "sha256-RaLJmBUl+4CkFQhJQOmaK2//DOrIE42/CRVO8nrCLmM=";
+          sparseCheckout = [
+            "package.json"
+            "snippets"
+          ];
+        })
+        (fetchFromGitHub {
+          owner = "ylcnfrht";
+          repo = "vscode-python-snippet-pack";
+          rev = "7fa16e40449c3edac77e9fabf66ae53658949ee6";
+          sha256 = "sha256-dkmTQ81zvc9oFf4dUmqc/JcKVOl7cn/nfIS/d7nHz2I=";
+          sparseCheckout = [
+            "package.json"
+            "snippets"
+          ];
+        })
+        (fetchFromGitHub {
+          owner = "stephrobert";
+          repo = "ansible-snippets";
+          rev = "1cedf8adc8f68771737ee47129325754aaab1233";
+          sha256 = "sha256-Ngv2nVvSEcfyf3faf2mPU1rPbueIU0rWGaK9UxzlVJY=";
+          sparseCheckout = [
+            "package.json"
+            "snippets"
+          ];
+        })
+      ];
+      vscodeSnippetPaths = lib.concatStringsSep ":" vscodeSnippetPkgs;
     in
     {
       enable = true;
@@ -68,6 +105,11 @@
         "NVIM_TS_SITE"
         ":"
         "${parsers}/share"
+      ]
+      ++ lib.optionals (vscodeSnippetPaths != "") [
+        "--set"
+        "NVIM_VSCODE_SNIPPET_PATHS"
+        vscodeSnippetPaths
       ];
       plugins = with pkgs.vimPlugins; [
         lazy-nvim

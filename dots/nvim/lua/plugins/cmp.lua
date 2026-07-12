@@ -2,8 +2,10 @@ return {
   {
     'hrsh7th/nvim-cmp',
     event = 'VeryLazy',
+    dependencies = { 'saadparwaiz1/cmp_luasnip' },
     init = function()
       local cmp = require('cmp')
+      local ls = require('luasnip')
 
       local feedkey = function(key, mode)
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
@@ -12,12 +14,12 @@ return {
       cmp.setup({
         snippet = {
           expand = function(args)
-            vim.fn['vsnip#anonymous'](args.body)
+            ls.lsp_expand(args.body)
           end,
         },
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
-          { name = 'vsnip' },
+          { name = 'luasnip' },
           { name = 'buffer' },
           { name = 'path' },
         }),
@@ -27,17 +29,19 @@ return {
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
-            elseif vim.fn["vsnip#available"](1) == 1 then
-              feedkey("<Plug>(vsnip-expand-or-jump)", "")
+            elseif ls.expand_or_jumpable() then
+              feedkey("<Plug>luasnip-expand-or-jump", "")
             else
               fallback()
             end
           end, { "i", "s", noremap = true }),
-          ['<S-Tab>'] = cmp.mapping(function()
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
-            elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-              feedkey("<Plug>(vsnip-jump-prev)", "")
+            elseif ls.jumpable(-1) then
+              feedkey("<Plug>luasnip-jump-prev", "")
+            else
+              fallback()
             end
           end, { "i", "s" })
         },
