@@ -223,9 +223,22 @@ return {
     opts = {},
   },
   {
+    'mosheavni/yaml-companion.nvim',
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    init = function()
+      local cfg = require("yaml-companion").setup({ })
+      vim.lsp.config('yamlls', cfg)
+      vim.lsp.enable('yamlls')
+    end,
+  },
+  {
     'mason-org/mason-lspconfig.nvim',
     enabled = true,
-    opts = { },
+    opts = {},
     lazy = false,
     dependencies = {
       "neovim/nvim-lspconfig",
