@@ -69,24 +69,4 @@ return {
       require('telescope').load_extension('hoogle')
     end,
   },
-  {
-    'someone-stole-my-name/yaml-companion.nvim',
-    dependencies = {
-      "neovim/nvim-lspconfig",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-    init = function()
-      require("telescope").load_extension("yaml_schema")
-
-      -- some snippets here: https://github.com/budimanjojo/k8s-snippets/blob/master/snippets/k8s_io-api.json
-      local cfg = require("yaml-companion").setup({
-        -- lspconfig = {
-        --   cmd = {"yaml-language-server"}
-        -- },
-      })
-      vim.lsp.enable('yamlls')
-      vim.lsp.config('yamlls', cfg)
-    end,
-  },
 }

@@ -99,6 +99,7 @@
         nodejs_latest
         proselint
         statix
+        yaml-language-server
       ];
       extraWrapperArgs = [
         "--suffix"
