@@ -176,22 +176,20 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
     config = function()
-      require('nvim-treesitter.configs').setup {
-        ensure_installed = {},
-        auto_install = false,
-        modules = {},
-        sync_install = false,
-        ignore_install = {},
-        folding = {
-          enable = true,
-          persistent = true,
-        },
-        highlight = {
-          enable = true,
-          disable = {},
-        },
-      }
+      require('nvim-treesitter').setup {}
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function()
+          if not pcall(vim.treesitter.start) then
+            return
+          end
+          vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+          vim.wo[0][0].foldmethod = 'expr'
+        end,
+      })
     end,
   },
   {
