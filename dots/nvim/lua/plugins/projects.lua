@@ -132,7 +132,7 @@ return {
         { '<C-h><C-p>', ':Gitsigns preview_hunk_inline<CR>',  noremap = true },
         { '<C-h><C-r>', ':Gitsigns reset_hunk<CR>',  noremap = true },
         { '<C-h><C-b>', ':Gitsigns blame<CR>',  noremap = true },
-        { '<C-h><C-d>', ':Gitsigns diff_this<CR>',  noremap = true },
+        { '<C-h><C-d>', ':Gitsigns diffthis<CR>',  noremap = true },
       }
     end,
   },
