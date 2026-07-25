@@ -53,7 +53,7 @@
     modules = {
       nixosRoot = ./modules;
       homeRoot = ./home;
-      withPrefix = [ "vm" ];
+      withPrefix = [ "vm" "providers" ];
     };
 
     checks = let
