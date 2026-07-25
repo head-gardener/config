@@ -3,7 +3,3 @@
 .nixos-test-history
 result*
 \#*
-
-# temp
-ansible/*
-monitrc
