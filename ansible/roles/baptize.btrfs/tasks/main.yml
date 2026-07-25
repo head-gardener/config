@@ -1,0 +1,51 @@
+- name: Check for BTRFS root
+  ansible.builtin.command:
+    cmd: "findmnt / -n -o FSTYPE"
+  changed_when: false
+  register: fstype
+
+- name: Early exit
+  ansible.builtin.meta: end_role
+  when: fstype.stdout == "btrfs"
+
+- name: Pull
+  ansible.builtin.copy:
+    src: /home/hunter/Code/digitalocean-ext4-to-btrfs/ext2btrfs
+    dest: /tmp/ext2btrfs
+    mode: "0777"
+
+# - name: Pull
+#   ansible.builtin.get_url:
+#     url: https://raw.githubusercontent.com/head-gardener/digitalocean-ext4-to-btrfs/master/ext2btrfs
+#     dest: /tmp/ext2btrfs
+#     mode: 777
+
+- name: Run
+  ansible.builtin.shell:
+    executable: /bin/bash
+    cmd: |-
+      set -eo pipefail
+      bash -x /tmp/ext2btrfs 2>&1 | logger --stderr --tag ext2btrfs
+  changed_when: true
+  register: _out
+  ignore_unreachable: true
+  failed_when:
+    - (_out.rc | default(1)) != 0
+    - not (_out.unreacheable | default(false))
+  environment:
+    INIT_OPTS: -x
+    DRY_RUN: ""
+    PARENT: ansible
+
+- name: Wait for host to reboot
+  ansible.builtin.wait_for_connection:
+    delay: 10
+    timeout: 300
+    sleep: 5
+
+- name: Confirm BTRFS root
+  ansible.builtin.command:
+    cmd: "findmnt / -n -o FSTYPE"
+  changed_when: false
+  register: fstype
+  failed_when: fstype.stdout != "btrfs"
