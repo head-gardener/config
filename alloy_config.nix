@@ -120,5 +120,10 @@ in {
       strictSSH
       # wireguard-client
     ] ++ server;
+    foxgrape = [
+      fail2ban
+      strictSSH
+      # cache
+    ] ++ server;
   };
 }
