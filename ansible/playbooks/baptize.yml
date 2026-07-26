@@ -1,0 +1,178 @@
+- name: Play
+  hosts: all
+  gather_subset:
+    - devices
+    - distribution
+    - mounts
+  vars:
+    kexec_url: https://tunnel.backyard-hg.net/kexec/kexec-boot
+    initrd_url: https://tunnel.backyard-hg.net/kexec/initrd.gz
+    bzimage_url: https://tunnel.backyard-hg.net/kexec/bzImage
+    image_url: https://tunnel.backyard-hg.net/image/root.raw.zst
+
+    stop_cloud_init: true
+    stop_apt: true
+
+    swap_size_mb: 2048
+  tasks:
+    - name: Terminate cloud-init
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: stopped
+      when: stop_cloud_init
+      loop:
+        - cloud-init
+        - cloud-init-local
+        - cloud-final
+
+    - name: Terminate apt
+      when: >-
+        ansible_facts["distribution"] in ["Debian", "Ubuntu"] or
+        stop_apt
+      block:
+        - name: Terminate apt process
+          ansible.builtin.shell:
+            cmd: |-
+              set -ex
+              procs="$(pgrep 'apt' || echo '')"
+              [ -z "$procs" ] && exit 0
+              echo "killing $procs"
+              kill -TERM $procs
+          register: terminate
+          changed_when: "'killing' in terminate.stdout"
+          timeout: 300
+
+        - name: Restore dpkg database
+          ansible.builtin.shell:
+            cmd: |-
+              dpkg --configure -a
+              apt-get install -f -y
+          retries: 15
+          delay: 8
+          until: >-
+            restore is not failed or
+            (restore.stdout is not search("lock") and
+            restore.stderr is not search("lock"))
+          register: restore
+          when: terminate is changed
+          changed_when: true
+
+    - name: Get prereqs
+      ansible.builtin.apt:
+        name:
+          - bash
+          - kexec-tools
+        lock_timeout: 300
+        state: present
+
+    - name: Pull kexec image
+      ansible.builtin.get_url:
+        url: "{{ item.url }}?v={{ '%s' | strftime }}"
+        mode: "{{ item.mode | default('0600') }}"
+        dest: "/{{ item.name }}"
+        force: true
+      loop:
+        - name: kexec
+          url: "{{ kexec_url }}"
+          mode: "0700"
+        - name: initrd.gz
+          url: "{{ initrd_url }}"
+        - name: bzImage
+          url: "{{ bzimage_url }}"
+
+    - name: Cut kexec -e call from kexec wrapper
+      ansible.builtin.replace:
+        regexp: "^kexec -e.*"
+        path: /kexec
+
+    - name: Set target disk
+      when: target_disk is undefined
+      block:
+        - name: Find device mounted at root
+          ansible.builtin.set_fact:
+            root_partition: >-
+              {{
+                (ansible_facts["mounts"]
+                  | selectattr('mount', 'equalto', '/')
+                  | list
+                  | first
+                ).device | basename
+              }}
+
+        - name: Find parent disk
+          ansible.builtin.set_fact:
+            target_disk: "/dev/{{ item.key }}"
+          loop: "{{ ansible_facts['devices'] | dict2items }}"
+          when:
+            - item.value.partitions is defined
+            - root_partition in item.value.partitions.keys() | list
+
+    - name: Set cmdline on kexec call
+      ansible.builtin.replace:
+        regexp: "{{ item.key }}"
+        replace: "{{ item.key + item.val }}"
+        path: /kexec
+      loop:
+        - key: "installer.image_url="
+          val: "{{ image_url }}"
+        - key: "installer.target_disk="
+          val: "{{ target_disk }}"
+
+    - name: Drop page/inode/dentry caches
+      ansible.builtin.shell:
+        cmd: |-
+          sync
+          echo 3 > /proc/sys/vm/drop_caches
+      changed_when: false
+      failed_when: false
+
+    # OOM (i.e. killed) is not changed, other errors are failed
+    - name: Load kexec params
+      ansible.builtin.command:
+        cmd: '/kexec'
+      register: kexec_load
+      vars:
+        kexec_oom: >-
+          {{
+            kexec_load.rc in [-9, 137] or
+            'killed' in (kexec_load.module_stdout | default(kexec_load.stdout, true) | default('') | lower)
+          }}
+      changed_when: kexec_load.rc == 0
+      failed_when:
+        - kexec_load.rc != 0
+        - not kexec_oom
+
+    - name: Recover from kexec load OOM
+      when: kexec_load is not changed
+      block:
+        - name: Provision swap
+          ansible.builtin.include_role:
+            name: geerlingguy.swap
+          vars:
+            swap_file_path: /baptize.swap
+            swap_file_size_mb: "{{ swap_size_mb }}"
+
+        - name: Load kexec params (retry)
+          ansible.builtin.command:
+            cmd: '/kexec'
+          changed_when: true
+          register: _out
+          until: _out is not failed
+          retries: 3
+
+    - name: Enter kexec
+      ansible.builtin.command:
+        cmd: 'kexec -e'
+      changed_when: true
+      async: 60
+      poll: 0
+
+    - name: Wait for port 22
+      ansible.builtin.wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        delay: 100
+        sleep: 10
+        timeout: 1200
+      delegate_to: localhost
+      become: false
