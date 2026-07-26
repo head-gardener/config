@@ -3,3 +3,6 @@
 .nixos-test-history
 result*
 \#*
+
+ansible/roles/*
+.ansible
