@@ -36,7 +36,6 @@
         path="$out/share/parser"
         ln -s ${pkgs.tree-sitter-grammars.tree-sitter-norg}/parser      "$path/norg.so"
         ln -s ${pkgs.tree-sitter-grammars.tree-sitter-norg-meta}/parser "$path/norg_meta.so"
-        ln -s ${pkgs.tree-sitter-grammars.tree-sitter-yaml}/parser      "$path/yaml.so"
       '';
     in
     {
