@@ -1,6 +1,5 @@
 *tfstate*
 *.terraform*
 
-digitalocean/ssh/*
 *.lo
 *.iso
