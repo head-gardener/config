@@ -2,7 +2,7 @@
 
 {
   imports = [
-    "${inputs.nixpkgs}/nixos/modules/virtualisation/digital-ocean-config.nix"
+    inputs.self.nixosModules.providers-digitalocean
     (inputs.self.lib.mkKeys inputs.self "hunter")
     inputs.self.nixosModules.zram
   ];
@@ -21,8 +21,6 @@
     size = 2048;
   }];
 
-  networking.networkmanager.enable = false;
-
   environment.systemPackages = with pkgs; [
     fish
   ];
@@ -31,12 +29,6 @@
   networking.firewall.allowedTCPPorts = [ ];
   networking.firewall.allowedUDPPorts = [ ];
   networking.firewall.allowPing = false;
-
-  networking.useDHCP = lib.mkForce false;
-  services.cloud-init = {
-    enable = true;
-    network.enable = true;
-  };
 
   programs = {
     atop = {
