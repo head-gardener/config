@@ -136,6 +136,11 @@
               ];
               boot.kernelPackages = pkgs.linuxPackages_latest;
               boot.supportedFilesystems = lib.mkForce [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+
+              environment.systemPackages = [
+                pkgs.ntfs3g
+                pkgs.util-linux
+              ];
             })
             (self.lib.mkKeys' self "nixos" "hunter")
             self.nixosModules.tmux
