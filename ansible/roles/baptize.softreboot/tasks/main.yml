@@ -29,7 +29,20 @@
   loop: "{{ softreboot_stop_services }}"
   failed_when: false
 
-- name: Disable swap files backed by the target disk
+- name: Stop swap units backed by the target disk
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+  loop: >-
+    {{
+      lookup('pipe', 'systemctl list-units --type=swap --no-legend --no-pager'
+        ~ ' | awk "{print \$1}"')
+      .split()
+    }}
+  when: item is match('.*swap.*' ~ target_disk | basename ~ '.*')
+  failed_when: false
+
+- name: Swap off files backed by the target disk
   ansible.builtin.command:
     cmd: swapoff "{{ item }}"
   loop: "{{ ansible_facts['mounts'] | selectattr('fstype', 'equalto', 'swap') | map(attribute='device') | list }}"
