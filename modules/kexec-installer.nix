@@ -23,6 +23,7 @@ let
           imports = [
             "${modulesPath}/installer/netboot/netboot.nix"
             "${modulesPath}/profiles/image-based-appliance.nix"
+            "${modulesPath}/profiles/perlless.nix"
           ];
 
           boot.kernelParams = [
@@ -34,7 +35,10 @@ let
           users.users.root.initialPassword = "root";
           services.getty.autologinUser = "root";
 
-          boot.initrd.systemd.enable = true;
+          services.userborn = {
+            enable = true;
+            static = true;
+          };
 
           environment.systemPackages = with pkgs; [
             curl
@@ -43,6 +47,8 @@ let
             parted
             gptfdisk
           ];
+
+          systemd.services.register-nix-paths.enable = false;
 
           systemd.services.auto-install = {
             description = "Auto-install disk image";
