@@ -143,6 +143,69 @@ let
     ++ cfg.extraImports;
   };
 
+  nextrootInstaller = inputs.nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux";
+    specialArgs = { inherit inputs; };
+    modules = [
+      installerCommon
+      (
+        {
+          config,
+          pkgs,
+          lib,
+          modulesPath,
+          ...
+        }:
+        {
+          boot.isContainer = true;
+
+          console.enable = true;
+          systemd.services.console-getty.enable = false;
+
+          networking.resolvconf.enable = false;
+          networking.useHostResolvConf = false;
+          networking.firewall.enable = false;
+
+          systemd.services.auto-install.serviceConfig.EnvironmentFile = lib.mkBefore "-/etc/installer.env";
+          systemd.services.auto-install.script = lib.mkBefore ''
+            image_url="''${IMAGE_URL:-}"
+            target_disk="''${TARGET_DISK:-}"
+          '';
+
+          system.build.tarball = pkgs.callPackage "${modulesPath}/../lib/make-system-tarball.nix" {
+            fileName = "nextroot";
+            extraArgs = "--owner=0";
+
+            compressCommand = "zstd -T0 -19";
+            compressionExtension = ".zst";
+            extraInputs = [ pkgs.zstd ];
+
+            storeContents = [
+              {
+                object = config.system.build.toplevel;
+                symlink = "none";
+              }
+            ];
+
+            contents = [
+              {
+                source = pkgs.writeShellScript "nextroot-init" ''
+                  exec ${config.system.build.toplevel}/init
+                '';
+                target = "/sbin/init";
+              }
+              {
+                source = config.system.build.toplevel + "/etc/os-release";
+                target = "/etc/os-release";
+              }
+            ];
+          };
+        }
+      )
+    ]
+    ++ cfg.nextrootExtraImports;
+  };
+
   inherit (pkgs.stdenv.hostPlatform) efiArch;
 
   isBios = cfg.firmware == "bios";
@@ -188,6 +251,22 @@ in
       type = lib.types.listOf lib.types.deferredModule;
       default = [ ];
     };
+    nextrootExtraImports = lib.mkOption {
+      type = lib.types.listOf lib.types.deferredModule;
+      default = [ ];
+    };
+    watchdogSeconds = lib.mkOption {
+      type = lib.types.int;
+      default = 1800;
+      description = ''
+        Reset the machine unless the installer has begun writing to disk within
+        this many seconds, recovering from a transition that lost the network.
+        0 disables the watchdog.
+
+        Only the window before the write is covered - a reset during the write
+        leaves an unbootable disk.
+      '';
+    };
     firmware = lib.mkOption {
       type = lib.types.enum [
         "bios"
@@ -214,6 +293,10 @@ in
       readOnly = true;
       type = lib.types.raw;
     };
+    nextroot = lib.mkOption {
+      readOnly = true;
+      type = lib.types.raw;
+    };
     grubPackage = lib.mkOption {
       readOnly = true;
       type = lib.types.package;
@@ -235,8 +318,10 @@ in
   config = lib.mkMerge [
     {
       personal.kexecInstaller.installer = kexecInstaller;
+      personal.kexecInstaller.nextroot = nextrootInstaller;
       personal.kexecInstaller.grubPackage = grubPkg;
       system.build.kexecInstaller = cfg.installer.config.system.build.kexecTree;
+      system.build.nextrootTarball = cfg.nextroot.config.system.build.tarball;
 
       boot.loader.efi.canTouchEfiVariables = false;
 
