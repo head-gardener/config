@@ -6,7 +6,7 @@
     - mounts
   become: true
   vars:
-    baptize_method: null
+    baptize_method: softreboot
     image_url: https://tunnel.backyard-hg.net/image/root.raw.zst
 
     stop_cloud_init: true
@@ -40,11 +40,11 @@
           timeout: 300
 
         - name: Restore dpkg database
+          # noqa: no-handler
           ansible.builtin.shell:
             cmd: |-
               dpkg --configure -a
               apt-get install -f -y
-          # noqa: no-handler
           retries: 15
           delay: 8
           until: >-
@@ -77,6 +77,8 @@
             - item.value.partitions is defined
             - root_partition in item.value.partitions.keys() | list
 
+    # TODO: add method auto, try softreboot then kexec
+
     - name: Run kexec installer
       ansible.builtin.include_role:
         name: baptize.kexec
@@ -85,7 +87,7 @@
     - name: Run soft-reboot installer
       ansible.builtin.include_role:
         name: baptize.softreboot
-      when: baptize_method != "kexec"
+      when: baptize_method == "softreboot"
 
     - name: Wait for port 22
       ansible.builtin.wait_for:
