@@ -9,17 +9,108 @@
 let
   cfg = config.personal.kexecInstaller;
 
+  # Payload shared by every installer flavor.
+  installerCommon =
+    { pkgs, ... }:
+    {
+      users.users.root.initialPassword = "root";
+      services.getty.autologinUser = "root";
+
+      environment.systemPackages = with pkgs; [
+        curl
+        zstd
+        util-linux
+        parted
+        gptfdisk
+      ];
+
+      systemd.services.auto-install = {
+        description = "Auto-install disk image";
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        wantedBy = [ "multi-user.target" ];
+        path = [
+          pkgs.curl
+          pkgs.zstd
+          pkgs.gptfdisk
+          pkgs.parted
+          pkgs.util-linux
+        ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          # Parameters for installers that can't be handed a kernel command line.
+          EnvironmentFile = "-/etc/installer.env";
+        };
+        script = ''
+          set -euxo pipefail
+
+          image_url="''${IMAGE_URL:-}"
+          target_disk="''${TARGET_DISK:-}"
+
+          for o in $(</proc/cmdline); do
+            case "$o" in
+              installer.image_url=*) [ -n "$image_url" ] || image_url="''${o#*=}" ;;
+              installer.target_disk=*) [ -n "$target_disk" ] || target_disk="''${o#*=}" ;;
+            esac
+          done
+
+          if [ -z "$image_url" ]; then
+            echo "No image url in /etc/installer.env or cmdline, skipping auto-install"
+            exit 1
+          fi
+
+          if \
+            ( [ -z "$target_disk" ] && echo -n "No target disk given. " ) || \
+            ( [ "$target_disk" == "auto" ] && echo -n "Target disk set to 'auto'. " ); then
+            target_disk="$(
+              lsblk --filter "type=='disk'" --noheadings -o name -x size -p \
+              | head -1)"
+            echo "Detected target disk to be $target_disk"
+          fi
+
+          echo "Waiting for network connectivity..."
+          for i in $(seq 1 30); do
+            if curl -fsS --connect-timeout 2 -o /dev/null -I "$image_url" 2>/dev/null; then
+              echo "Network is ready."
+              break
+            fi
+            echo "  waiting... ($i/30)"
+            sleep 2
+          done
+
+          decompress=zstd
+          case "$image_url" in
+            *.zst) decompress="zstd -d" ;;
+            *) decompress=cat ;;
+          esac
+
+          # Point of no return: the disk is inconsistent until dd finishes.
+          touch /run/installer-started
+
+          echo "Downloading and writing disk image from $image_url to $target_disk..."
+          curl -fsSL --retry 15 --retry-delay 5 --retry-all-errors "$image_url" \
+            | $decompress \
+            | dd of="$target_disk" bs=4M conv=fsync status=progress
+
+          echo "Installation complete! Rebooting..."
+          # Left behind, this would turn the reboot into another soft-reboot.
+          rmdir /run/nextroot 2>/dev/null || true
+          sync
+          sleep 3
+          reboot -f
+        '';
+      };
+    };
+
   kexecInstaller = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = { inherit inputs; };
     modules = [
       (inputs.self.lib.mkKeys' inputs.self "root" "hunter")
+      installerCommon
       (
-        {
-          pkgs,
-          modulesPath,
-          ...
-        }:
+        { modulesPath, ... }:
         {
           imports = [
             "${modulesPath}/installer/netboot/netboot.nix"
@@ -33,89 +124,9 @@ let
             "installer.target_disk="
           ];
 
-          users.users.root.initialPassword = "root";
-          services.getty.autologinUser = "root";
-
           boot.initrd.systemd.enable = true;
 
-          environment.systemPackages = with pkgs; [
-            curl
-            zstd
-            util-linux
-            parted
-            gptfdisk
-          ];
-
           systemd.services.register-nix-paths.enable = false;
-
-          systemd.services.auto-install = {
-            description = "Auto-install disk image";
-            after = [ "network-online.target" ];
-            wants = [ "network-online.target" ];
-            wantedBy = [ "multi-user.target" ];
-            path = [
-              pkgs.curl
-              pkgs.zstd
-              pkgs.gptfdisk
-              pkgs.parted
-              pkgs.util-linux
-            ];
-            serviceConfig = {
-              Type = "oneshot";
-              RemainAfterExit = true;
-            };
-            script = ''
-              set -euxo pipefail
-
-              image_url=""
-              target_disk=""
-              for o in $(</proc/cmdline); do
-                case "$o" in
-                  installer.image_url=*) image_url="''${o#*=}" ;;
-                  installer.target_disk=*) target_disk="''${o#*=}" ;;
-                esac
-              done
-
-              if [ -z "$image_url" ]; then
-                echo "No installer.image_url in cmdline, skipping auto-install"
-                exit 1
-              fi
-
-              if \
-                ( [ -z "$target_disk" ] && echo -n "No installer.target_disk in cmdline. " ) || \
-                ( [ "$target_disk" == "auto" ] && echo -n "installer.target_disk set to 'auto'. " ); then
-                target_disk="$(
-                  lsblk --filter "type=='disk'" --noheadings -o name -x size -p \
-                  | head -1)"
-                echo "Detected target disk to be $target_disk"
-              fi
-
-              echo "Waiting for network connectivity..."
-              for i in $(seq 1 30); do
-                if curl -fsS --connect-timeout 2 -o /dev/null -I "$image_url" 2>/dev/null; then
-                  echo "Network is ready."
-                  break
-                fi
-                echo "  waiting... ($i/30)"
-                sleep 2
-              done
-
-              decompress=zstd
-              case "$image_url" in
-                *.zst) decompress="zstd -d" ;;
-                *) decompress=cat ;;
-              esac
-
-              echo "Downloading and writing disk image from $image_url to $target_disk..."
-              curl -fsSL --retry 15 --retry-delay 5 --retry-all-errors "$image_url" \
-                | $decompress \
-                | dd of="$target_disk" bs=4M conv=fsync status=progress
-
-              echo "Installation complete! Rebooting..."
-              sleep 3
-              reboot
-            '';
-          };
 
           system.etc.overlay.enable = true;
         }
