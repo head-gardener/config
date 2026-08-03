@@ -6,17 +6,11 @@
     - mounts
   become: true
   vars:
-    kexec_url: https://tunnel.backyard-hg.net/kexec/kexec-boot
-    initrd_url: https://tunnel.backyard-hg.net/kexec/initrd.gz
-    bzimage_url: https://tunnel.backyard-hg.net/kexec/bzImage
+    baptize_method: null
     image_url: https://tunnel.backyard-hg.net/image/root.raw.zst
 
     stop_cloud_init: true
     stop_apt: true
-
-    swap_size_mb: 2048
-
-    pkgs_flake: s
   tasks:
     - name: Terminate cloud-init
       ansible.builtin.service:
@@ -50,6 +44,7 @@
             cmd: |-
               dpkg --configure -a
               apt-get install -f -y
+          # noqa: no-handler
           retries: 15
           delay: 8
           until: >-
@@ -59,34 +54,6 @@
           register: restore
           when: terminate is changed
           changed_when: true
-
-    - name: Get prereqs
-      ansible.builtin.package:
-        name:
-          - bash
-          - kexec-tools
-        state: present
-      when: ansible_facts["os_family"] != "NixOS"
-
-    - name: Pull kexec image
-      ansible.builtin.get_url:
-        url: "{{ item.url }}?v={{ '%s' | strftime }}"
-        mode: "{{ item.mode | default('0600') }}"
-        dest: "/{{ item.name }}"
-        force: true
-      loop:
-        - name: kexec
-          url: "{{ kexec_url }}"
-          mode: "0700"
-        - name: initrd.gz
-          url: "{{ initrd_url }}"
-        - name: bzImage
-          url: "{{ bzimage_url }}"
-
-    - name: Cut kexec -e call from kexec wrapper
-      ansible.builtin.replace:
-        regexp: "^kexec -e.*"
-        path: /kexec
 
     - name: Set target disk
       when: target_disk is undefined
@@ -110,75 +77,15 @@
             - item.value.partitions is defined
             - root_partition in item.value.partitions.keys() | list
 
-    - name: Set cmdline on kexec call
-      ansible.builtin.replace:
-        regexp: "{{ item.key }}"
-        replace: "{{ item.key + item.val }}"
-        path: /kexec
-      loop:
-        - key: "installer.image_url="
-          val: "{{ image_url }}"
-        - key: "installer.target_disk="
-          val: "{{ target_disk }}"
+    - name: Run kexec installer
+      ansible.builtin.include_role:
+        name: baptize.kexec
+      when: baptize_method == "kexec"
 
-    - name: Drop page/inode/dentry caches
-      ansible.builtin.shell:
-        cmd: |-
-          sync
-          echo 3 > /proc/sys/vm/drop_caches
-      changed_when: false
-      failed_when: false
-
-    # todo: kill zram for kexec. it's pointless
-
-    # OOM (i.e. killed) is not changed, other errors are failed
-    - name: Load kexec params
-      ansible.builtin.command:
-        cmd: >-
-          {% if ansible_facts["os_family"] == "NixOS" %}
-          nix shell {{ pkgs_flake }}#kexec-tools -c
-          {% endif %}
-          /kexec
-      register: kexec_load
-      vars:
-        kexec_oom: >-
-          {{
-            kexec_load.rc in [-9, 137] or
-            'killed' in (kexec_load.module_stdout | default(kexec_load.stdout, true) | default('') | lower)
-          }}
-      changed_when: kexec_load.rc == 0
-      failed_when:
-        - kexec_load.rc != 0
-        - not kexec_oom
-
-    - name: Recover from kexec load OOM
-      when: kexec_load is not changed
-      block:
-        - name: Provision swap
-          ansible.builtin.include_role:
-            name: geerlingguy.swap
-          vars:
-            swap_file_path: /baptize.swap
-            swap_file_size_mb: "{{ swap_size_mb }}"
-
-        - name: Load kexec params (retry)
-          ansible.builtin.command:
-            cmd: >-
-              {% if ansible_facts["os_family"] == "NixOS" %}
-              nix shell {{ pkgs_flake }}#kexec-tools -c
-              {% endif %}
-              /kexec
-          changed_when: true
-          register: _out
-          until: _out is not failed
-          retries: 3
-
-    - name: Enter kexec
-      ansible.builtin.command:
-        cmd: 'kexec -e'
-      changed_when: true
-      async: 60
-      poll: 0
+    - name: Run soft-reboot installer
+      ansible.builtin.include_role:
+        name: baptize.softreboot
+      when: baptize_method != "kexec"
 
     - name: Wait for port 22
       ansible.builtin.wait_for:
