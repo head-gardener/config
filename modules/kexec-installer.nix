@@ -9,20 +9,11 @@
 let
   cfg = config.personal.kexecInstaller;
 
-  # Payload shared by every installer flavor.
   installerCommon =
     { pkgs, ... }:
     {
       users.users.root.initialPassword = "root";
       services.getty.autologinUser = "root";
-
-      environment.systemPackages = with pkgs; [
-        curl
-        zstd
-        util-linux
-        parted
-        gptfdisk
-      ];
 
       systemd.services.auto-install = {
         description = "Auto-install disk image";
@@ -32,28 +23,16 @@ let
         path = [
           pkgs.curl
           pkgs.zstd
-          pkgs.gptfdisk
-          pkgs.parted
-          pkgs.util-linux
         ];
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
-          # Parameters for installers that can't be handed a kernel command line.
-          EnvironmentFile = "-/etc/installer.env";
         };
         script = ''
           set -euxo pipefail
 
-          image_url="''${IMAGE_URL:-}"
-          target_disk="''${TARGET_DISK:-}"
-
-          for o in $(</proc/cmdline); do
-            case "$o" in
-              installer.image_url=*) [ -n "$image_url" ] || image_url="''${o#*=}" ;;
-              installer.target_disk=*) [ -n "$target_disk" ] || target_disk="''${o#*=}" ;;
-            esac
-          done
+          image_url="''${image_url:-}"
+          target_disk="''${target_disk:-}"
 
           if [ -z "$image_url" ]; then
             echo "No image url in /etc/installer.env or cmdline, skipping auto-install"
@@ -128,6 +107,15 @@ let
 
           systemd.services.register-nix-paths.enable = false;
 
+          systemd.services.auto-install.script = lib.mkBefore ''
+            for o in $(</proc/cmdline); do
+              case "$o" in
+                installer.image_url=*) [ -n "$image_url" ] || image_url="''${o#*=}" ;;
+                installer.target_disk=*) [ -n "$target_disk" ] || target_disk="''${o#*=}" ;;
+              esac
+            done
+          '';
+
           system.etc.overlay.enable = true;
         }
       )
@@ -177,6 +165,12 @@ let
           networking.resolvconf.enable = false;
           networking.useHostResolvConf = false;
           networking.firewall.enable = false;
+
+          systemd.services.auto-install.serviceConfig.EnvironmentFile = lib.mkBefore "-/etc/installer.env";
+          systemd.services.auto-install.script = lib.mkBefore ''
+            image_url="''${IMAGE_URL:-}"
+            target_disk="''${TARGET_DISK:-}"
+          '';
 
           systemd.services.installer-watchdog = lib.mkIf (cfg.nextrootWatchdogSeconds > 0) {
             description = "Reset the machine if the installer never starts";
