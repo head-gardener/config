@@ -24,6 +24,7 @@ let
           imports = [
             "${modulesPath}/installer/netboot/netboot.nix"
             "${modulesPath}/profiles/image-based-appliance.nix"
+            "${modulesPath}/profiles/perlless.nix"
           ];
 
           boot.kernelParams = [
@@ -44,6 +45,8 @@ let
             parted
             gptfdisk
           ];
+
+          systemd.services.register-nix-paths.enable = false;
 
           systemd.services.auto-install = {
             description = "Auto-install disk image";
@@ -113,6 +116,8 @@ let
               reboot
             '';
           };
+
+          system.etc.overlay.enable = true;
         }
       )
     ]

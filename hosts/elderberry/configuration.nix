@@ -12,6 +12,11 @@
     extraImports = [
       inputs.self.nixosModules.providers-digitalocean
       "${modulesPath}/virtualisation/digital-ocean-config.nix"
+      {
+        services.do-agent.enable = false;
+        services.openssh.enable = false;
+        virtualisation.digitalOcean.rebuildFromUserData = false;
+      }
     ];
     flavor = "1g";
     unwrap = false;
