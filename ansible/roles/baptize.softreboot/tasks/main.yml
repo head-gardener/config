@@ -31,19 +31,24 @@
   changed_when: false
   failed_when: false
 
-- name: Create the nextroot directory
-  ansible.builtin.file:
+- name: Clear possible previously mounted nextroot
+  ansible.posix.mount:
     path: "{{ nextroot_dir }}"
-    state: directory
-    mode: "0755"
+    fstype: tmpfs
+    src: fakesrc
+    state: unmounted
 
 - name: Mount a tmpfs to hold the nextroot
-  # noqa: command-instead-of-module
-  ansible.builtin.command:
-    cmd: mount -t tmpfs -o size={{ nextroot_tmpfs_size }},mode=0755 tmpfs {{ nextroot_dir }}
-  register: nextroot_mount
-  changed_when: nextroot_mount.rc == 0
-  failed_when: nextroot_mount.rc != 0
+  ansible.posix.mount:
+    path: "{{ nextroot_dir }}"
+    fstype: tmpfs
+    src: nextroot
+    opts: >-
+      size={{ nextroot_tmpfs_size }},mode=0755{{ noswap }}
+    state: ephemeral
+  vars:
+    noswap: >-
+      {% if ansible_facts["kernel"] is version('6.4', '>=') %},noswap{% endif %}
 
 - name: Stream-extract the nextroot installer
   ansible.builtin.shell:
