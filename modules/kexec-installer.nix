@@ -135,6 +135,104 @@ let
     ++ cfg.extraImports;
   };
 
+  # An installer entered with `systemctl soft-reboot`, which swaps userspace
+  # for /run/nextroot without ever restarting the kernel. Needs no free memory
+  # to speak of, unlike kexec, which has to pin a whole second kernel image.
+  nextrootInstaller = inputs.nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux";
+    specialArgs = { inherit inputs; };
+    modules = [
+      (inputs.self.lib.mkKeys' inputs.self "root" "hunter")
+      installerCommon
+      (
+        {
+          config,
+          pkgs,
+          lib,
+          modulesPath,
+          ...
+        }:
+        {
+          imports = [
+            "${modulesPath}/profiles/image-based-appliance.nix"
+          ];
+
+          # Makes toplevel/init the stage 2 script instead of systemd, i.e. the
+          # "here is a bare root, become a system" contract switch_root wants.
+          boot.isContainer = true;
+
+          # The overlay demands a systemd initrd, which isContainer rules out.
+          # Classic activation also leaves foreign files in /etc alone, which is
+          # how the installer gets its parameters.
+          system.etc.overlay.enable = lib.mkForce false;
+          services.userborn.enable = true;
+
+          i18n.glibcLocales = null;
+
+          console.enable = true;
+          # systemd-getty-generator already covers /dev/console.
+          systemd.services.console-getty.enable = false;
+
+          # Ansible copies the host's resolv.conf in; nothing may clobber it.
+          networking.resolvconf.enable = false;
+          networking.useHostResolvConf = false;
+          networking.firewall.enable = false;
+
+          systemd.services.installer-watchdog = lib.mkIf (cfg.nextrootWatchdogSeconds > 0) {
+            description = "Reset the machine if the installer never starts";
+            wantedBy = [ "multi-user.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              TimeoutStartSec = "infinity";
+            };
+            script = ''
+              sleep ${toString cfg.nextrootWatchdogSeconds}
+              if [ -e /run/installer-started ]; then
+                echo "Installer is writing to disk, standing down."
+                exit 0
+              fi
+              echo "Installer never started, resetting."
+              echo b > /proc/sysrq-trigger
+            '';
+          };
+
+          system.build.tarball = pkgs.callPackage "${modulesPath}/../lib/make-system-tarball.nix" {
+            fileName = "nextroot";
+            extraArgs = "--owner=0";
+
+            # xz would be decompressed on a single slow vCPU.
+            compressCommand = "zstd -T0 -19";
+            compressionExtension = ".zst";
+            extraInputs = [ pkgs.zstd ];
+
+            storeContents = [
+              {
+                object = config.system.build.toplevel;
+                symlink = "none";
+              }
+            ];
+
+            # Both of these are load-bearing: systemd refuses to switch into a
+            # root without an os-release, then execs /sbin/init.
+            contents = [
+              {
+                source = config.system.build.toplevel + "/init";
+                target = "/sbin/init";
+              }
+              {
+                source = config.system.build.toplevel + "/etc/os-release";
+                target = "/etc/os-release";
+              }
+            ];
+
+            extraCommands = "mkdir -p proc sys dev run tmp var";
+          };
+        }
+      )
+    ]
+    ++ cfg.nextrootExtraImports;
+  };
+
   inherit (pkgs.stdenv.hostPlatform) efiArch;
 
   isBios = cfg.firmware == "bios";
@@ -180,6 +278,29 @@ in
       type = lib.types.listOf lib.types.deferredModule;
       default = [ ];
     };
+    nextrootExtraImports = lib.mkOption {
+      type = lib.types.listOf lib.types.deferredModule;
+      default = [ ];
+      description = ''
+        Modules for the soft-reboot installer only.
+
+        Deliberately separate from {option}`extraImports`: switching root
+        instead of kexec'ing exists to shed the provider's boot-time machinery,
+        so the two installers rarely want the same additions.
+      '';
+    };
+    nextrootWatchdogSeconds = lib.mkOption {
+      type = lib.types.int;
+      default = 1800;
+      description = ''
+        Reset the machine unless the installer has begun writing to disk within
+        this many seconds, recovering from a transition that lost the network.
+        0 disables the watchdog.
+
+        Only the window before the write is covered - a reset during the write
+        leaves an unbootable disk.
+      '';
+    };
     firmware = lib.mkOption {
       type = lib.types.enum [ "bios" "uefi" ];
       default = "bios";
@@ -200,6 +321,10 @@ in
       default = "xl";
     };
     installer = lib.mkOption {
+      readOnly = true;
+      type = lib.types.raw;
+    };
+    nextroot = lib.mkOption {
       readOnly = true;
       type = lib.types.raw;
     };
@@ -225,8 +350,10 @@ in
     # Common to both firmware flavors.
     {
       personal.kexecInstaller.installer = kexecInstaller;
+      personal.kexecInstaller.nextroot = nextrootInstaller;
       personal.kexecInstaller.grubPackage = grubPkg;
       system.build.kexecInstaller = cfg.installer.config.system.build.kexecTree;
+      system.build.nextrootTarball = cfg.nextroot.config.system.build.tarball;
 
       boot.loader.efi.canTouchEfiVariables = false;
 
