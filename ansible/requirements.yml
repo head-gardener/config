@@ -2,3 +2,6 @@
 roles:
   - name: geerlingguy.swap
     version: "2.0.0"
+
+collections:
+  - name: ansible.posix
