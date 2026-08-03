@@ -1,8 +1,2 @@
 nextroot_url: https://tunnel.backyard-hg.net/nextroot/nextroot.tar.zst
-nextroot_dir: /run/nextroot
 nextroot_tmpfs_size: 600M
-softreboot_stop_services:
-  - docker
-  - containerd
-  - fail2ban
-  - do-agent

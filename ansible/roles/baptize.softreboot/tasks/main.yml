@@ -8,29 +8,20 @@
 - name: Fail when systemd is too old
   ansible.builtin.fail:
     msg: >-
-      systemd is too old for soft-reboot (need >= 254, got
-      {{ systemctl_version.stdout_lines[0] | regex_replace('^systemd (.+) .*', '\\1') }}).
-      Set -e baptize_method=kexec to use the legacy kexec installer instead.
-  when: >-
-    (systemctl_version.stdout_lines[0] | regex_replace('^systemd (.+) .*', '\1')) is version('254', '<')
-
-- name: Assert soft-reboot.target is available
-  # noqa: command-instead-of-module
-  ansible.builtin.command:
-    cmd: systemctl show -p LoadState --value soft-reboot.target
-  register: soft_reboot_loadstate
-  changed_when: false
-  failed_when: soft_reboot_loadstate.stdout == 'not-found'
-
-- name: Stop memory-hungry services
-  ansible.builtin.service:
-    name: "{{ item }}"
-    state: stopped
-  loop: "{{ softreboot_stop_services }}"
-  failed_when: false
+      systemd is too old for soft-reboot (need >= 254, got {{ ver }}).
+      Set baptize_method=kexec to use kexec installer instead.
+  when: ver is version('254', '<')
+  vars:
+    ver: >-
+      {{ (systemctl_version.stdout_lines[0] | regex_replace('^systemd (.+) .*', '\1')) }}
 
 - name: Gather service facts
   ansible.builtin.service_facts:
+
+- name: Assert systemd-soft-reboot.service is available
+  ansible.builtin.fail:
+    msg: systemd-soft-reboot.service is not available.
+  when: ansible_facts.services['systemd-soft-reboot.service'] is not defined
 
 - name: Stop swap units backed by the target disk
   ansible.builtin.service:
@@ -66,13 +57,14 @@
 - name: Mount a tmpfs to hold the nextroot
   # noqa: args
   ansible.posix.mount:
-    path: "{{ nextroot_dir }}"
+    path: /run/nextroot
     fstype: tmpfs
     opts: "size={{ nextroot_tmpfs_size }},mode=0755"
     state: ephemeral
 
 - name: Stream-extract the nextroot installer
   ansible.builtin.shell:
+    # TODO: nix shell?
     cmd: |-
       set -o pipefail
       curl -fsSL "{{ nextroot_url }}" | zstd -d | tar -x --numeric-owner -p -C {{ nextroot_dir }}
@@ -121,5 +113,3 @@
   ansible.builtin.command:
     cmd: systemctl --job-mode=replace-irreversibly start soft-reboot.target
   changed_when: true
-  async: 60
-  poll: 0
