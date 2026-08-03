@@ -5,4 +5,5 @@ result*
 \#*
 
 ansible/roles/*
+!ansible/roles/baptize.*
 .ansible
