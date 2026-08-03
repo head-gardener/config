@@ -15,26 +15,39 @@
     ver: >-
       {{ (systemctl_version.stdout_lines[0] | regex_replace('^systemd (.+) .*', '\1')) }}
 
-- name: Stop swap units backed by the target disk
-  ansible.builtin.service:
-    name: "{{ item }}"
-    state: stopped
-  loop: >-
-    {{
-      lookup('pipe', 'systemctl list-units --type=swap --no-legend --no-pager'
-        ~ ' | awk "{print \$1}"')
-      .split()
-    }}
-  when: item is match('.*swap.*' ~ target_disk | basename ~ '.*')
-  failed_when: false
+- name: Gather service facts
+  ansible.builtin.service_facts:
 
-- name: Swap off files backed by the target disk
-  ansible.builtin.command:
-    cmd: swapoff "{{ item }}"
-  loop: "{{ ansible_facts['mounts'] | selectattr('fstype', 'equalto', 'swap') | map(attribute='device') | list }}"
-  when: item is match(target_disk ~ '.*')
-  changed_when: true
-  failed_when: false
+- name: Assert systemd-soft-reboot.service is available
+  ansible.builtin.fail:
+    msg: systemd-soft-reboot.service is not available.
+  when: ansible_facts.services['systemd-soft-reboot.service'] is not defined
+
+- name: Stop swap
+  when: ansible_facts["kernel"] | version('6.4', '<')
+  block:
+    - name: Stop swap units backed by the target disk
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: stopped
+      loop: >-
+        {{
+          ansible_facts.services
+          | dict2items
+          | selectattr('key', 'match', '.*\.swap$')
+          | selectattr('key', 'search', target_disk | basename)
+          | map(attribute='key')
+          | list
+        }}
+      failed_when: false
+
+    - name: Swap off files backed by the target disk
+      ansible.builtin.command:
+        cmd: swapoff "{{ item }}"
+      loop: "{{ ansible_facts['mounts'] | selectattr('fstype', 'equalto', 'swap') | map(attribute='device') | list }}"
+      when: item is match('^' ~ target_disk ~ '(/|$)')
+      changed_when: true
+      failed_when: false
 
 - name: Drop page/inode/dentry caches
   ansible.builtin.shell:
