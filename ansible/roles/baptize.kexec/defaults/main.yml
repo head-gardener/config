@@ -1,0 +1,5 @@
+kexec_url: https://tunnel.backyard-hg.net/kexec/kexec-boot
+initrd_url: https://tunnel.backyard-hg.net/kexec/initrd.gz
+bzimage_url: https://tunnel.backyard-hg.net/kexec/bzImage
+swap_size_mb: 2048
+pkgs_flake: s

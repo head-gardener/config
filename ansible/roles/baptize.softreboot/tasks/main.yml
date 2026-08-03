@@ -1,0 +1,82 @@
+- name: Check systemd version
+  # noqa: command-instead-of-module
+  ansible.builtin.command:
+    cmd: systemctl --version
+  register: systemctl_version
+  changed_when: false
+
+- name: Fail when systemd is too old
+  ansible.builtin.fail:
+    msg: >-
+      systemd is too old for soft-reboot (need >= 254, got {{ ver }}).
+      Set baptize_method=kexec to use kexec installer instead.
+  when: ver is version('254', '<')
+  vars:
+    ver: >-
+      {{ (systemctl_version.stdout_lines[0] | regex_replace('^systemd (.+) .*', '\1')) }}
+
+- name: Disable swap files backed by the target disk
+  ansible.builtin.command:
+    cmd: swapoff "{{ item }}"
+  loop: "{{ ansible_facts['mounts'] | selectattr('fstype', 'equalto', 'swap') | map(attribute='device') | list }}"
+  when: item is match(target_disk ~ '.*')
+  changed_when: true
+  failed_when: false
+
+- name: Drop page/inode/dentry caches
+  ansible.builtin.shell:
+    cmd: |-
+      sync
+      echo 3 > /proc/sys/vm/drop_caches
+  changed_when: false
+  failed_when: false
+
+- name: Create the nextroot directory
+  ansible.builtin.file:
+    path: "{{ nextroot_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Mount a tmpfs to hold the nextroot
+  # noqa: command-instead-of-module
+  ansible.builtin.command:
+    cmd: mount -t tmpfs -o size={{ nextroot_tmpfs_size }},mode=0755 tmpfs {{ nextroot_dir }}
+  register: nextroot_mount
+  changed_when: nextroot_mount.rc == 0
+  failed_when: nextroot_mount.rc != 0
+
+- name: Stream-extract the nextroot installer
+  ansible.builtin.shell:
+    # TODO: nix shell?
+    cmd: |-
+      set -o pipefail
+      curl -fsSL "{{ nextroot_url }}?v={{ '%s' | strftime }}" \
+        | zstd -d \
+        | tar -x --numeric-owner -p -C {{ nextroot_dir }}
+  changed_when: true
+
+- name: Verify the nextroot is a valid os tree
+  ansible.builtin.stat:
+    path: "{{ nextroot_dir }}/{{ item }}"
+  loop:
+    - etc/os-release
+    - sbin/init
+  register: nextroot_check
+  failed_when: >-
+    (item == 'sbin/init' and not nextroot_check.stat.executable) or
+    not nextroot_check.stat.exists
+
+- name: Write installer parameters
+  ansible.builtin.copy:
+    dest: "{{ nextroot_dir }}/etc/installer.env"
+    mode: "0600"
+    content: |-
+      IMAGE_URL={{ image_url }}
+      TARGET_DISK={{ target_disk }}
+
+- name: Reboot into the nextroot
+  # noqa: command-instead-of-module
+  ansible.builtin.command:
+    cmd: systemctl soft-reboot
+  changed_when: true
+  ignore_unreachable: true
