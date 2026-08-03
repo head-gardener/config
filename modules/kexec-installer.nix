@@ -10,10 +10,16 @@ let
   cfg = config.personal.kexecInstaller;
 
   installerCommon =
-    { pkgs, ... }:
+    { pkgs, modulesPath, ... }:
     {
+      imports = [
+        "${modulesPath}/profiles/image-based-appliance.nix"
+      ];
+
       users.users.root.initialPassword = "root";
       services.getty.autologinUser = "root";
+
+      i18n.glibcLocales = null;
 
       systemd.services.auto-install = {
         description = "Auto-install disk image";
@@ -35,7 +41,7 @@ let
           target_disk="''${target_disk:-}"
 
           if [ -z "$image_url" ]; then
-            echo "No image url in /etc/installer.env or cmdline, skipping auto-install"
+            echo "No image url provided, skipping auto-install"
             exit 1
           fi
 
@@ -64,7 +70,6 @@ let
             *) decompress=cat ;;
           esac
 
-          # Point of no return: the disk is inconsistent until dd finishes.
           touch /run/installer-started
 
           echo "Downloading and writing disk image from $image_url to $target_disk..."
@@ -73,11 +78,27 @@ let
             | dd of="$target_disk" bs=4M conv=fsync status=progress
 
           echo "Installation complete! Rebooting..."
-          # Left behind, this would turn the reboot into another soft-reboot.
-          rmdir /run/nextroot 2>/dev/null || true
           sync
           sleep 3
           reboot -f
+        '';
+      };
+
+      systemd.services.installer-watchdog = lib.mkIf (cfg.watchdogSeconds > 0) {
+        description = "Reset the machine if the installer never starts";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          TimeoutStartSec = "infinity";
+        };
+        script = ''
+          sleep ${toString cfg.watchdogSeconds}
+          if [ -e /run/installer-started ]; then
+            echo "Installer is writing to disk, standing down."
+            exit 0
+          fi
+          echo "Installer never started, resetting."
+          echo b > /proc/sysrq-trigger
         '';
       };
     };
@@ -86,14 +107,12 @@ let
     system = "x86_64-linux";
     specialArgs = { inherit inputs; };
     modules = [
-      (inputs.self.lib.mkKeys' inputs.self "root" "hunter")
       installerCommon
       (
-        { modulesPath, ... }:
+        { modulesPath, lib, ... }:
         {
           imports = [
             "${modulesPath}/installer/netboot/netboot.nix"
-            "${modulesPath}/profiles/image-based-appliance.nix"
             "${modulesPath}/profiles/perlless.nix"
           ];
 
@@ -103,8 +122,9 @@ let
             "installer.target_disk="
           ];
 
-          boot.initrd.systemd.enable = true;
+          services.userborn.static = true;
 
+          # brought in by netboot which doesn't gate on nix.enabled
           systemd.services.register-nix-paths.enable = false;
 
           systemd.services.auto-install.script = lib.mkBefore ''
@@ -115,8 +135,6 @@ let
               esac
             done
           '';
-
-          system.etc.overlay.enable = true;
         }
       )
     ]
@@ -130,7 +148,6 @@ let
     system = "x86_64-linux";
     specialArgs = { inherit inputs; };
     modules = [
-      (inputs.self.lib.mkKeys' inputs.self "root" "hunter")
       installerCommon
       (
         {
@@ -141,27 +158,16 @@ let
           ...
         }:
         {
-          imports = [
-            "${modulesPath}/profiles/image-based-appliance.nix"
-          ];
-
-          # Makes toplevel/init the stage 2 script instead of systemd, i.e. the
-          # "here is a bare root, become a system" contract switch_root wants.
           boot.isContainer = true;
 
-          # The overlay demands a systemd initrd, which isContainer rules out.
-          # Classic activation also leaves foreign files in /etc alone, which is
-          # how the installer gets its parameters.
-          system.etc.overlay.enable = lib.mkForce false;
-          services.userborn.enable = true;
-
-          i18n.glibcLocales = null;
+          services.userborn = {
+            enable = true;
+            static = true;
+          };
 
           console.enable = true;
-          # systemd-getty-generator already covers /dev/console.
           systemd.services.console-getty.enable = false;
 
-          # Ansible copies the host's resolv.conf in; nothing may clobber it.
           networking.resolvconf.enable = false;
           networking.useHostResolvConf = false;
           networking.firewall.enable = false;
@@ -172,29 +178,10 @@ let
             target_disk="''${TARGET_DISK:-}"
           '';
 
-          systemd.services.installer-watchdog = lib.mkIf (cfg.nextrootWatchdogSeconds > 0) {
-            description = "Reset the machine if the installer never starts";
-            wantedBy = [ "multi-user.target" ];
-            serviceConfig = {
-              Type = "oneshot";
-              TimeoutStartSec = "infinity";
-            };
-            script = ''
-              sleep ${toString cfg.nextrootWatchdogSeconds}
-              if [ -e /run/installer-started ]; then
-                echo "Installer is writing to disk, standing down."
-                exit 0
-              fi
-              echo "Installer never started, resetting."
-              echo b > /proc/sysrq-trigger
-            '';
-          };
-
           system.build.tarball = pkgs.callPackage "${modulesPath}/../lib/make-system-tarball.nix" {
             fileName = "nextroot";
             extraArgs = "--owner=0";
 
-            # xz would be decompressed on a single slow vCPU.
             compressCommand = "zstd -T0 -19";
             compressionExtension = ".zst";
             extraInputs = [ pkgs.zstd ];
@@ -206,8 +193,6 @@ let
               }
             ];
 
-            # Both of these are load-bearing: systemd refuses to switch into a
-            # root without an os-release, then execs /sbin/init.
             contents = [
               {
                 source = config.system.build.toplevel + "/init";
@@ -218,8 +203,6 @@ let
                 target = "/etc/os-release";
               }
             ];
-
-            extraCommands = "mkdir -p proc sys dev run tmp var";
           };
         }
       )
@@ -272,18 +255,7 @@ in
       type = lib.types.listOf lib.types.deferredModule;
       default = [ ];
     };
-    nextrootExtraImports = lib.mkOption {
-      type = lib.types.listOf lib.types.deferredModule;
-      default = [ ];
-      description = ''
-        Modules for the soft-reboot installer only.
-
-        Deliberately separate from {option}`extraImports`: switching root
-        instead of kexec'ing exists to shed the provider's boot-time machinery,
-        so the two installers rarely want the same additions.
-      '';
-    };
-    nextrootWatchdogSeconds = lib.mkOption {
+    watchdogSeconds = lib.mkOption {
       type = lib.types.int;
       default = 1800;
       description = ''
@@ -296,7 +268,10 @@ in
       '';
     };
     firmware = lib.mkOption {
-      type = lib.types.enum [ "bios" "uefi" ];
+      type = lib.types.enum [
+        "bios"
+        "uefi"
+      ];
       default = "bios";
       description = ''
         Firmware the target boots with.
@@ -341,7 +316,6 @@ in
   };
 
   config = lib.mkMerge [
-    # Common to both firmware flavors.
     {
       personal.kexecInstaller.installer = kexecInstaller;
       personal.kexecInstaller.nextroot = nextrootInstaller;
@@ -372,8 +346,9 @@ in
 
         partitions."20-root" = {
           storePaths = [ config.system.build.toplevel ];
-          contents."/nix-path-registration".source =
-            "${pkgs.closureInfo { rootPaths = [ config.system.build.toplevel ]; }}/registration";
+          contents."/nix-path-registration".source = "${
+            pkgs.closureInfo { rootPaths = [ config.system.build.toplevel ]; }
+          }/registration";
           repartConfig = {
             Type = "root";
             Format = "btrfs";
