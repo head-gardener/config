@@ -10,7 +10,10 @@ let
 
   kexec = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
-    specialArgs = { inherit inputs; };
+    specialArgs = {
+      inherit inputs;
+      watchdogSeconds = cfg.watchdogSeconds;
+    };
     modules = [
       inputs.self.nixosModules.installer-common
       inputs.self.nixosModules.installer-kexec
@@ -21,7 +24,10 @@ let
 
   softreboot = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
-    specialArgs = { inherit inputs; };
+    specialArgs = {
+      inherit inputs;
+      watchdogSeconds = cfg.watchdogSeconds;
+    };
     modules = [
       inputs.self.nixosModules.installer-common
       inputs.self.nixosModules.installer-softreboot
