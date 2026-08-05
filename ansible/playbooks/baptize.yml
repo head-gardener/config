@@ -3,6 +3,7 @@
   gather_subset:
     - devices
     - distribution
+    - kernel
     - mounts
   become: true
   vars:
