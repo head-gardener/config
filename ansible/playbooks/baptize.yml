@@ -17,6 +17,7 @@
         name: "{{ item }}"
         state: stopped
       when: stop_cloud_init
+      failed_when: false
       loop:
         - cloud-init
         - cloud-init-local
