@@ -1,3 +1,4 @@
 nextroot_url: https://tunnel.backyard-hg.net/nextroot/tarball/nextroot.tar.zst
 nextroot_dir: /run/nextroot
 nextroot_tmpfs_size: 670M
+nextroot_store_url: https://tunnel.backyard-hg.net/nextroot-store/nextroot-store.squashfs

@@ -59,10 +59,11 @@
 
 - name: Clear possible previously mounted nextroot
   ansible.posix.mount:
-    path: "{{ nextroot_dir }}"
-    fstype: tmpfs
-    src: fakesrc
+    path: "{{ item }}"
     state: unmounted
+  loop:
+    - "{{ nextroot_dir }}/nix/store"
+    - "{{ nextroot_dir }}"
 
 - name: Mount a tmpfs to hold the nextroot
   ansible.posix.mount:
@@ -85,6 +86,22 @@
         | zstd -d \
         | tar -x --numeric-owner -p -C {{ nextroot_dir }}
   changed_when: true
+
+- name: Fetch the nextroot Nix store
+  ansible.builtin.shell:
+    cmd: |-
+      set -o pipefail
+      curl -fsSL "{{ nextroot_store_url }}?v={{ '%s' | strftime }}" \
+        -o {{ nextroot_dir }}/store.squashfs
+  changed_when: true
+
+- name: Loop-mount the squashfs store at /nix/store
+  ansible.posix.mount:
+    path: "{{ nextroot_dir }}/nix/store"
+    src: "{{ nextroot_dir }}/store.squashfs"
+    fstype: auto
+    opts: "loop,ro"
+    state: ephemeral
 
 - name: Verify the nextroot is a valid os tree
   ansible.builtin.stat:

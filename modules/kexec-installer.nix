@@ -163,6 +163,11 @@ let
           modulesPath,
           ...
         }:
+        let
+          osRelease = pkgs.runCommand "nextroot-os-release" { } ''
+            cp -L ${config.system.build.toplevel}/etc/os-release $out
+          '';
+        in
         {
           boot.isContainer = true;
 
@@ -192,23 +197,23 @@ let
             compressionExtension = ".zst";
             extraInputs = [ pkgs.zstd ];
 
-            storeContents = [
-              {
-                object = config.system.build.toplevel;
-                symlink = "none";
-              }
-            ];
-
             contents = [
               {
                 source = config.system.build.toplevel + "/init";
                 target = "/sbin/init";
               }
               {
-                source = config.system.build.toplevel + "/etc/os-release";
+                source = osRelease;
                 target = "/etc/os-release";
               }
             ];
+          };
+
+          system.build.squashfsStore = pkgs.callPackage "${modulesPath}/../lib/make-squashfs.nix" {
+            fileName = "nextroot-store";
+            storeContents = [ config.system.build.toplevel ];
+            comp = "zstd -Xcompression-level 19";
+            hydraBuildProduct = true;
           };
         }
       )
@@ -332,6 +337,7 @@ in
       personal.kexecInstaller.grubPackage = grubPkg;
       system.build.kexecInstaller = cfg.installer.config.system.build.kexecTree;
       system.build.nextrootTarball = cfg.nextroot.config.system.build.tarball;
+      system.build.nextrootSquashfs = cfg.nextroot.config.system.build.squashfsStore;
 
       boot.loader.efi.canTouchEfiVariables = false;
 
