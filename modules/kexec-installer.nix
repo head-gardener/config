@@ -60,7 +60,7 @@ let
 
           echo "Waiting for network connectivity..."
           for i in $(seq 1 30); do
-            if curl -fsS --connect-timeout 2 -o /dev/null -I "$image_url" 2>/dev/null; then
+            if curl -fsSL --head --connect-timeout 2 -I "$image_url"; then
               echo "Network is ready."
               break
             fi
