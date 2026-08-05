@@ -149,9 +149,6 @@ let
     ++ cfg.extraImports;
   };
 
-  # An installer entered with `systemctl soft-reboot`, which swaps userspace
-  # for /run/nextroot without ever restarting the kernel. Needs no free memory
-  # to speak of, unlike kexec, which has to pin a whole second kernel image.
   nextrootInstaller = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = { inherit inputs; };
@@ -196,7 +193,9 @@ let
 
             contents = [
               {
-                source = config.system.build.toplevel + "/init";
+                source = pkgs.writeShellScript "nextroot-init" ''
+                  exec ${config.system.build.toplevel}/init
+                '';
                 target = "/sbin/init";
               }
               {
