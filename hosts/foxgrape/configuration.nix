@@ -8,13 +8,13 @@
   imports = [
     ./hardware-configuration.nix
     (inputs.self.lib.mkKeys inputs.self "hunter")
-    inputs.self.nixosModules.kexec-installer
+    inputs.self.nixosModules.installer-toplevel
     inputs.self.nixosModules.providers-datalix
   ];
 
-  personal.kexecInstaller = {
+  personal.installer = {
     firmware = "uefi";
-    extraImports = [
+    extraImports.all = [
       inputs.self.nixosModules.providers-datalix
     ];
   };
