@@ -105,31 +105,6 @@
       IMAGE_URL={{ image_url }}
       TARGET_DISK={{ target_disk }}
 
-- name: Check for host network configuration
-  ansible.builtin.stat:
-    path: "{{ item }}"
-  loop:
-    - /etc/systemd/network
-    - /etc/resolv.conf
-  register: host_net
-
-- name: Ensure destination directories exist
-  ansible.builtin.file:
-    path: "{{ nextroot_dir }}{{ item.item | dirname }}"
-    state: directory
-    mode: "0755"
-  loop: "{{ host_net.results }}"
-  when: item.stat.exists
-
-- name: Carry the host network configuration into the nextroot
-  ansible.builtin.copy:
-    src: "{{ item.item }}"
-    dest: "{{ nextroot_dir }}{{ item.item }}"
-    remote_src: true
-    mode: preserve
-  loop: "{{ host_net.results }}"
-  when: item.stat.exists
-
 - name: Reboot into the nextroot
   # noqa: command-instead-of-module
   ansible.builtin.command:
