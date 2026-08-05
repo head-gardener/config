@@ -83,12 +83,12 @@
 
     - name: Run kexec installer
       ansible.builtin.include_role:
-        name: baptize.kexec
+        name: baptize_kexec
       when: baptize_method == "kexec"
 
     - name: Run soft-reboot installer
       ansible.builtin.include_role:
-        name: baptize.softreboot
+        name: baptize_softreboot
       when: baptize_method == "softreboot"
 
     - name: Wait for port 22
