@@ -1,34 +1,22 @@
-{ inputs, modulesPath, ... }:
+{ inputs, ... }:
 
 {
   imports = [
     inputs.self.nixosModules.providers-digitalocean
     (inputs.self.lib.mkKeys inputs.self "hunter")
     inputs.self.nixosModules.zram
-    inputs.self.nixosModules.kexec-installer
+    inputs.self.nixosModules.installer-toplevel
   ];
 
-  personal.kexecInstaller = {
-    nextrootExtraImports = [
+  personal.installer = {
+    extraImports.all = [
       inputs.self.nixosModules.providers-digitalocean
-      "${modulesPath}/virtualisation/digital-ocean-config.nix"
       {
         services.do-agent.enable = false;
         services.openssh.enable = false;
         virtualisation.digitalOcean.rebuildFromUserData = false;
       }
     ];
-    extraImports = [
-      inputs.self.nixosModules.providers-digitalocean
-      "${modulesPath}/virtualisation/digital-ocean-config.nix"
-      {
-        services.do-agent.enable = false;
-        services.openssh.enable = false;
-        virtualisation.digitalOcean.rebuildFromUserData = false;
-      }
-    ];
-    flavor = "1g";
-    unwrap = false;
   };
 
   swapDevices = [{
