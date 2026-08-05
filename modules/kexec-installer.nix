@@ -123,7 +123,6 @@ let
           ];
 
           boot.kernelParams = [
-            "console=tty0"
             "installer.image_url="
             "installer.target_disk="
           ];
