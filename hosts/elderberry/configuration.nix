@@ -9,6 +9,15 @@
   ];
 
   personal.kexecInstaller = {
+    nextrootExtraImports = [
+      inputs.self.nixosModules.providers-digitalocean
+      "${modulesPath}/virtualisation/digital-ocean-config.nix"
+      {
+        services.do-agent.enable = false;
+        services.openssh.enable = false;
+        virtualisation.digitalOcean.rebuildFromUserData = false;
+      }
+    ];
     extraImports = [
       inputs.self.nixosModules.providers-digitalocean
       "${modulesPath}/virtualisation/digital-ocean-config.nix"
