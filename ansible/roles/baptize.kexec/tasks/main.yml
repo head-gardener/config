@@ -93,5 +93,4 @@
   ansible.builtin.command:
     cmd: 'kexec -e'
   changed_when: true
-  async: 60
-  poll: 0
+  ignore_unreachable: true
