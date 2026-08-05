@@ -1,4 +1,4 @@
-- name: Assert systemd is new enough for soft-reboot
+- name: Check systemd version
   # noqa: command-instead-of-module
   ansible.builtin.command:
     cmd: systemctl --version
@@ -23,28 +23,31 @@
     msg: systemd-soft-reboot.service is not available.
   when: ansible_facts.services['systemd-soft-reboot.service'] is not defined
 
-- name: Stop swap units backed by the target disk
-  ansible.builtin.service:
-    name: "{{ item }}"
-    state: stopped
-  loop: >-
-    {{
-      ansible_facts.services
-      | dict2items
-      | selectattr('key', 'match', '.*\.swap$')
-      | selectattr('key', 'search', target_disk | basename)
-      | map(attribute='key')
-      | list
-    }}
-  failed_when: false
+- name: Stop swap
+  when: ansible_facts["kernel"] | version('6.4', '<')
+  block:
+    - name: Stop swap units backed by the target disk
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: stopped
+      loop: >-
+        {{
+          ansible_facts.services
+          | dict2items
+          | selectattr('key', 'match', '.*\.swap$')
+          | selectattr('key', 'search', target_disk | basename)
+          | map(attribute='key')
+          | list
+        }}
+      failed_when: false
 
-- name: Swap off files backed by the target disk
-  ansible.builtin.command:
-    cmd: swapoff "{{ item }}"
-  loop: "{{ ansible_facts['mounts'] | selectattr('fstype', 'equalto', 'swap') | map(attribute='device') | list }}"
-  when: item is match('^' ~ target_disk ~ '(/|$)')
-  changed_when: true
-  failed_when: false
+    - name: Swap off files backed by the target disk
+      ansible.builtin.command:
+        cmd: swapoff "{{ item }}"
+      loop: "{{ ansible_facts['mounts'] | selectattr('fstype', 'equalto', 'swap') | map(attribute='device') | list }}"
+      when: item is match('^' ~ target_disk ~ '(/|$)')
+      changed_when: true
+      failed_when: false
 
 - name: Drop page/inode/dentry caches
   ansible.builtin.shell:
@@ -54,23 +57,34 @@
   changed_when: false
   failed_when: false
 
-- name: Mount a tmpfs to hold the nextroot
-  # noqa: args
+- name: Clear possible previously mounted nextroot
   ansible.posix.mount:
-    path: /run/nextroot
+    path: "{{ nextroot_dir }}"
     fstype: tmpfs
-    opts: "size={{ nextroot_tmpfs_size }},mode=0755"
+    src: fakesrc
+    state: unmounted
+
+- name: Mount a tmpfs to hold the nextroot
+  ansible.posix.mount:
+    path: "{{ nextroot_dir }}"
+    fstype: tmpfs
+    src: nextroot
+    opts: >-
+      size={{ nextroot_tmpfs_size }},mode=0755{{ noswap }}
     state: ephemeral
+  vars:
+    noswap: >-
+      {% if ansible_facts["kernel"] is version('6.4', '>=') %},noswap{% endif %}
 
 - name: Stream-extract the nextroot installer
   ansible.builtin.shell:
     # TODO: nix shell?
     cmd: |-
       set -o pipefail
-      curl -fsSL "{{ nextroot_url }}" | zstd -d | tar -x --numeric-owner -p -C {{ nextroot_dir }}
-  register: nextroot_extract
-  changed_when: nextroot_extract.rc == 0
-  failed_when: nextroot_extract.rc != 0
+      curl -fsSL "{{ nextroot_url }}?v={{ '%s' | strftime }}" \
+        | zstd -d \
+        | tar -x --numeric-owner -p -C {{ nextroot_dir }}
+  changed_when: true
 
 - name: Verify the nextroot is a valid os tree
   ansible.builtin.stat:
@@ -80,8 +94,8 @@
     - sbin/init
   register: nextroot_check
   failed_when: >-
-    (item == 'sbin/init' and not nextroot_check.results[1].stat.executable) or
-    not nextroot_check.results[0].stat.exists
+    (item == 'sbin/init' and not nextroot_check.stat.executable) or
+    not nextroot_check.stat.exists
 
 - name: Write installer parameters
   ansible.builtin.copy:
@@ -99,10 +113,18 @@
     - /etc/resolv.conf
   register: host_net
 
+- name: Ensure destination directories exist
+  ansible.builtin.file:
+    path: "{{ nextroot_dir }}{{ item.item | dirname }}"
+    state: directory
+    mode: "0755"
+  loop: "{{ host_net.results }}"
+  when: item.stat.exists
+
 - name: Carry the host network configuration into the nextroot
   ansible.builtin.copy:
     src: "{{ item.item }}"
-    dest: "{{ nextroot_dir }}/{{ item.item }}"
+    dest: "{{ nextroot_dir }}{{ item.item }}"
     remote_src: true
     mode: preserve
   loop: "{{ host_net.results }}"
@@ -111,5 +133,6 @@
 - name: Reboot into the nextroot
   # noqa: command-instead-of-module
   ansible.builtin.command:
-    cmd: systemctl --job-mode=replace-irreversibly start soft-reboot.target
+    cmd: systemctl soft-reboot
   changed_when: true
+  ignore_unreachable: true

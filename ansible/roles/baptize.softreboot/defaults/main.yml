@@ -1,2 +1,3 @@
-nextroot_url: https://tunnel.backyard-hg.net/nextroot/nextroot.tar.zst
-nextroot_tmpfs_size: 600M
+nextroot_url: https://tunnel.backyard-hg.net/nextroot/tarball/nextroot.tar.zst
+nextroot_dir: /run/nextroot
+nextroot_tmpfs_size: 670M
