@@ -115,8 +115,8 @@ in {
       # cache
       docker
       fail2ban
-      sing-box-out
-      { personal.sing-box.vaultless = true; }
+      # sing-box-out
+      # { personal.sing-box.vaultless = true; }
       strictSSH
       # wireguard-client
     ] ++ server;
