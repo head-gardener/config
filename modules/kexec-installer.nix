@@ -21,7 +21,9 @@ let
 
       i18n.glibcLocales = null;
 
-      systemd.services.auto-install = {
+      systemd.settings.Manager.ShowStatus = "yes";
+
+      systemd.services.installer = {
         description = "Auto-install disk image";
         after = [ "network-online.target" ];
         wants = [ "network-online.target" ];
@@ -33,6 +35,8 @@ let
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
+          StandardOutput = "journal+console";
+          StandardError = "journal+console";
         };
         script = ''
           set -euxo pipefail
@@ -84,12 +88,14 @@ let
         '';
       };
 
-      systemd.services.installer-watchdog = lib.mkIf (cfg.watchdogSeconds > 0) {
+      systemd.services.watchdog = lib.mkIf (cfg.watchdogSeconds > 0) {
         description = "Reset the machine if the installer never starts";
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           Type = "oneshot";
           TimeoutStartSec = "infinity";
+          StandardOutput = "journal+console";
+          StandardError = "journal+console";
         };
         script = ''
           sleep ${toString cfg.watchdogSeconds}
@@ -117,7 +123,6 @@ let
           ];
 
           boot.kernelParams = [
-            "console=tty0"
             "installer.image_url="
             "installer.target_disk="
           ];
@@ -129,7 +134,7 @@ let
 
           systemd.services.register-nix-paths.enable = false;
 
-          systemd.services.auto-install.script = lib.mkBefore ''
+          systemd.services.installer.script = lib.mkBefore ''
             for o in $(</proc/cmdline); do
               case "$o" in
                 installer.image_url=*) [ -n "$image_url" ] || image_url="''${o#*=}" ;;
@@ -166,8 +171,8 @@ let
           networking.useHostResolvConf = false;
           networking.firewall.enable = false;
 
-          systemd.services.auto-install.serviceConfig.EnvironmentFile = lib.mkBefore "-/etc/installer.env";
-          systemd.services.auto-install.script = lib.mkBefore ''
+          systemd.services.installer.serviceConfig.EnvironmentFile = lib.mkBefore "-/etc/installer.env";
+          systemd.services.installer.script = lib.mkBefore ''
             image_url="''${IMAGE_URL:-}"
             target_disk="''${TARGET_DISK:-}"
           '';
@@ -257,7 +262,7 @@ in
     };
     watchdogSeconds = lib.mkOption {
       type = lib.types.int;
-      default = 1800;
+      default = 300;
       description = ''
         Reset the machine unless the installer has begun writing to disk within
         this many seconds, recovering from a transition that lost the network.
