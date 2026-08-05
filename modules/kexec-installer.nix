@@ -261,6 +261,10 @@ in
       type = lib.types.listOf lib.types.deferredModule;
       default = [ ];
     };
+    nextrootExtraImports = lib.mkOption {
+      type = lib.types.listOf lib.types.deferredModule;
+      default = [ ];
+    };
     watchdogSeconds = lib.mkOption {
       type = lib.types.int;
       default = 300;
