@@ -1,13 +1,10 @@
 {
   pkgs,
   lib,
-  config,
   modulesPath,
+  watchdogSeconds ? 300,
   ...
 }:
-let
-  cfg = config.personal.installer;
-in
 {
   imports = [
     "${modulesPath}/profiles/image-based-appliance.nix"
@@ -85,7 +82,7 @@ in
     '';
   };
 
-  systemd.services.watchdog = lib.mkIf (cfg.watchdogSeconds > 0) {
+  systemd.services.watchdog = lib.mkIf (watchdogSeconds > 0) {
     description = "Reset the machine if the installer never starts";
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
@@ -95,7 +92,7 @@ in
       StandardError = "journal+console";
     };
     script = ''
-      sleep ${toString cfg.watchdogSeconds}
+      sleep ${toString watchdogSeconds}
       if [ -e /run/installer-started ]; then
         echo "Installer is writing to disk, standing down."
         exit 0
