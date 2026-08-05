@@ -127,7 +127,10 @@ let
             "installer.target_disk="
           ];
 
-          services.userborn.static = true;
+          services.userborn = {
+            enable = true;
+            static = true;
+          };
 
           # brought in by netboot which doesn't gate on nix.enabled
           systemd.services.register-nix-paths.enable = false;
@@ -169,11 +172,6 @@ let
         in
         {
           boot.isContainer = true;
-
-          services.userborn = {
-            enable = true;
-            static = true;
-          };
 
           console.enable = true;
           systemd.services.console-getty.enable = false;
