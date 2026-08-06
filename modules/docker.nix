@@ -5,6 +5,7 @@
       inputs.self.nixosModules.docker
     ];
     script = ''
+      start_all()
       machine.wait_for_unit("docker.socket")
       machine.succeed("docker ps")
       machine.succeed("su hunter -c 'docker ps'")

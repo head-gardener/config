@@ -15,6 +15,7 @@ in
       )
     ];
     script = ''
+      start_all()
       machine.wait_for_unit("multi-user.target")
       fs = machine.succeed("lsblk ${root} -o FSTYPE --noheadings").strip()
       assert "btrfs" in fs

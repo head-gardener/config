@@ -59,6 +59,7 @@ in
           inputs.self.nixosModules.btrfs
         ];
         script = ''
+          start_all()
           machine.wait_for_unit("multi-user.target")
           output = machine.succeed("${lib.getExe cfg.package}")
           import json

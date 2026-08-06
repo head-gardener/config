@@ -55,10 +55,7 @@ in {
 
             hostPkgs = pkgs;
 
-            testScript = ''
-              start_all()
-              ${conf.script}
-            '';
+            testScript = conf.script;
           };
 
       in lib.mapAttrs mkCheck checksConf;
