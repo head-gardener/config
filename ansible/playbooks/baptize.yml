@@ -4,6 +4,7 @@
     - devices
     - distribution
     - mounts
+  become: true
   vars:
     kexec_url: https://tunnel.backyard-hg.net/kexec/kexec-boot
     initrd_url: https://tunnel.backyard-hg.net/kexec/initrd.gz
@@ -14,6 +15,8 @@
     stop_apt: true
 
     swap_size_mb: 2048
+
+    pkgs_flake: s
   tasks:
     - name: Terminate cloud-init
       ansible.builtin.service:
@@ -27,7 +30,7 @@
 
     - name: Terminate apt
       when: >-
-        ansible_facts["distribution"] in ["Debian", "Ubuntu"] or
+        ansible_facts["distribution"] in ["Debian", "Ubuntu"] and
         stop_apt
       block:
         - name: Terminate apt process
@@ -58,12 +61,12 @@
           changed_when: true
 
     - name: Get prereqs
-      ansible.builtin.apt:
+      ansible.builtin.package:
         name:
           - bash
           - kexec-tools
-        lock_timeout: 300
         state: present
+      when: ansible_facts["os_family"] != "NixOS"
 
     - name: Pull kexec image
       ansible.builtin.get_url:
@@ -126,10 +129,16 @@
       changed_when: false
       failed_when: false
 
+    # todo: kill zram for kexec. it's pointless
+
     # OOM (i.e. killed) is not changed, other errors are failed
     - name: Load kexec params
       ansible.builtin.command:
-        cmd: '/kexec'
+        cmd: >-
+          {% if ansible_facts["os_family"] == "NixOS" %}
+          nix shell {{ pkgs_flake }}#kexec-tools -c
+          {% endif %}
+          /kexec
       register: kexec_load
       vars:
         kexec_oom: >-
@@ -154,7 +163,11 @@
 
         - name: Load kexec params (retry)
           ansible.builtin.command:
-            cmd: '/kexec'
+            cmd: >-
+              {% if ansible_facts["os_family"] == "NixOS" %}
+              nix shell {{ pkgs_flake }}#kexec-tools -c
+              {% endif %}
+              /kexec
           changed_when: true
           register: _out
           until: _out is not failed
