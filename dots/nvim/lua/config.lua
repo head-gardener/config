@@ -62,8 +62,9 @@ vim.o.hidden = true
 vim.o.number = false
 vim.o.cursorline = false
 vim.o.showmatch = true
-vim.opt.colorcolumn = { 90 }
-vim.opt.title = true
+vim.o.winborder = 'rounded'
+vim.o.colorcolumn = "90"
+vim.o.title = true
 
 -- Search
 vim.o.incsearch = true

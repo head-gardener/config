@@ -3,7 +3,7 @@
 {
   home = {
     username = "hunter";
-    stateVersion = "25.11";
+    stateVersion = "26.05";
     packages = with pkgs; [
       arkpandora_ttf
       bemoji
@@ -13,14 +13,14 @@
       fzy
       libnotify
       nautilus
-      neofetch
+      fastfetch.minimal
       nix-prefetch-github
       obs-studio
       ripdrag
       tree
       unzip
       vlc
-      wineWowPackages.stable
+      wineWow64Packages.stable
       winetricks
       xclip
     ] ++ [

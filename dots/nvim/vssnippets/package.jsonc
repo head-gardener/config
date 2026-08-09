@@ -1,0 +1,7 @@
+{
+  "name": "user-snippets",
+  "contributes": {
+    "snippets": [
+    ],
+  }
+}
