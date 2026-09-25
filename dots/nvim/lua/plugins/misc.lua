@@ -135,12 +135,6 @@ return {
       load = {
         ["core.defaults"] = {},
         ["core.concealer"] = {},
-        ["core.integrations.treesitter"] = {
-          config = {
-            configure_parsers = false,
-            warn_missing_parsers = false,
-          },
-        },
       }
     },
   },
