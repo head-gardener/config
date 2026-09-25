@@ -14,6 +14,7 @@
     inputs.notesearch.packages.${stdenv.hostPlatform.system}.notesearch-desktop
     minio-client
     nix-output-monitor
+    ntfs3g
     nvd
     tldr
   ];
