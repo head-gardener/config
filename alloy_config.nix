@@ -125,5 +125,6 @@ in {
       strictSSH
       # cache
     ] ++ server;
+    hazelnut = [ ];
   };
 }

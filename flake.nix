@@ -117,6 +117,7 @@
         damson = self.lib.mkHost "x86_64-linux" "damson" [ ];
         elderberry = self.lib.mkHost "x86_64-linux" "elderberry" [ ];
         foxgrape = self.lib.mkHost "x86_64-linux" "foxgrape" [ ];
+        hazelnut = self.lib.mkHost "x86_64-linux" "hazelnut" [ ];
 
         digitalocean = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
