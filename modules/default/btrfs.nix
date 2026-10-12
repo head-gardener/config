@@ -134,10 +134,10 @@ in
           # total == 0 is an absurd case so we fail fast
           comprat="$( \
             compsize -b /nix/store \
-            | awk '/TOTAL/ { total = $4 }; /none/ { none = $4 }; END { print 1 - none / total }' \
+            | awk '/TOTAL/ { total = $4 }; /none/ { none = $4 }; END { print int((1 - none / total) * 100) }' \
           )"
           echo "free = $free%, compression ratio = $comprat%"
-          if [ "$free" -le 10 -a "$comprat" -le 0.7 ]; then
+          if [ "$free" -le 10 -a "$comprat" -le 70 ]; then
             echo "Compressing /nix/store..."
             unshare -m bash -e -c '
               mount -o remount,rw /nix/store
