@@ -49,6 +49,7 @@ deploy-as host tgt=host:
   sys="$(nix build \
     /tmp/config#nixosConfigurations.{{ tgt }}.config.system.build.toplevel \
     --no-link --print-out-paths)"; \
+  nix store diff-closures /run/current-system "$sys"; \
   sudo "$sys/bin/switch-to-configuration" switch;'
 
 change-nixos-release from to:
@@ -66,6 +67,7 @@ build-deploy-as host tgt=host:
   sys="$(nix build .#nixosConfigurations.{{ tgt }}.config.system.build.toplevel \
     --no-link --print-out-paths)"
   nix copy --to ssh://{{ host }} "$sys"
+  ssh -tt {{ host }} nix store diff-closures /run/current-system "$sys"
   ssh -tt {{ host }} sudo "$sys/bin/switch-to-configuration" switch
 
 # stop autoupgrade timer on the remote
