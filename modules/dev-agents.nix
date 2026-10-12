@@ -10,6 +10,7 @@
           --prefix PATH : ${pkgs.lib.makeBinPath [
             pkgs.uv
             pkgs.nodejs
+            pkgs.github-mcp-server
           ]} \
           --set SUDO_ASKPASS '${lib.getExe pkgs.kdePackages.ksshaskpass}'
       '';
