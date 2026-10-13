@@ -118,6 +118,7 @@ in {
       # sing-box-out
       # { personal.sing-box.vaultless = true; }
       strictSSH
+      tailscale-client
       # wireguard-client
     ] ++ server;
     foxgrape = [
